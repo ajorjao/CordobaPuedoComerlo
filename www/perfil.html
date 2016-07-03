@@ -38,7 +38,7 @@
 				});
     	}
 
-    	function add_familiar(nombre, intolerancias){
+    	function add_familiar(nombre, intolerancias, importante){
     		var familiar = ''+
     			'<div class="panel panel-default">'+
 				    '<div class="panel-heading" role="tab" id="heading_'+nombre.replace(" ","_")+'">'+
@@ -51,7 +51,7 @@
 				    '</div>'+
 
 
-				    '<div id="collapse_'+nombre.replace(" ","_")+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_'+nombre.replace(" ","_")+'">'+
+				    '<div id="collapse_'+nombre.replace(" ","_")+'" class="panel-collapse collapse'+importante+'" role="tabpanel" aria-labelledby="heading_'+nombre.replace(" ","_")+'">'+
 				      '<div class="panel-body">'+
 				        '<ul class="list-group">'+
 				    // #############intolerancias###############
@@ -100,7 +100,12 @@
 						// $.each(familiar, function(i, item) {
 					 //  	console.log(i+":", item);
 						// });
-						add_familiar(familiar.name, "asd");
+						if (id==0){
+							add_familiar(familiar.name, "", " in");
+						}
+						else{
+							add_familiar(familiar.name, "", "");
+						}
 					});
 				});
 	    }
