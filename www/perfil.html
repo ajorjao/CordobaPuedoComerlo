@@ -7,6 +7,108 @@
     <link href="css/style.css"  rel="stylesheet">
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js" "></script>
+    <script type="text/javascript">
+    	var url_server = "localhost:3000"
+
+    	function login(){
+    		var form = new FormData();
+				form.append("user[email]", "ajorjao13@gmail.com");
+				form.append("user[password]", "asdasd123");
+
+				var settings = {
+				  "async": true,
+				  "crossDomain": true,
+				  "url": "http://"+url_server+"/sign_in",
+				  "method": "POST",
+				  xhrFields: {
+				    withCredentials: true
+				  },
+				  "headers": {
+				    "cache-control": "no-cache",
+				    "postman-token": "eb313cc6-dede-ad8a-fc17-2e83b68d2d4f"
+				  },
+				  "processData": false,
+				  "contentType": false,
+				  "mimeType": "multipart/form-data",
+				  "data": form
+				}
+
+				$.ajax(settings).done(function (response) {
+				  console.log(response);
+				});
+    	}
+
+    	function add_familiar(nombre, intolerancias){
+    		var familiar = ''+
+    			'<div class="panel panel-default">'+
+				    '<div class="panel-heading" role="tab" id="heading_'+nombre.replace(" ","_")+'">'+
+				      '<h4 class="panel-title">'+
+				        '<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_'+nombre.replace(" ","_")+'" aria-expanded="false" aria-controls="collapseOne">'+
+				          nombre+
+				          '<a data-toggle="modal" data-target="#nombre-familiar-modal" href=""><span class=" edit-relative glyphicon glyphicon-pencil aria-hidden="true"></span></a>'+
+				        '</a>'+
+				      '</h4>'+
+				    '</div>'+
+
+
+				    '<div id="collapse_'+nombre.replace(" ","_")+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_'+nombre.replace(" ","_")+'">'+
+				      '<div class="panel-body">'+
+				        '<ul class="list-group">'+
+				    // #############intolerancias###############
+						  // '<li class="intolerance list-group-item">'+
+						  // 	'<img src="img/intolerancias/2.png" alt="...">'+
+						  //   'Nueces'+
+						  //   '<a href=""><span class=" remove-intolerance glyphicon glyphicon-remove aria-hidden="true"></span></a>'+
+						  // '</li>'+
+				    // #############intolerancias###############
+
+						  '<button data-toggle="modal" data-target="#intolerancia-modal" type="button" class="list-group-item">'+
+							  '<a  href=""><span class=" add-intolerance glyphicon glyphicon-plus aria-hidden="true"></span></a>'+
+							  'Agregar Intolerancia'+
+						  '</button>'+
+							'</ul>'+
+				      '</div>'+
+				    '</div>'+
+				  '</div>'
+    		$(".panel-group").append(familiar);
+    	}
+
+	    function get_my_family(){
+	    	var settings = {
+				  "async": true,
+				  "crossDomain": true,
+				  "url": "http://"+url_server+"/user",
+				  "method": "GET",
+				  xhrFields: {
+				    withCredentials: true
+				  },
+				  "headers": {
+				    "cache-control": "no-cache",
+				    "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
+				  },
+				  error: function(resp, status){
+				  	console.log(status)
+			    	console.log("logeandose:");
+			    	login();
+			    	get_my_family();
+				  }
+				}
+
+				$.ajax(settings).done(function (response) {
+					$.each(response.family, function(id, familiar) {
+				  	console.log("familiar:", familiar.name);
+						// $.each(familiar, function(i, item) {
+					 //  	console.log(i+":", item);
+						// });
+						add_familiar(familiar.name, "asd");
+					});
+				});
+	    }
+
+	    $(document).ready(function( $ ) {
+				get_my_family();
+	    });
+    </script>
 </head>
 
 <body>
@@ -28,7 +130,7 @@
 <div class="intolerance-wrap">
 
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-  <div class="panel panel-default">
+<!--   <div class="panel panel-default">
     <div class="panel-heading" role="tab" id="headingOne">
       <h4 class="panel-title">
         <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -65,10 +167,13 @@
 			  <a  href=""><span class=" add-intolerance glyphicon glyphicon-plus aria-hidden="true"></span></a>
 			  Agregar Intolerancia
 		  </button>
-		</ul>
+			</ul>
       </div>
     </div>
   </div>
+
+
+
   <div class="panel panel-default">
     <div class="panel-heading" role="tab" id="headingTwo">
       <h4 class="panel-title">
@@ -82,16 +187,16 @@
       <div class="panel-body">
         <ul class="list-group">
 		  
-		  <li class="intolerance list-group-item">
-		  <img src="img/intolerancias/1.png" alt="...">
-		    	Gluten
-		    	<a href=""><span class=" remove-intolerance glyphicon glyphicon-remove aria-hidden="true"></span></a>
-		  </li>
-		  <li class="intolerance list-group-item">
-		  <img src="img/intolerancias/2.png" alt="...">
-		    	Nueces
-		    	<a href=""><span class=" remove-intolerance glyphicon glyphicon-remove aria-hidden="true"></span></a>
-		  </li>
+			  <li class="intolerance list-group-item">
+			  <img src="img/intolerancias/1.png" alt="...">
+			    	Gluten
+			    	<a href=""><span class=" remove-intolerance glyphicon glyphicon-remove aria-hidden="true"></span></a>
+			  </li>
+			  <li class="intolerance list-group-item">
+			  <img src="img/intolerancias/2.png" alt="...">
+			    	Nueces
+			    	<a href=""><span class=" remove-intolerance glyphicon glyphicon-remove aria-hidden="true"></span></a>
+			  </li>
 		  <button data-toggle="modal" data-target="#intolerancia-modal" type="button" class="list-group-item">
 			  <a  href=""><span class=" add-intolerance glyphicon glyphicon-plus aria-hidden="true"></span></a>
 			  Agregar Intolerancia
@@ -148,14 +253,12 @@
 		  </button>
       </div>
     </div>
-  </div>
+  </div> -->
 </div>
 
 <button data-toggle="modal" data-target="#new-relative-modal" type="button" class="btn btn-success">Agregar Integrante</button>
 
 </div>
-
-
 
     <!-- Modal Foto-->
     <div class="modal fade" id="foto-perfil-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -250,7 +353,6 @@
         </div>
       </div>
     </div>
-
 
     <!-- Modal nuevo familiar-->
     <div class="modal fade" id="new-relative-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
