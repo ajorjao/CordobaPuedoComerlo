@@ -1,14 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="format-detection" content="telephone=no" />
-  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-  <link href="css/bootstrap.min.css"  rel="stylesheet">
+  <meta charset="UTF-8">
+	<title>menu</title>
+	<link href="css/bootstrap.min.css"  rel="stylesheet">
   <link href="css/style.css"  rel="stylesheet">
-  <script type="text/javascript" src="js/jquery.min.js"></script>
-  <script type="text/javascript" src="js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="js/app.js" "></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js" "></script>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  <script type="text/javascript" src="cordova.js"></script>
+  <script type="text/javascript">
+
+
+  function escanear(){
+    console.log("hola fabo");
+    cordova.plugins.barcodeScanner.scan(
+      function (result) {
+          alert("We got a barcode\n" +
+                "Result: " + result.text + "\n" +
+                "Format: " + result.format + "\n" +
+                "Cancelled: " + result.cancelled);
+      }, 
+      function (error) {
+          alert("Scanning failed: " + error);
+      },
+      {
+          "preferFrontCamera" : true, // iOS and Android
+          "showFlipCameraButton" : true, // iOS and Android
+          "prompt" : "Place a barcode inside the scan area", // supported on Android only
+          // default: all but PDF_417 and RSS_EXPANDED
+          "orientation" : "landscape" // Android only (portrait|landscape), default unset so it rotates with the device
+      }
+   );
+  };
+  </script>
 </head>
 
 <body>
@@ -23,10 +49,10 @@
 </nav>
   
   <div class="menu-wrapper">
-  
   <div class="row">
     <div class="col-xs-12 ">
-      <button id="startScan" type="button" class="btn btn-default btn-lg btn-block">
+      <button onClick="escanear()" type="button" class="btn btn-default btn-lg btn-block">
+          
           <img  src="img/barcode-search.png" alt="..." >
           <br>
           <p>Escanear Producto</p>    
@@ -54,11 +80,9 @@
       Contactanos</button>
     </div>
   </div>
-  <div id="results"></div>
   </div>
 
     <!-- Modal -->
-    
     <div class="modal fade" id="contacto-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
