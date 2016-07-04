@@ -158,6 +158,10 @@
 	    $(document).ready(function( $ ) {
 				get_my_data();
 	    });
+
+      function go_main_menu(){
+        window.location = "index.html";
+      }
     </script>
 </head>
 
@@ -166,7 +170,7 @@
 <nav class="navbar">
   <div class="container-fluid">
     <ul class="nav navbar-nav">
-    <li><a class="back-button" href="#">
+    <li><a class="back-button" onClick="go_main_menu()">
         <span class="back-button-glyphicon glyphicon glyphicon-arrow-left aria-hidden="true"></span></a></li>
     <li><p class="navbar-text">PERFIL</p></li>
     </ul>
@@ -180,130 +184,6 @@
 <div class="intolerance-wrap">
 
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-<!--   <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingOne">
-      <h4 class="panel-title">
-        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          Juanin Juan Harry
-          <a data-toggle="modal" data-target="#nombre-familiar-modal" href=""><span class=" edit-relative glyphicon glyphicon-pencil aria-hidden="true"></span></a>
-        </a>
-      </h4>
-    </div>
-    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-      <div class="panel-body">
-        <ul class="list-group">
-		  <li class=" intolerance list-group-item">
-          	<img src="img/intolerancias/6.png" alt="...">
-		    Lactosa
-		    <a href=""><span class=" remove-intolerance glyphicon glyphicon-remove aria-hidden="true"></span></a>
-		  </li>
-		  <li class="intolerance list-group-item">
-		  	<img src="img/intolerancias/1.png" alt="...">
-		    Gluten
-		    <a href=""><span class=" remove-intolerance glyphicon glyphicon-remove aria-hidden="true"></span></a>
-		  </li>
-		  <li class="intolerance list-group-item">
-		  	<img src="img/intolerancias/4.png" alt="...">
-		    Huevo
-		   	<a href=""><span class=" remove-intolerance glyphicon glyphicon-remove aria-hidden="true"></span></a>
-		  </li>
-		  <li class="intolerance list-group-item">
-		  	<img src="img/intolerancias/2.png" alt="...">
-		    Nueces
-		    <a href=""><span class=" remove-intolerance glyphicon glyphicon-remove aria-hidden="true"></span></a>
-
-		  </li>
-		  <button data-toggle="modal" data-target="#intolerancia-modal" type="button" class="list-group-item">
-			  <a  href=""><span class=" add-intolerance glyphicon glyphicon-plus aria-hidden="true"></span></a>
-			  Agregar Intolerancia
-		  </button>
-			</ul>
-      </div>
-    </div>
-  </div>
-
-
-
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingTwo">
-      <h4 class="panel-title">
-        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-          Pedro
-          <a data-toggle="modal" data-target="#nombre-familiar-modal" href=""><span class=" edit-relative glyphicon glyphicon-pencil aria-hidden="true"></span></a>
-        </a>
-      </h4>
-    </div>
-    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-      <div class="panel-body">
-        <ul class="list-group">
-		  
-			  <li class="intolerance list-group-item">
-			  <img src="img/intolerancias/1.png" alt="...">
-			    	Gluten
-			    	<a href=""><span class=" remove-intolerance glyphicon glyphicon-remove aria-hidden="true"></span></a>
-			  </li>
-			  <li class="intolerance list-group-item">
-			  <img src="img/intolerancias/2.png" alt="...">
-			    	Nueces
-			    	<a href=""><span class=" remove-intolerance glyphicon glyphicon-remove aria-hidden="true"></span></a>
-			  </li>
-		  <button data-toggle="modal" data-target="#intolerancia-modal" type="button" class="list-group-item">
-			  <a  href=""><span class=" add-intolerance glyphicon glyphicon-plus aria-hidden="true"></span></a>
-			  Agregar Intolerancia
-		  </button>
-		</ul>
-      </div>
-    </div>
-  </div> 
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingThree">
-      <h4 class="panel-title">
-        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-          Juan
-          <a data-toggle="modal" data-target="#nombre-familiar-modal" href=""><span class=" edit-relative glyphicon glyphicon-pencil aria-hidden="true"></span></a>
-        </a>
-      </h4>
-    </div>
-    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-      <div class="panel-body">
-        <ul class="list-group">
-		  <li class="intolerance list-group-item">
-		  <img src="img/intolerancias/2.png" alt="...">
-		    	Nueces
-		    	<a href=""><span class=" remove-intolerance glyphicon glyphicon-remove aria-hidden="true"></span></a>
-		  </li>
-		  <button data-toggle="modal" data-target="#intolerancia-modal" type="button" class="list-group-item">
-			  <a  href=""><span class=" add-intolerance glyphicon glyphicon-plus aria-hidden="true"></span></a>
-			  Agregar Intolerancia
-		  </button>
-		</ul>
-      </div>
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingFour">
-      <h4 class="panel-title">
-        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-          Diego
-          <a data-toggle="modal" data-target="#nombre-familiar-modal" href=""><span class=" edit-relative glyphicon glyphicon-pencil aria-hidden="true"></span></a>
-        </a>
-      </h4>
-    </div>
-    <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-      <div class="panel-body">
-        <ul class="list-group">
-		  <li class="intolerance list-group-item">
-		  <img src="img/intolerancias/6.png" alt="...">
-		    	Lactosa
-		    	<a href=""><span class=" remove-intolerance glyphicon glyphicon-remove aria-hidden="true"></span></a>
-		  </li>
-		  <button type="button" class="list-group-item" data-toggle="modal" data-target="#intolerancia-modal">
-			  <a  href=""><span class=" add-intolerance glyphicon glyphicon-plus aria-hidden="true"></span></a>
-			  Agregar Intolerancia
-		  </button>
-      </div>
-    </div>
-  </div> -->
 </div>
 
 <button data-toggle="modal" data-target="#new-relative-modal" type="button" class="btn btn-success">Agregar Integrante</button>

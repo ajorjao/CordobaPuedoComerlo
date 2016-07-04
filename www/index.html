@@ -4,38 +4,120 @@
   <meta charset="UTF-8">
 	<title>menu</title>
 	<link href="css/bootstrap.min.css"  rel="stylesheet">
-  <link href="css/style.css"  rel="stylesheet">
-  <script src="js/jquery.min.js"></script>
-  <script src="js/bootstrap.min.js" "></script>
-  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-  <script type="text/javascript" src="cordova.js"></script>
-  <script type="text/javascript">
-	  function escanear(){
-	    // console.log("hola fabo");
-	    cordova.plugins.barcodeScanner.scan(
-	      function (result) {
-	          alert("We got a barcode\n" +
-	                "Result: " + result.text + "\n" +
-	                "Format: " + result.format + "\n" +
-	                "Cancelled: " + result.cancelled);
-	      },
-	      function (error) {
-	          alert("Scanning failed: " + error);
-	      },
-	      {
-	          "preferFrontCamera" : false, // iOS and Android
-	          "showFlipCameraButton" : true, // iOS and Android
-	          "prompt" : "Coloque el codigo de barra frente a la camara", // supported on Android only
-	          // default: all but PDF_417 and RSS_EXPANDED
-	          //"orientation" : "landscape" // Android only (portrait|landscape), default unset so it rotates with the device
-	      }
-	   );
-	  };
+    <link href="css/style.css"  rel="stylesheet">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js" "></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript">
+      var url_server = "localhost:3000"
+      var ruta_proyecto = "/home/jorge/Escritorio/PuedoComerlo"
 
+  	  function escanear(){
+  	    // console.log("hola fabo");
+  	    cordova.plugins.barcodeScanner.scan(
+  	      function (result) {
+  	          alert("We got a barcode\n" +
+  	                "Result: " + result.text + "\n" +
+  	                "Format: " + result.format + "\n" +
+  	                "Cancelled: " + result.cancelled);
+  	      },
+  	      function (error) {
+  	          alert("Scanning failed: " + error);
+  	      },
+  	      {
+  	          "preferFrontCamera" : false, // iOS and Android
+  	          "showFlipCameraButton" : true, // iOS and Android
+  	          "prompt" : "Coloque el codigo de barra frente a la camara", // supported on Android only
+  	          // default: all but PDF_417 and RSS_EXPANDED
+  	          //"orientation" : "landscape" // Android only (portrait|landscape), default unset so it rotates with the device
+  	      }
+  	    );
+  	  };
+
+      function login(){
+        var form = new FormData();
+        form.append("user[email]", "ajorjao13@gmail.com");
+        form.append("user[password]", "asdasd123");
+
+        var settings = {
+          "async": true,
+          "crossDomain": true,
+          "url": "http://"+url_server+"/sign_in",
+          "method": "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          "headers": {
+            "cache-control": "no-cache",
+            "postman-token": "eb313cc6-dede-ad8a-fc17-2e83b68d2d4f"
+          },
+          "processData": false,
+          "contentType": false,
+          "mimeType": "multipart/form-data",
+          "data": form,
+          error: function(resp, status){
+            console.log(resp);
+            return false;
+          }
+        }
+
+        $.ajax(settings).done(function (response) {
+          console.log(response);
+          return true;
+        });
+      }
+
+      function get_my_data(){
+        var settings = {
+          "async": true,
+          "crossDomain": true,
+          "url": "http://"+url_server+"/user",
+          "method": "GET",
+          xhrFields: {
+            withCredentials: true
+          },
+          "headers": {
+            "cache-control": "no-cache",
+            "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
+          },
+          error: function(resp, status){
+            console.log(status)
+            console.log("logeandose:");
+            if (login()==true){
+              get_my_data();
+            }
+            else{
+              console.log("error al logearse");
+            }
+          }
+        }
+
+        $.ajax(settings).done(function (response) {
+          var foto_de_perfil = ruta_proyecto+"/public"+response.user.avatar_file_name
+          $("#profilePicture").attr("src", foto_de_perfil);
+        });
+      }
+
+      $(document).ready(function( $ ) {
+        get_my_data();
+      });
+
+      function go_profile(){
+        window.location = "perfil.html";
+      }
+
+      function go_search_id(){
+        window.location = "busqueda_id.html";
+      }
+
+      function go_search_name(){
+        window.location = "busqueda_nombre.html";
+      }
   
   
-  </script>
+    </script>
 </head>
 
 <body>
@@ -43,7 +125,7 @@
 <nav class="navbar">
   <div class="container-fluid">
     <ul class="nav navbar-nav">
-    <li><a href="#"> <img  src="img/perfil.jpg" alt="..." class="img-circle"></a></li>
+    <li><a onClick="go_profile()"> <img id="profilePicture" alt="..." class="img-circle"></a></li>
     <li><p class="navbar-text navbar-text-menu">Puedo comerlo?</p></li>
     </ul>
   </div>
@@ -62,13 +144,13 @@
   </div>
   <div class="row">
     <div class="col-xs-6 ">
-      <button type="button" class="btn btn-default btn-lg btn-block">
+      <button type="button" onClick="go_search_name()" class="btn btn-default btn-lg btn-block">
         <span class="glyphicon glyphicon-search aria-hidden="true"></span>
         Buscar por nombre
       </button>
     </div>
     <div class="col-xs-6 ">
-      <button type="button" class="btn btn-default btn-lg btn-block">
+      <button type="button" onClick="go_search_id()" class="btn btn-default btn-lg btn-block">
         <span class="glyphicon glyphicon-barcode aria-hidden="true"></span>
         Buscar por código
       </button>
