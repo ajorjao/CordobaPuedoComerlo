@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+	<title>Busqueda por nombre</title>
+	<link href="css/bootstrap.min.css"  rel="stylesheet">
+    <link href="css/style.css"  rel="stylesheet">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js" "></script>
+
+    <script type="text/javascript">
+    	var url_server = "localhost:3000"
+
+    	function search(){
+    		var form = new FormData();
+				form.append("product[name]", $("#exampleInputAmount").val());
+
+				var settings = {
+			    "async": true,
+				  "crossDomain": true,
+				  "url": "http://"+url_server+"/products",
+				  "method": "PUT",
+				  "headers": {
+				    "cache-control": "no-cache",
+				    "postman-token": "6416ff29-c90c-b556-c237-e6d5c5e57efa"
+				  },
+				  "processData": false,
+				  "contentType": false,
+				  "mimeType": "multipart/form-data",
+				  "data": form,
+				  error: function(resp, status){
+				  	add_product($.parseJSON(resp.responseText).error+": "+$("#exampleInputAmount").val(), -1);
+				  }
+				}
+
+				$.ajax(settings).done(function (response) {
+				  // console.log(response);
+					resp = $.parseJSON(response);
+				  clear_listgroup();
+				  $.each(resp.products, function(index, producto) {
+				  	// console.log("producto:", producto.name);
+						// $.each(producto, function(i, item) {
+					 //  	console.log(i+":", item);
+						// });
+						add_product(producto.name, 0);
+					});
+				});
+    	}
+
+    	function clear_listgroup(){
+    		$(".list-group").html("");
+    	}
+
+    	function add_product(name, n_ing_intolerados){
+    		if (n_ing_intolerados==0){
+    			var producto = '<a href="#" class="list-group-item list-group-item-success">'+name+'</a>'
+    		}
+    		else {
+    			var producto = '<a href="#" class="list-group-item list-group-item-danger"><span class="badge">'+n_ing_intolerados+'</span>'+name+'</a>'
+    		}
+    		$(".list-group").append(producto);
+    	}
+    </script>
+
+</head>
+<body>
+	<nav class="navbar">
+	  <div class="container-fluid">
+	    <ul class="nav navbar-nav">
+    	<li><a class="back-button" href="#">
+        <span class="back-button-glyphicon glyphicon glyphicon-arrow-left aria-hidden="true"></span></a></li>
+	    <li><p class="navbar-text">BUSQUEDA</p></li>
+	    </ul>
+	  </div>
+	</nav>
+	  <div class="search-wrapper">
+			<form class="form-inline busqueda">
+			  <div class="form-group">
+			    <div class="input-group">
+			      <input type="text" class="form-control" id="exampleInputAmount" placeholder="Nombre del producto">
+			      <div class="input-group-addon">
+			      <button onClick="search()" type="button" class="btn btn-primary search-btn"><span class="glyphicon glyphicon-search aria-hidden="true"></span>
+			      </button>
+			      </div>
+			    </div>
+			  </div>
+			</form>
+
+			<div class="list-group">
+			  <a href="#" class="list-group-item list-group-item-success">Por favor realiza tu busqueda utilizando el nombre del producto</a>
+			  <!-- <a href="#" class="list-group-item list-group-item-success">Tocomple</a>
+			  <a href="#" class="list-group-item list-group-item-danger"><span class="badge">3</span>Porotos</a>
+			  <a href="#" class="list-group-item list-group-item-success">Corbatas Carozzi</a>
+			  <a href="#" class="list-group-item list-group-item-danger"><span class="badge">1</span>Helado Soprole</a>
+			  <a href="#" class="list-group-item list-group-item-success">Galletas Toddy</a>
+			  <a href="#" class="list-group-item list-group-item-danger"><span class="badge">5</span>Pollito al velador</a> -->
+			</div>
+	  </div>
+</body>
+</html>

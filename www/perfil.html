@@ -9,6 +9,7 @@
     <script src="js/bootstrap.min.js" "></script>
     <script type="text/javascript">
     	var url_server = "localhost:3000"
+			var ruta_proyecto = "/home/jorge/Escritorio/PuedoComerlo"
 
     	function login(){
     		var form = new FormData();
@@ -78,7 +79,7 @@
     		$(".panel-group").append(familiar);
     	}
 
-	    function get_my_family(){
+	    function get_my_data(){
 	    	var settings = {
 				  "async": true,
 				  "crossDomain": true,
@@ -95,7 +96,7 @@
 				  	console.log(status)
 			    	console.log("logeandose:");
 			    	if (login()==true){
-			    		get_my_family();
+			    		get_my_data();
 			    	}
 			    	else{
 			    		console.log("error al logearse");
@@ -104,6 +105,9 @@
 				}
 
 				$.ajax(settings).done(function (response) {
+					var foto_de_perfil = ruta_proyecto+"/public"+response.user.avatar_file_name
+					// console.log(foto_de_perfil);
+					$("#profilePicture").attr("src", foto_de_perfil);
 					$.each(response.family, function(id, familiar) {
 				  	console.log("familiar:", familiar.name);
 						// $.each(familiar, function(i, item) {
@@ -119,8 +123,40 @@
 				});
 	    }
 
+	    function new_picture(){
+	    	var form = new FormData();
+				form.append("user[avatar]", $("#InputFile").prop("files")[0]);
+
+				var settings = {
+				  "async": true,
+				  "crossDomain": true,
+				  "url": "http://"+url_server+"/user/",
+				  "method": "PUT",
+				  xhrFields: {
+				    withCredentials: true
+				  },
+				  "headers": {
+				    "cache-control": "no-cache",
+				    "postman-token": "1fa9c955-3fc6-3be7-2a0d-d01f59170acb"
+				  },
+				  "processData": false,
+				  "contentType": false,
+				  "mimeType": "multipart/form-data",
+				  "data": form,
+				  error: function(resp, status){
+				  	console.log(resp);
+				  	location.reload();
+				  }
+				}
+
+				$.ajax(settings).done(function (response) {
+				  console.log(response);
+				  location.reload();
+				});
+	    }
+
 	    $(document).ready(function( $ ) {
-				get_my_family();
+				get_my_data();
 	    });
     </script>
 </head>
@@ -138,7 +174,7 @@
 </nav>
 
 <div class="perfil-img">
-	<img  src="img/perfil.jpg" alt="..." class="img-circle">
+	<img id="profilePicture" alt="..." class="img-circle">
 	<a href="" data-toggle="modal" data-target="#foto-perfil-modal" ><span class="glyphicon glyphicon-camera aria-hidden="true"></span></a>
 </div>
 <div class="intolerance-wrap">
@@ -294,7 +330,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button onClick="new_picture()" type="button" class="btn btn-primary">Guardar</button>
           </div>
           </form>
         </div>
