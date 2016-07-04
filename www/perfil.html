@@ -30,11 +30,16 @@
 				  "processData": false,
 				  "contentType": false,
 				  "mimeType": "multipart/form-data",
-				  "data": form
+				  "data": form,
+				  error: function(resp, status){
+				  	console.log(resp);
+			    	return false;
+				  }
 				}
 
 				$.ajax(settings).done(function (response) {
 				  console.log(response);
+				  return true;
 				});
     	}
 
@@ -89,8 +94,12 @@
 				  error: function(resp, status){
 				  	console.log(status)
 			    	console.log("logeandose:");
-			    	login();
-			    	get_my_family();
+			    	if (login()==true){
+			    		get_my_family();
+			    	}
+			    	else{
+			    		console.log("error al logearse");
+			    	}
 				  }
 				}
 
