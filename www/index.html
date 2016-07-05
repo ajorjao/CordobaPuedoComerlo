@@ -23,7 +23,7 @@
   	          //       "Result: " + result.text + "\n" +
   	          //       "Format: " + result.format + "\n" +
   	          //       "Cancelled: " + result.cancelled);
-              get_product();
+              get_product(result);
   	      },
   	      function (error) {
   	          alert("Scanning failed: " + error);
@@ -39,7 +39,7 @@
   	    );
   	  };
 
-      function get_product(){
+      function get_product(id){
         // $("#modal-popup").modal('show');
         var request_ok = false;
         var request_fail = false;
@@ -48,7 +48,7 @@
         var settings = {
           "async": true,
           "crossDomain": true,
-          "url": "http://localhost:3000/products/"+$('#id_product').val(),
+          "url": "http://localhost:3000/products/"+id,
           "method": "GET",
           "headers": {
             "cache-control": "no-cache",
@@ -56,9 +56,13 @@
           },
           error: function(resp, status){
             console.log(resp)
-            alert(JSON.stringify(resp.responseText, null, 4));
           }
         }
+
+        $.ajax(settings).done(function (response) {
+          alert(JSON.stringify(response.responseText, null, 4));
+        });
+
       }
 
       function login(){

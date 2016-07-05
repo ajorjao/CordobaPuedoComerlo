@@ -163,6 +163,9 @@
 			  "crossDomain": true,
 			  "url": "http://"+url_server+"/families",
 			  "method": "POST",
+			  xhrFields: {
+			    withCredentials: true
+			  },
 			  "headers": {
 			    "cache-control": "no-cache",
 			    "postman-token": "04643411-9b85-17f5-0c7f-4c4375d05851"
