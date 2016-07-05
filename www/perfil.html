@@ -13,6 +13,7 @@
     	var url_server = "192.168.43.206:3000"
 			// var ruta_proyecto = "/home/jorge/Escritorio/PuedoComerlo"
 
+			var stored_id = 0;
 
     	function login(){
     		var form = new FormData();
@@ -48,20 +49,24 @@
 				});
     	}
 
-    	function add_familiar(nombre, intolerancias, importante){
+    	function guardar_id(newid){
+    		stored_id = newid;
+    	}
+
+    	function add_familiar(nombre,id, intolerancias, importante){
     		var familiar = ''+
     			'<div class="panel panel-default">'+
-				    '<div class="panel-heading" role="tab" id="heading_'+nombre.replace(" ","_")+'">'+
+				    '<div class="panel-heading" role="tab" id="heading_'+id+'">'+
 				      '<h4 class="panel-title">'+
-				        '<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_'+nombre.replace(" ","_")+'" aria-expanded="false" aria-controls="collapseOne">'+
+				        '<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_'+id+'" aria-expanded="false" aria-controls="collapseOne">'+
 				          nombre+
-				          '<a data-toggle="modal" data-target="#nombre-familiar-modal" href=""><span class=" edit-relative glyphicon glyphicon-pencil aria-hidden="true"></span></a>'+
+				          '<a data-toggle="modal" onClick="guardar_id('+id+')" data-target="#nombre-familiar-modal" href=""><span class=" edit-relative glyphicon glyphicon-pencil aria-hidden="true"></span></a>'+
 				        '</a>'+
 				      '</h4>'+
 				    '</div>'+
 
 
-				    '<div id="collapse_'+nombre.replace(" ","_")+'" class="panel-collapse collapse'+importante+'" role="tabpanel" aria-labelledby="heading_'+nombre.replace(" ","_")+'">'+
+				    '<div id="collapse_'+id+'" class="panel-collapse collapse'+importante+'" role="tabpanel" aria-labelledby="heading_'+id+'">'+
 				      '<div class="panel-body">'+
 				        '<ul class="list-group">'+
 				    // #############intolerancias###############
@@ -113,10 +118,10 @@
 					 //  	console.log(i+":", item);
 						// });
 						if (id==0){
-							add_familiar(familiar.name, "", " in");
+							add_familiar(familiar.name, familiar.id, "", " in");
 						}
 						else{
-							add_familiar(familiar.name, "", "");
+							add_familiar(familiar.name, familiar.id, "", "");
 						}
 					});
 				});
@@ -144,6 +149,7 @@
 				  "data": form,
 				  error: function(resp, status){
 				  	console.log(resp);
+					  alert("Error, por favor comprueba tu conexión")
 				  	location.reload();
 				  }
 				}
@@ -156,34 +162,94 @@
 
 	    function new_relative(){
 	    	var form = new FormData();
-			form.append("family[name]", $("#new_relative_name").val());
+				form.append("family[name]", $("#new_relative_name").val());
 
-			var settings = {
-			  "async": true,
-			  "crossDomain": true,
-			  "url": "http://"+url_server+"/families",
-			  "method": "POST",
-			  xhrFields: {
-			    withCredentials: true
-			  },
-			  "headers": {
-			    "cache-control": "no-cache",
-			    "postman-token": "04643411-9b85-17f5-0c7f-4c4375d05851"
-			  },
-			  "processData": false,
-			  "contentType": false,
-			  "mimeType": "multipart/form-data",
-			  "data": form,
-			  error: function(resp, status){
+				var settings = {
+				  "async": true,
+				  "crossDomain": true,
+				  "url": "http://"+url_server+"/families",
+				  "method": "POST",
+				  xhrFields: {
+				    withCredentials: true
+				  },
+				  "headers": {
+				    "cache-control": "no-cache",
+				    "postman-token": "04643411-9b85-17f5-0c7f-4c4375d05851"
+				  },
+				  "processData": false,
+				  "contentType": false,
+				  "mimeType": "multipart/form-data",
+				  "data": form,
+				  error: function(resp, status){
+				  	alert("Error, por favor comprueba tu conexión")
 				  	console.log(resp);
 				  	location.reload();
+					}
 				}
-			}
 
-			$.ajax(settings).done(function (response) {
-			  console.log(response);
-			  location.reload();
-			});
+				$.ajax(settings).done(function (response) {
+				  console.log(response);
+				  location.reload();
+				});
+	    }
+
+	    function edit_familiar(){
+	    	var form = new FormData();
+				form.append("family[name]", $("#name").val());
+
+				var settings = {
+				  "async": true,
+				  "crossDomain": true,
+				  "url": "http://"+url_server+"/families/"+stored_id,
+				  "method": "PUT",
+				  xhrFields: {
+				    withCredentials: true
+				  },
+				  "headers": {
+				    "cache-control": "no-cache",
+				    "postman-token": "1082d9ec-0ae4-0939-b9d5-cb671fcecd07"
+				  },
+				  "processData": false,
+				  "contentType": false,
+				  "mimeType": "multipart/form-data",
+				  "data": form,
+				  error: function(resp, status){
+				  	// console.log(resp);
+					  alert("Error, por favor comprueba tu conexión")
+				  	location.reload();
+					}
+				}
+
+				$.ajax(settings).done(function (response) {
+				  // console.log(response);
+					location.reload();
+				});
+	    }
+
+	    function delete_familiar(){
+				var settings = {
+				  "async": true,
+				  "crossDomain": true,
+				  "url": "http://"+url_server+"/families/"+stored_id,
+				  "method": "DELETE",
+				  xhrFields: {
+				    withCredentials: true
+				  },
+				  "headers": {
+				    "cache-control": "no-cache",
+				    "postman-token": "ffda9024-5df8-49dd-cbbf-af449e968378"
+				  },
+				  error: function(resp, status){
+				  	// console.log(resp);
+				  	alert("Error, por favor comprueba tu conexión")
+				  	location.reload();
+					}
+				}
+
+				$.ajax(settings).done(function (response) {
+				  // console.log(response);
+					location.reload();
+				});
 	    }
 
 	    $(document).ready(function( $ ) {
@@ -266,8 +332,9 @@
                 </div>
           </div>
           <div class="modal-footer">
+            <button type="button" onClick="delete_familiar()" class="btn btn-delete btn-danger" data-dismiss="modal">Eliminar familiar</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" onClick="edit_familiar()" class="btn btn-primary">Guardar</button>
           </div>
           </form>
         </div>

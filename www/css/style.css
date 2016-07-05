@@ -114,3 +114,7 @@ body{
 .btn-add-intolerances{
 	width: 100%;
 }
+
+.btn-delete{
+	float: left;
+}
