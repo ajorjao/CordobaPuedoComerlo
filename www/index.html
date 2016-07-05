@@ -8,12 +8,12 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js" "></script>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <!-- <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script> -->
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript">
       // var url_server = "localhost:3000"
-      var url_server = "10.6.43.164:3000"
-      var ruta_proyecto = "/home/jorge/Escritorio/PuedoComerlo"
+      // var url_server = "10.6.43.164:3000"
+      var url_server = "192.168.43.206:3000"
 
   	  function escanear(){
   	    // console.log("hola fabo");
@@ -84,19 +84,20 @@
             "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
           },
           error: function(resp, status){
-            console.log(status)
-            console.log("logeandose:");
-            if (login()==true){
-              get_my_data();
-            }
-            else{
-              console.log("error al logearse");
-            }
+            // console.log(status)
+            window.location = "crear_perfil.html";
+            // console.log("logeandose:");
+            // if (login()==true){
+              // get_my_data();
+            // }
+            // else{
+            //   console.log("error al logearse");
+            // }
           }
         }
 
         $.ajax(settings).done(function (response) {
-          var foto_de_perfil = ruta_proyecto+"/public"+response.user.avatar_file_name
+          var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
           $("#profilePicture").attr("src", foto_de_perfil);
         });
       }
@@ -116,8 +117,7 @@
       function go_search_name(){
         window.location = "busqueda_nombre.html";
       }
-  
-  
+
     </script>
 </head>
 
