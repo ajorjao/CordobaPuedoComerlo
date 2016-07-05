@@ -23,7 +23,8 @@
   	          //       "Result: " + result.text + "\n" +
   	          //       "Format: " + result.format + "\n" +
   	          //       "Cancelled: " + result.cancelled);
-              get_product(result);
+              //alert(result.text);
+              get_product(result.text);
   	      },
   	      function (error) {
   	          alert("Scanning failed: " + error);
@@ -56,11 +57,12 @@
           },
           error: function(resp, status){
             console.log(resp)
+            alert("Error, el producto no se encuentra disponible en nuestra base de datos.");
           }
         }
 
         $.ajax(settings).done(function (response) {
-          alert(JSON.stringify(response.responseText, null, 4));
+          alert(JSON.stringify(response, null, 4));
         });
 
       }
