@@ -36,14 +36,15 @@
 				  "mimeType": "multipart/form-data",
 				  "data": form,
 				  error: function(resp, status){
-				  	console.log(resp);
-			    	return false;
+				  	// console.log(resp);
+			    	console.log("error al logearse");
+			    	alert("Error al logearse, por favor comprueba tu conexión")
 				  }
 				}
 
 				$.ajax(settings).done(function (response) {
 				  console.log(response);
-				  return true;
+				  get_my_data();
 				});
     	}
 
@@ -98,12 +99,7 @@
 				  error: function(resp, status){
 				  	console.log(status)
 			    	console.log("logeandose:");
-			    	if (login()==true){
-			    		get_my_data();
-			    	}
-			    	else{
-			    		console.log("error al logearse");
-			    	}
+			    	login()
 				  }
 				}
 

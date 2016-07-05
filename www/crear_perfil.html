@@ -12,6 +12,75 @@
       // var url_server = "10.6.43.164:3000"
       var url_server = "192.168.43.206:3000"
 
+    	function register(){
+				var form = new FormData();
+				// ############## aqui falta que las personas den un email para crear perfil #############
+				form.append("user[email]", $("#email").val());
+				form.append("user[password]", "asdasd123");
+				form.append("user[password_confirmation]", "asdasd123");
+
+				var settings = {
+				  "async": true,
+				  "crossDomain": true,
+				  "url": "http://"+url_server+"/register",
+				  "method": "POST",
+				  xhrFields: {
+				    withCredentials: true
+				  },
+				  "headers": {
+				    "cache-control": "no-cache",
+				    "postman-token": "6929ffa6-6171-2dfa-13b0-19fcaafe723b"
+				  },
+				  "processData": false,
+				  "contentType": false,
+				  "mimeType": "multipart/form-data",
+				  "data": form,
+				  error: function(resp, status){
+				  	// console.log(resp);
+			    	console.log("error al logearse");
+			    	alert("Error, por favor comprueba tu conexión")
+				  }
+				}
+
+				$.ajax(settings).done(function (response) {
+				  console.log(response);
+				  add_new_familiar();
+				});
+    	}
+
+    	function add_new_familiar(){
+    		var form = new FormData();
+				form.append("family[name]", $("#name").val());
+
+				var settings = {
+				  "async": true,
+				  "crossDomain": true,
+				  "url": "http://"+url_server+"/families",
+				  "method": "POST",
+				  xhrFields: {
+				    withCredentials: true
+				  },
+				  "headers": {
+				    "cache-control": "no-cache",
+				    "postman-token": "880451d2-bb70-c49a-a2a2-bdea0c3d7827"
+				  },
+				  "processData": false,
+				  "contentType": false,
+				  "mimeType": "multipart/form-data",
+				  "data": form,
+				  error: function(resp, status){
+				  	// console.log(resp);
+			    	console.log("Error al agregar familiar");
+			    	alert("Error, por favor comprueba tu conexión")
+				  }
+				}
+
+				$.ajax(settings).done(function (response) {
+				  console.log(response);
+				  window.location = "perfil.html";
+				});
+    	}
+
       // ################# se va a necesitar cuando se presione "Crear" ######################
       // function go_profile(){
         // window.location = "perfil.html";
@@ -36,10 +105,10 @@
   </div>
 </nav>
 
-<div class="perfil-img">
+<!-- <div class="perfil-img">
 	<img  src="img/default_avatar.png" alt="..." class="img-circle">
 	<a href="" data-toggle="modal" data-target="#foto-perfil-modal" ><span class="glyphicon glyphicon-camera aria-hidden="true"></span></a>
-</div>
+</div> -->
 <div class="intolerance-wrap">
 
           <form class="form-horizontal">
@@ -47,6 +116,12 @@
                     <label for="text" class="col-sm-2 control-label">Nombre</label>
                     <div class="col-sm-10">
                       <input type="text" class="form-control" id="name" placeholder="Nombre">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="text" class="col-sm-2 control-label">Email</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="email" placeholder="Nombre">
                     </div>
                 </div>
                 <div class="form-group">
