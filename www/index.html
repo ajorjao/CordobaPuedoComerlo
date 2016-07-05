@@ -12,7 +12,28 @@
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript">
       // var url_server = "localhost:3000"
+
+      function get_url_server(){
+          var rawFile = new XMLHttpRequest();
+          rawFile.open("GET", "config.txt", false);
+          rawFile.onreadystatechange = function ()
+          {
+              if(rawFile.readyState === 4)
+              {
+                  if(rawFile.status === 200 || rawFile.status == 0)
+                  {
+                      var allText = rawFile.responseText;
+                      alert(allText);
+                  }
+              }
+          }
+          rawFile.send(null);
+      }
+
+
+
       var url_server = "10.6.43.164:3000"
+
       var ruta_proyecto = "/home/jorge/Escritorio/PuedoComerlo"
 
   	  function escanear(){
@@ -84,25 +105,30 @@
             "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
           },
           error: function(resp, status){
-            console.log(status)
-            console.log("logeandose:");
-            if (login()==true){
-              get_my_data();
-            }
-            else{
-              console.log("error al logearse");
-            }
+            // console.log(status)
+            // console.log("logeandose:");
+            // if (login()==true){
+            //   get_my_data();
+            // }
+            // else{
+            //   console.log("error al logearse");
+            // }
+            return false;
           }
         }
 
         $.ajax(settings).done(function (response) {
           var foto_de_perfil = ruta_proyecto+"/public"+response.user.avatar_file_name
           $("#profilePicture").attr("src", foto_de_perfil);
+          return true;
         });
       }
 
       $(document).ready(function( $ ) {
-        get_my_data();
+        if (!get_my_data()){
+          window.location = "crear_perfil.html";
+        }
+        get_url_server();
       });
 
       function go_profile(){
