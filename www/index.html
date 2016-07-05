@@ -55,8 +55,9 @@
             "postman-token": "81b17c9b-b428-8799-911e-b183185f6434"
           },
           error: function(resp, status){
-            alert("Error, por favor comprueba tu conexión")
-            console.log(resp)
+            // alert("Error, por favor comprueba tu conexión")
+            // console.log(resp)
+            // alert(JSON.stringify(resp, null, 4));
             alert("Error, el producto no se encuentra disponible en nuestra base de datos.");
           }
         }
@@ -67,39 +68,39 @@
 
       }
 
-      function login(){
-        var form = new FormData();
-        form.append("user[email]", "ajorjao13@gmail.com");
-        form.append("user[password]", "asdasd123");
+      // function login(){
+        // var form = new FormData();
+        // form.append("user[email]", "ajorjao13@gmail.com");
+        // form.append("user[password]", "asdasd123");
 
-        var settings = {
-          "async": true,
-          "crossDomain": true,
-          "url": "http://"+url_server+"/sign_in",
-          "method": "POST",
-          xhrFields: {
-            withCredentials: true
-          },
-          "headers": {
-            "cache-control": "no-cache",
-            "postman-token": "eb313cc6-dede-ad8a-fc17-2e83b68d2d4f"
-          },
-          "processData": false,
-          "contentType": false,
-          "mimeType": "multipart/form-data",
-          "data": form,
-          error: function(resp, status){
-            alert("Error, por favor comprueba tu conexión")
-            console.log(resp);
-            return false;
-          }
-        }
+        // var settings = {
+        //   "async": true,
+        //   "crossDomain": true,
+        //   "url": "http://"+url_server+"/sign_in",
+        //   "method": "POST",
+        //   xhrFields: {
+        //     withCredentials: true
+        //   },
+        //   "headers": {
+        //     "cache-control": "no-cache",
+        //     "postman-token": "eb313cc6-dede-ad8a-fc17-2e83b68d2d4f"
+        //   },
+        //   "processData": false,
+        //   "contentType": false,
+        //   "mimeType": "multipart/form-data",
+        //   "data": form,
+        //   error: function(resp, status){
+        //     alert("Error, por favor comprueba tu conexión")
+        //     console.log(resp);
+        //     return false;
+        //   }
+        // }
 
-        $.ajax(settings).done(function (response) {
-          console.log(response);
-          return true;
-        });
-      }
+        // $.ajax(settings).done(function (response) {
+        //   console.log(response);
+        //   return true;
+        // });
+      // }
 
       function get_my_data(){
         var settings = {
@@ -116,6 +117,7 @@
           },
           error: function(resp, status){
             // console.log(status)
+            alert("Error de conexión, intentalo nuevamente");
             window.location = "crear_perfil.html";
             // console.log("logeandose:");
             // if (login()==true){
