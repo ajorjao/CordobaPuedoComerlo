@@ -23,7 +23,8 @@
   	          //       "Result: " + result.text + "\n" +
   	          //       "Format: " + result.format + "\n" +
   	          //       "Cancelled: " + result.cancelled);
-              get_product(result);
+              // alert(result)
+              get_product(result.text);
   	      },
   	      function (error) {
   	          alert("Scanning failed: " + error);
@@ -55,12 +56,15 @@
             "postman-token": "81b17c9b-b428-8799-911e-b183185f6434"
           },
           error: function(resp, status){
+            alert("Error, por favor comprueba tu conexión")
             console.log(resp)
           }
         }
 
         $.ajax(settings).done(function (response) {
-          alert(JSON.stringify(response.responseText, null, 4));
+          // console.log(response);
+          // console.log(JSON.stringify(response, null, 4));
+          alert(JSON.stringify(response, null, 4));
         });
 
       }
@@ -87,6 +91,7 @@
           "mimeType": "multipart/form-data",
           "data": form,
           error: function(resp, status){
+            alert("Error, por favor comprueba tu conexión")
             console.log(resp);
             return false;
           }
