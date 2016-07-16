@@ -2,52 +2,127 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>perfil</title>
+	<title>Perfil</title>
 	<link href="css/bootstrap.min.css"  rel="stylesheet">
     <link href="css/style.css"  rel="stylesheet">
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js" "></script>
     <script type="text/javascript">
-    	// var url_server = "localhost:3000"
-      // var url_server = "10.6.43.164:3000"
-    	var url_server = "192.168.43.206:3000"
-			// var ruta_proyecto = "/home/jorge/Escritorio/PuedoComerlo"
 
-			var stored_id = 0;
+      $(document).ready(function( $ ) {
+        ping();
+      });
+      var url_server = ""
+      var settings = {}
+      function set_settings(url_server){
+        settings = {
+          "async": true,
+          "crossDomain": true,
+          "url": "http://"+url_server+"/ping",
+          "method": "GET",
+          "headers": {
+            "cache-control": "no-cache",
+            "postman-token": "4b2b1c69-8975-b182-c74e-f196b3ed57d3"
+          },
+          "timeout": 1000 // sets timeout to 3 seconds
+        }
+      }
+      function ping(){
+        set_settings("192.168.43.206:3000")
+        pings = $.ajax(settings)
+        pings.done(function (response) {
+          url_server = "192.168.43.206:3000";
+          console.log("Conected to", url_server);
+          get_my_data();
+        })
+        pings.fail(function (response) {
+          console.log("fail 192.168.43.206:3000");
+          set_settings("10.6.43.164:3000");
+          pings = $.ajax(settings)
+          pings.done(function (response) {
+            url_server = "10.6.43.164:3000";
+            console.log("Conected to", url_server);
+          	get_my_data();
+          })
+          pings.fail(function (response) {
+            console.log("fail 10.6.43.164:3000");
+            set_settings("localhost:3000");
+            pings = $.ajax(settings)
+            pings.fail(function (response) {
+              alert("Problema de conexion con el servidor");
+              location.reload();
+            })
+            pings.done(function (response) {
+              url_server = "localhost:3000";
+              console.log("Conected to", url_server);
+          		get_my_data();
+            })
+          })
+        })
+      }
 
-    	function login(){
-    		var form = new FormData();
-				form.append("user[email]", "ajorjao13@gmail.com");
-				form.append("user[password]", "asdasd123");
 
-				var settings = {
+    // 	function login(){
+    // 		var form = new FormData();
+				// form.append("user[email]", "ajorjao13@gmail.com");
+				// form.append("user[password]", "asdasd123");
+
+				// var settings = {
+				//   "async": true,
+				//   "crossDomain": true,
+				//   "url": "http://"+url_server+"/sign_in",
+				//   "method": "POST",
+				//   xhrFields: {
+				//     withCredentials: true
+				//   },
+				//   "headers": {
+				//     "cache-control": "no-cache",
+				//     "postman-token": "eb313cc6-dede-ad8a-fc17-2e83b68d2d4f"
+				//   },
+				//   "processData": false,
+				//   "contentType": false,
+				//   "mimeType": "multipart/form-data",
+				//   "data": form,
+				//   error: function(resp, status){
+				//   	// console.log(resp);
+			 //    	console.log("error al logearse");
+			 //    	alert("Error al logearse, por favor comprueba tu conexión")
+				//   }
+				// }
+
+				// $.ajax(settings).done(function (response) {
+				//   console.log(response);
+				//   get_my_data();
+				// });
+    // 	}
+
+    	function logout(){
+    		var settings = {
 				  "async": true,
 				  "crossDomain": true,
-				  "url": "http://"+url_server+"/sign_in",
-				  "method": "POST",
+				  "url": "http://"+url_server+"/sign_out",
+				  "method": "DELETE",
 				  xhrFields: {
 				    withCredentials: true
 				  },
 				  "headers": {
 				    "cache-control": "no-cache",
-				    "postman-token": "eb313cc6-dede-ad8a-fc17-2e83b68d2d4f"
+				    "postman-token": "0d3ea712-a98e-209b-6bcc-8b064906ed01"
 				  },
-				  "processData": false,
-				  "contentType": false,
-				  "mimeType": "multipart/form-data",
-				  "data": form,
 				  error: function(resp, status){
 				  	// console.log(resp);
-			    	console.log("error al logearse");
-			    	alert("Error al logearse, por favor comprueba tu conexión")
+			    	console.log("error al cerrar sesion");
+			    	alert("Error al cerrar sesion, por favor comprueba tu conexión")
 				  }
 				}
 
 				$.ajax(settings).done(function (response) {
-				  console.log(response);
-				  get_my_data();
+				  // alert("Se recomienda que borres los datos de esta aplicacion");
+        	window.location = "login.html";
 				});
     	}
+
+			var stored_id = 0;
 
     	function guardar_id(newid){
     		stored_id = newid;
@@ -256,10 +331,6 @@
 				});
 	    }
 
-	    $(document).ready(function( $ ) {
-				get_my_data();
-	    });
-
       function go_main_menu(){
         window.location = "index.html";
       }
@@ -288,6 +359,11 @@
 </div>
 
 <button data-toggle="modal" data-target="#new-relative-modal" type="button" class="btn btn-success">Agregar Integrante</button>
+
+<br><br>
+<div align="right">
+	<button type="button" onClick="logout()" class="btn btn-sm btn-danger">Cerrar sesión</button>
+</div>
 
 </div>
 

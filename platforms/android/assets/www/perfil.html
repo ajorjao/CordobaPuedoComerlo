@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>perfil</title>
+	<link href="css/bootstrap.min.css"  rel="stylesheet">
+    <link href="css/style.css"  rel="stylesheet">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js" "></script>
+    <script type="text/javascript">
+    	// var url_server = "localhost:3000"
+      // var url_server = "10.6.43.164:3000"
+    	var url_server = "192.168.43.206:3000"
+			// var ruta_proyecto = "/home/jorge/Escritorio/PuedoComerlo"
+
+
+    	function login(){
+    		var form = new FormData();
+				form.append("user[email]", "ajorjao13@gmail.com");
+				form.append("user[password]", "asdasd123");
+
+				var settings = {
+				  "async": true,
+				  "crossDomain": true,
+				  "url": "http://"+url_server+"/sign_in",
+				  "method": "POST",
+				  xhrFields: {
+				    withCredentials: true
+				  },
+				  "headers": {
+				    "cache-control": "no-cache",
+				    "postman-token": "eb313cc6-dede-ad8a-fc17-2e83b68d2d4f"
+				  },
+				  "processData": false,
+				  "contentType": false,
+				  "mimeType": "multipart/form-data",
+				  "data": form,
+				  error: function(resp, status){
+				  	// console.log(resp);
+			    	console.log("error al logearse");
+			    	alert("Error al logearse, por favor comprueba tu conexión")
+				  }
+				}
+
+				$.ajax(settings).done(function (response) {
+				  console.log(response);
+				  get_my_data();
+				});
+    	}
+
+    	function add_familiar(nombre, intolerancias, importante){
+    		var familiar = ''+
+    			'<div class="panel panel-default">'+
+				    '<div class="panel-heading" role="tab" id="heading_'+nombre.replace(" ","_")+'">'+
+				      '<h4 class="panel-title">'+
+				        '<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_'+nombre.replace(" ","_")+'" aria-expanded="false" aria-controls="collapseOne">'+
+				          nombre+
+				          '<a data-toggle="modal" data-target="#nombre-familiar-modal" href=""><span class=" edit-relative glyphicon glyphicon-pencil aria-hidden="true"></span></a>'+
+				        '</a>'+
+				      '</h4>'+
+				    '</div>'+
+
+
+				    '<div id="collapse_'+nombre.replace(" ","_")+'" class="panel-collapse collapse'+importante+'" role="tabpanel" aria-labelledby="heading_'+nombre.replace(" ","_")+'">'+
+				      '<div class="panel-body">'+
+				        '<ul class="list-group">'+
+				    // #############intolerancias###############
+						  // '<li class="intolerance list-group-item">'+
+						  // 	'<img src="img/intolerancias/2.png" alt="...">'+
+						  //   'Nueces'+
+						  //   '<a href=""><span class=" remove-intolerance glyphicon glyphicon-remove aria-hidden="true"></span></a>'+
+						  // '</li>'+
+				    // #############intolerancias###############
+
+						  '<button data-toggle="modal" data-target="#intolerancia-modal" type="button" class="list-group-item">'+
+							  '<a  href=""><span class=" add-intolerance glyphicon glyphicon-plus aria-hidden="true"></span></a>'+
+							  'Agregar Intolerancia'+
+						  '</button>'+
+							'</ul>'+
+				      '</div>'+
+				    '</div>'+
+				  '</div>'
+    		$(".panel-group").append(familiar);
+    	}
+
+	    function get_my_data(){
+	    	var settings = {
+				  "async": true,
+				  "crossDomain": true,
+				  "url": "http://"+url_server+"/user",
+				  "method": "GET",
+				  xhrFields: {
+				    withCredentials: true
+				  },
+				  "headers": {
+				    "cache-control": "no-cache",
+				    "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
+				  },
+				  error: function(resp, status){
+				  	console.log(status)
+			    	console.log("logeandose:");
+			    	login()
+				  }
+				}
+
+				$.ajax(settings).done(function (response) {
+					var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
+
+					$("#profilePicture").attr("src", foto_de_perfil);
+					$.each(response.family, function(id, familiar) {
+				  	console.log("familiar:", familiar.name);
+						// $.each(familiar, function(i, item) {
+					 //  	console.log(i+":", item);
+						// });
+						if (id==0){
+							add_familiar(familiar.name, "", " in");
+						}
+						else{
+							add_familiar(familiar.name, "", "");
+						}
+					});
+				});
+	    }
+
+	    function new_picture(){
+	    	var form = new FormData();
+				form.append("user[avatar]", $("#InputFile").prop("files")[0]);
+
+				var settings = {
+				  "async": true,
+				  "crossDomain": true,
+				  "url": "http://"+url_server+"/user/",
+				  "method": "PUT",
+				  xhrFields: {
+				    withCredentials: true
+				  },
+				  "headers": {
+				    "cache-control": "no-cache",
+				    "postman-token": "1fa9c955-3fc6-3be7-2a0d-d01f59170acb"
+				  },
+				  "processData": false,
+				  "contentType": false,
+				  "mimeType": "multipart/form-data",
+				  "data": form,
+				  error: function(resp, status){
+				  	console.log(resp);
+				  	location.reload();
+				  }
+				}
+
+				$.ajax(settings).done(function (response) {
+				  console.log(response);
+				  location.reload();
+				});
+	    }
+
+	    function new_relative(){
+	    	var form = new FormData();
+			form.append("family[name]", $("#new_relative_name").val());
+
+			var settings = {
+			  "async": true,
+			  "crossDomain": true,
+			  "url": "http://"+url_server+"/families",
+			  "method": "POST",
+			  "headers": {
+			    "cache-control": "no-cache",
+			    "postman-token": "04643411-9b85-17f5-0c7f-4c4375d05851"
+			  },
+			  "processData": false,
+			  "contentType": false,
+			  "mimeType": "multipart/form-data",
+			  "data": form,
+			  error: function(resp, status){
+				  	console.log(resp);
+				  	location.reload();
+				}
+			}
+
+			$.ajax(settings).done(function (response) {
+			  console.log(response);
+			  location.reload();
+			});
+	    }
+
+	    $(document).ready(function( $ ) {
+				get_my_data();
+	    });
+
+      function go_main_menu(){
+        window.location = "index.html";
+      }
+    </script>
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+    <li><a class="back-button" onClick="go_main_menu()">
+        <span class="back-button-glyphicon glyphicon glyphicon-arrow-left aria-hidden="true"></span></a></li>
+    <li><p class="navbar-text">PERFIL</p></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="perfil-img">
+	<img id="profilePicture" alt="..." class="img-circle">
+	<a href="" data-toggle="modal" data-target="#foto-perfil-modal" ><span class="glyphicon glyphicon-camera aria-hidden="true"></span></a>
+</div>
+<div class="intolerance-wrap">
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+</div>
+
+<button data-toggle="modal" data-target="#new-relative-modal" type="button" class="btn btn-success">Agregar Integrante</button>
+
+</div>
+
+    <!-- Modal Foto-->
+    <div class="modal fade" id="foto-perfil-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Cambiar foto de perfil</h4>
+          </div>
+          <div class="modal-body">
+              <form class="form-horizontal">
+                <div class="form-group">
+				    <label for="InputFile" class="col-sm-2 control-label">Nueva Foto</label>
+				    <div class="col-sm-10">
+				    <input type="file" id="InputFile">
+				    <p class="help-block">Seleccione una imagen guardada en su dispositivo.</p>
+				    </div>
+				</div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button onClick="new_picture()" type="button" class="btn btn-primary">Guardar</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Nombre-->
+    <div class="modal fade" id="nombre-familiar-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Cambiar Nombre de Integrante</h4>
+          </div>
+          <div class="modal-body">
+              <form class="form-horizontal">
+                <div class="form-group">
+                  <label for="text" class="col-sm-2 control-label">Nombre</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="name" placeholder="Nombre">
+                  </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Intolerancia-->
+    <div class="modal fade" id="intolerancia-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Agregar nueva intolerancias</h4>
+          </div>
+          <div class="modal-body">
+              <form class="form-horizontal">
+                <div class="form-group">
+                  <label for="select" class="col-sm-2 control-label">Intolerancia</label>
+                  <div class="col-sm-10">
+                    <select class="form-control">
+					  <option>Leche</option>
+					  <option>Gluten</option>
+					  <option>Maní</option>
+					  <option>Nueces</option>
+					  <option>Apio</option>
+					  <option>Mostaza</option>
+					  <option>Huevo</option>
+					  <option>Sesamo</option>
+					  <option>Pescado</option>
+					  <option>Crustaceos</option>
+					  <option>Mariscos</option>
+					  <option>Soya</option>
+					  <option>Sulfitos</option>
+					  <option>Lupino</option>
+					</select>
+                  </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal nuevo familiar-->
+    <div class="modal fade" id="new-relative-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Agregar nuevo integrante</h4>
+          </div>
+          <div class="modal-body">
+              <form class="form-horizontal">
+              	<div class="form-group">
+                  <label for="text" class="col-sm-2 control-label">Nombre</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="new_relative_name" name="name" placeholder="Nombre">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="text" class="col-sm-2 control-label">Intolerancias</label>
+                  <div class="col-sm-10">
+
+					<div class="btn-group-vertical btn-add-intolerances" data-toggle="buttons">
+					  <label class="intolerance btn btn-default btn-lg">
+					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/1.png" alt="..."> Gluten
+					  </label>
+					  <label class="intolerance btn btn-default btn-lg">
+					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/2.png" alt="..."> Maní
+					  </label>
+					  <label class="intolerance btn btn-default btn-lg">
+					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/3.png" alt="..."> Nueces
+					  </label>
+					  <label class="intolerance btn btn-default btn-lg">
+					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/11.png" alt="..."> Apio
+					  </label>
+					  <label class="intolerance btn btn-default btn-lg">
+					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/13.png" alt="..."> Mostaza
+					  </label>
+					  <label class="intolerance btn btn-default btn-lg">
+					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/4.png" alt="..."> Huevo
+					  </label>
+					  <label class="intolerance btn btn-default btn-lg">
+					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/8.png" alt="..."> Sesamo
+					  </label>
+					  <label class="intolerance btn btn-default btn-lg">
+					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/12.png" alt="..."> Pescado
+					  </label>
+					  <label class="intolerance btn btn-default btn-lg">
+					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/14.png" alt="..."> Crustaceos
+					  </label>
+					  <label class="intolerance btn btn-default btn-lg">
+					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/5.png" alt="..."> Mariscos
+					  </label>
+					  <label class="intolerance btn btn-default btn-lg">
+					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/7.png" alt="..."> Soya
+					  </label>
+					  <label class="intolerance btn btn-default btn-lg">
+					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/9.png" alt="..."> Sulfitos
+					  </label>
+					  <label class="intolerance btn btn-default btn-lg">
+					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/1.png" alt="..."> Lupino
+					  </label>
+
+					</div>
+                  </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button onClick="new_relative()" type="button" class="btn btn-primary">Guardar</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</body>
+</html>

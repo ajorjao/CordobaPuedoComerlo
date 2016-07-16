@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-	<title>menu</title>
+	<title>Menu</title>
 	<link href="css/bootstrap.min.css"  rel="stylesheet">
     <link href="css/style.css"  rel="stylesheet">
     <script src="js/jquery.min.js"></script>
@@ -11,23 +11,68 @@
     <!-- <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script> -->
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript">
-      // var url_server = "localhost:3000"
-      // var url_server = "10.6.43.164:3000"
-      var url_server = "192.168.43.206:3000"
+
+      $(document).ready(function( $ ) {
+        ping();
+      });
+      var url_server = ""
+      var settings = {}
+      function set_settings(url_server){
+        settings = {
+          "async": true,
+          "crossDomain": true,
+          "url": "http://"+url_server+"/ping",
+          "method": "GET",
+          "headers": {
+            "cache-control": "no-cache",
+            "postman-token": "4b2b1c69-8975-b182-c74e-f196b3ed57d3"
+          },
+          "timeout": 1000 // sets timeout to 3 seconds
+        }
+      }
+      function ping(){
+        set_settings("192.168.43.206:3000")
+        pings = $.ajax(settings)
+        pings.done(function (response) {
+          url_server = "192.168.43.206:3000";
+          console.log("Conected to", url_server);
+          get_my_data();
+        })
+        pings.fail(function (response) {
+          console.log("fail 192.168.43.206:3000");
+          set_settings("10.6.43.164:3000");
+          pings = $.ajax(settings)
+          pings.done(function (response) {
+            url_server = "10.6.43.164:3000";
+            console.log("Conected to", url_server);
+            get_my_data();
+          })
+          pings.fail(function (response) {
+            console.log("fail 10.6.43.164:3000");
+            set_settings("localhost:3000");
+            pings = $.ajax(settings)
+            pings.fail(function (response) {
+              alert("Problema de conexion con el servidor");
+              location.reload();
+            })
+            pings.done(function (response) {
+              url_server = "localhost:3000";
+              console.log("Conected to", url_server);
+              get_my_data();
+            })
+          })
+        })
+      }
+
+
 
   	  function escanear(){
-  	    // console.log("hola fabo");
   	    cordova.plugins.barcodeScanner.scan(
   	      function (result) {
-  	          // alert("We got a barcode\n" +
-  	          //       "Result: " + result.text + "\n" +
-  	          //       "Format: " + result.format + "\n" +
-  	          //       "Cancelled: " + result.cancelled);
               get_product(result.text);
   	      },
   	      function (error) {
   	          alert("Scanning failed: " + error);
-
   	      },
   	      {
   	          "preferFrontCamera" : false, // iOS and Android
@@ -68,40 +113,6 @@
 
       }
 
-      // function login(){
-        // var form = new FormData();
-        // form.append("user[email]", "ajorjao13@gmail.com");
-        // form.append("user[password]", "asdasd123");
-
-        // var settings = {
-        //   "async": true,
-        //   "crossDomain": true,
-        //   "url": "http://"+url_server+"/sign_in",
-        //   "method": "POST",
-        //   xhrFields: {
-        //     withCredentials: true
-        //   },
-        //   "headers": {
-        //     "cache-control": "no-cache",
-        //     "postman-token": "eb313cc6-dede-ad8a-fc17-2e83b68d2d4f"
-        //   },
-        //   "processData": false,
-        //   "contentType": false,
-        //   "mimeType": "multipart/form-data",
-        //   "data": form,
-        //   error: function(resp, status){
-        //     alert("Error, por favor comprueba tu conexión")
-        //     console.log(resp);
-        //     return false;
-        //   }
-        // }
-
-        // $.ajax(settings).done(function (response) {
-        //   console.log(response);
-        //   return true;
-        // });
-      // }
-
       function get_my_data(){
         var settings = {
           "async": true,
@@ -118,7 +129,7 @@
           error: function(resp, status){
             // console.log(status)
             // alert("Error de conexión, intentalo nuevamente");
-            window.location = "crear_perfil.html";
+            window.location = "login.html";
             // console.log("logeandose:");
             // if (login()==true){
               // get_my_data();
@@ -134,10 +145,6 @@
           $("#profilePicture").attr("src", foto_de_perfil);
         });
       }
-
-      $(document).ready(function( $ ) {
-        get_my_data();
-      });
 
       function go_profile(){
         window.location = "perfil.html";
