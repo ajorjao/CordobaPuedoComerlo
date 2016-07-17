@@ -31,34 +31,40 @@
         }
       }
       function ping(){
-        set_settings("192.168.43.206:3000")
+        set_settings("192.168.43.206:3000") //ip celular
         pings = $.ajax(settings)
         pings.done(function (response) {
           url_server = "192.168.43.206:3000";
           console.log("Conected to", url_server);
-          get_my_data();
         })
         pings.fail(function (response) {
           console.log("fail 192.168.43.206:3000");
-          set_settings("10.6.43.164:3000");
+          set_settings("10.6.43.164:3000"); //ip di
           pings = $.ajax(settings)
           pings.done(function (response) {
             url_server = "10.6.43.164:3000";
             console.log("Conected to", url_server);
-            get_my_data();
           })
           pings.fail(function (response) {
             console.log("fail 10.6.43.164:3000");
-            set_settings("localhost:3000");
+            set_settings("192.168.1.33:3000"); //ip casa melipilla jorge
             pings = $.ajax(settings)
-            pings.fail(function (response) {
-              alert("Problema de conexion con el servidor");
-              location.reload();
-            })
             pings.done(function (response) {
-              url_server = "localhost:3000";
+              url_server = "192.168.1.33:3000";
               console.log("Conected to", url_server);
-              get_my_data();
+            })
+            pings.fail(function (response) {
+              console.log("fail 192.168.1.33:3000");
+              set_settings("localhost:3000"); //localhost
+              pings = $.ajax(settings)
+              pings.done(function (response) {
+                url_server = "localhost:3000";
+                console.log("Conected to", url_server);
+              })
+              pings.fail(function (response) {
+                alert("Problema de conexion con el servidor");
+                location.reload();
+              })
             })
           })
         })
@@ -167,7 +173,7 @@
   <div class="container-fluid">
     <ul class="nav navbar-nav">
     <li><a onClick="go_profile()"> <img id="profilePicture" alt="..." class="img-circle"></a></li>
-    <li><p class="navbar-text navbar-text-menu">Puedo comerlo?</p></li>
+    <li><p class="navbar-text navbar-text-menu">¿Puedo comerlo?</p></li>
     </ul>
   </div>
 </nav>

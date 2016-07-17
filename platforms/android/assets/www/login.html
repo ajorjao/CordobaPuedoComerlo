@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+	<title>Login</title>
+	<link href="css/bootstrap.min.css"  rel="stylesheet">
+    <link href="css/style.css"  rel="stylesheet">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js" "></script>
+    <script type="text/javascript">
+
+      $(document).ready(function( $ ) {
+        ping();
+      });
+      var url_server = ""
+      var settings = {}
+      function set_settings(url_server){
+        settings = {
+          "async": true,
+          "crossDomain": true,
+          "url": "http://"+url_server+"/ping",
+          "method": "GET",
+          "headers": {
+            "cache-control": "no-cache",
+            "postman-token": "4b2b1c69-8975-b182-c74e-f196b3ed57d3"
+          },
+          "timeout": 1000 // sets timeout to 3 seconds
+        }
+      }
+      function ping(){
+        set_settings("192.168.43.206:3000")
+        pings = $.ajax(settings)
+        pings.done(function (response) {
+          url_server = "192.168.43.206:3000";
+          console.log("Conected to", url_server);
+        })
+        pings.fail(function (response) {
+          console.log("fail 192.168.43.206:3000");
+          set_settings("10.6.43.164:3000");
+          pings = $.ajax(settings)
+          pings.done(function (response) {
+            url_server = "10.6.43.164:3000";
+            console.log("Conected to", url_server);
+          })
+          pings.fail(function (response) {
+            console.log("fail 10.6.43.164:3000");
+            set_settings("localhost:3000");
+            pings = $.ajax(settings)
+            pings.fail(function (response) {
+              alert("Problema de conexion con el servidor");
+              location.reload();
+            })
+            pings.done(function (response) {
+              url_server = "localhost:3000";
+              console.log("Conected to", url_server);
+            })
+          })
+        })
+      }
+
+
+
+      function login(){
+        var form = new FormData();
+        form.append("user[email]", $("#email").val());
+        form.append("user[password]", $("#pass").val());
+
+        var settings = {
+          "async": true,
+          "crossDomain": true,
+          "url": "http://"+url_server+"/sign_in",
+          "method": "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          "headers": {
+            "cache-control": "no-cache",
+            "postman-token": "eb313cc6-dede-ad8a-fc17-2e83b68d2d4f"
+          },
+          "processData": false,
+          "contentType": false,
+          "mimeType": "multipart/form-data",
+          "data": form,
+          error: function(resp, status){
+            if (status==404){
+              alert("Error, usuario")
+            }
+            else{
+              alert("Error, por favor comprueba tu conexión")
+            }
+            console.log(resp);
+          }
+        }
+
+        $.ajax(settings).done(function (response) {
+          console.log(response);
+          window.location = "perfil.html"
+        });
+      }
+
+      function go_crear_perfil(){
+        window.location = "crear_perfil.html";
+      }
+
+    </script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container-fluid">
+      <!-- <ul class="nav navbar-nav"> -->
+      <!-- <li><a onClick="go_profile()"> <img id="profilePicture" alt="..." class="img-circle"></a></li> -->
+      <p class="navbar-text" align="center">¿Puedo comerlo?</p>
+      <!-- </ul> -->
+    </div>
+  </nav>
+  <div class="menu-wrapper">
+    <div class="logo-img">
+      <div class="col-xs-12" align="middle">
+        <img src="img/logo.png" alt="..." >
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="text" class="control-label">Email</label>
+      <input type="text" class="form-control" id="email">
+      <label for="text" class="control-label">Contraseña</label>
+      <input type="password" class="form-control" id="pass">
+      <div class="login-social">
+        <div class="col-xs-6 ">
+          <!-- <button type="button" class="btn btn-default btn-lg btn-block"> -->
+            <img src="img/facebook-logo.png" alt="..." >
+          <!-- </button> -->
+        </div>
+        <div class="col-xs-6 ">
+          <!-- <button type="button" class="btn btn-default btn-lg btn-block"> -->
+            <img src="img/google-logo.png" alt="..." >
+          <!-- </button> -->
+        </div>
+      </div>
+      <!-- <div class="col-xs-12"> -->
+        <!-- <label for="text" class="control-label">Email</label> -->
+        <button  type="submit" onClick="login()" class="btn btn-default btn-lg btn-block">
+        <!-- <span class="glyphicon glyphicon-send aria-hidden="true"></span> -->
+        Iniciar sesión</button>
+      <!-- </div> -->
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <!-- <label for="text" class="control-label">Email</label> -->
+        <button  type="button" onClick="go_crear_perfil()" class="btn btn-default btn-lg btn-block">
+        <!-- <span class="glyphicon glyphicon-send aria-hidden="true"></span> -->
+        Registrarse</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
