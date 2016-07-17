@@ -36,6 +36,7 @@
         pings.done(function (response) {
           url_server = "192.168.43.206:3000";
           console.log("Conected to", url_server);
+          get_my_data();
         })
         pings.fail(function (response) {
           console.log("fail 192.168.43.206:3000");
@@ -44,6 +45,7 @@
           pings.done(function (response) {
             url_server = "10.6.43.164:3000";
             console.log("Conected to", url_server);
+            get_my_data();
           })
           pings.fail(function (response) {
             console.log("fail 10.6.43.164:3000");
@@ -52,6 +54,7 @@
             pings.done(function (response) {
               url_server = "192.168.1.33:3000";
               console.log("Conected to", url_server);
+              get_my_data();
             })
             pings.fail(function (response) {
               console.log("fail 192.168.1.33:3000");
@@ -60,6 +63,7 @@
               pings.done(function (response) {
                 url_server = "localhost:3000";
                 console.log("Conected to", url_server);
+                get_my_data();
               })
               pings.fail(function (response) {
                 alert("Problema de conexion con el servidor");

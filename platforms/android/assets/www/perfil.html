@@ -42,59 +42,36 @@
           pings.done(function (response) {
             url_server = "10.6.43.164:3000";
             console.log("Conected to", url_server);
-          	get_my_data();
+            get_my_data();
           })
           pings.fail(function (response) {
             console.log("fail 10.6.43.164:3000");
-            set_settings("localhost:3000");
+            set_settings("192.168.1.33:3000");
             pings = $.ajax(settings)
-            pings.fail(function (response) {
-              alert("Problema de conexion con el servidor");
-              location.reload();
-            })
             pings.done(function (response) {
-              url_server = "localhost:3000";
+              url_server = "192.168.1.33:3000";
               console.log("Conected to", url_server);
-          		get_my_data();
+              get_my_data();
+            })
+            pings.fail(function (response) {
+              console.log("fail 192.168.1.33:3000");
+              set_settings("localhost:3000");
+              pings = $.ajax(settings)
+              pings.done(function (response) {
+                url_server = "localhost:3000";
+                console.log("Conected to", url_server);
+                get_my_data();
+              })
+              pings.fail(function (response) {
+                alert("Problema de conexion con el servidor");
+                location.reload();
+              })
             })
           })
         })
       }
 
 
-    // 	function login(){
-    // 		var form = new FormData();
-				// form.append("user[email]", "ajorjao13@gmail.com");
-				// form.append("user[password]", "asdasd123");
-
-				// var settings = {
-				//   "async": true,
-				//   "crossDomain": true,
-				//   "url": "http://"+url_server+"/sign_in",
-				//   "method": "POST",
-				//   xhrFields: {
-				//     withCredentials: true
-				//   },
-				//   "headers": {
-				//     "cache-control": "no-cache",
-				//     "postman-token": "eb313cc6-dede-ad8a-fc17-2e83b68d2d4f"
-				//   },
-				//   "processData": false,
-				//   "contentType": false,
-				//   "mimeType": "multipart/form-data",
-				//   "data": form,
-				//   error: function(resp, status){
-				//   	// console.log(resp);
-			 //    	console.log("error al logearse");
-			 //    	alert("Error al logearse, por favor comprueba tu conexión")
-				//   }
-				// }
-
-				// $.ajax(settings).done(function (response) {
-				//   console.log(response);
-				//   get_my_data();
-				// });
-    // 	}
 
     	function logout(){
     		var settings = {

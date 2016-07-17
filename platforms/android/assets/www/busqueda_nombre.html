@@ -44,15 +44,24 @@
           })
           pings.fail(function (response) {
             console.log("fail 10.6.43.164:3000");
-            set_settings("localhost:3000");
+            set_settings("192.168.1.33:3000");
             pings = $.ajax(settings)
-            pings.fail(function (response) {
-              alert("Problema de conexion con el servidor");
-              location.reload();
-            })
             pings.done(function (response) {
-              url_server = "localhost:3000";
+              url_server = "192.168.1.33:3000";
               console.log("Conected to", url_server);
+            })
+            pings.fail(function (response) {
+              console.log("fail 192.168.1.33:3000");
+              set_settings("localhost:3000");
+              pings = $.ajax(settings)
+              pings.done(function (response) {
+                url_server = "localhost:3000";
+                console.log("Conected to", url_server);
+              })
+              pings.fail(function (response) {
+                alert("Problema de conexion con el servidor");
+                location.reload();
+              })
             })
           })
         })
