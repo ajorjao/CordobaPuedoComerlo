@@ -93,8 +93,14 @@
 				  "data": form,
 				  error: function(resp, status){
 				  	// console.log(resp);
-			    	console.log("error al logearse");
-			    	alert("Error, por favor comprueba tu conexión")
+			    	// console.log("error al logearse");
+			    	// alert("Error, por favor comprueba tu conexión")
+            if (resp.status==0){
+              alert("Error, por favor comprueba tu conexión")
+            }
+            else{
+              alert(JSON.parse(resp.responseText).error)
+            }
 				  }
 				}
 

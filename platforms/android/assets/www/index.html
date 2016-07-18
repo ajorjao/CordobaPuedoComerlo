@@ -96,9 +96,8 @@
 
       function get_product(id){
         // $("#modal-popup").modal('show');
-        var request_ok = false;
-        var request_fail = false;
-        // alert("Buscando...")
+        // var request_ok = false;
+        // var request_fail = false;
 
         var settings = {
           "async": true,
@@ -113,7 +112,13 @@
             // alert("Error, por favor comprueba tu conexión")
             // console.log(resp)
             // alert(JSON.stringify(resp, null, 4));
-            alert("Error, el producto no se encuentra disponible en nuestra base de datos.");
+            if (resp.status==0){
+              alert("Error, por favor comprueba tu conexión")
+            }
+            else{
+              alert(JSON.parse(resp.responseText).error)
+            }
+            // alert("Error, el producto no se encuentra disponible en nuestra base de datos.");
           }
         }
 

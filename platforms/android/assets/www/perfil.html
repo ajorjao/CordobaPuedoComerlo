@@ -157,7 +157,7 @@
 					  // alert("Error, por favor comprueba tu conexión")
 					  // window.location = "crear_perfil.html";
             alert("Error de conexión, intentalo nuevamente");
-            window.location = "crear_perfil.html";
+            window.location = "login.html";
 				  	// console.log(status)
 			    // 	console.log("logeandose:");
 			    // 	login()
@@ -216,7 +216,7 @@
 				});
 	    }
 
-	    function new_relative(){
+	    function new_familiar(){
 	    	var form = new FormData();
 				form.append("family[name]", $("#new_relative_name").val());
 
@@ -271,7 +271,13 @@
 				  "data": form,
 				  error: function(resp, status){
 				  	// console.log(resp);
-					  alert("Error, por favor comprueba tu conexión")
+            if (resp.status==0){
+              alert("Error, por favor comprueba tu conexión")
+					  	// alert("Error, por favor comprueba tu conexión")
+            }
+            else{
+              alert(JSON.parse(resp.responseText).error)
+            }
 				  	location.reload();
 					}
 				}
@@ -296,8 +302,12 @@
 				    "postman-token": "ffda9024-5df8-49dd-cbbf-af449e968378"
 				  },
 				  error: function(resp, status){
-				  	// console.log(resp);
-				  	alert("Error, por favor comprueba tu conexión")
+            if (resp.status==0){
+              alert("Error, por favor comprueba tu conexión")
+            }
+            else{
+              alert(JSON.parse(resp.responseText).error)
+            }
 				  	location.reload();
 					}
 				}
@@ -506,7 +516,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-            <button onClick="new_relative()" type="button" class="btn btn-primary">Guardar</button>
+            <button onClick="new_familiar()" type="button" class="btn btn-primary">Guardar</button>
           </div>
           </form>
         </div>

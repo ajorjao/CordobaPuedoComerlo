@@ -87,24 +87,21 @@
 				  "mimeType": "multipart/form-data",
 				  "data": form,
 				  error: function(resp, status){
-				  	if (status=="error"){
-				  		add_product("Error, por favor revisa tu coneccion a internet", -1)
-				  	}
-				  	else{
-				  		add_product($.parseJSON(resp.responseText).error+": "+$("#exampleInputAmount").val(), -1)
-				  	}
+            if (resp.status==0){
+              // alert("Error, por favor comprueba tu conexión")
+				  		add_error("Error, por favor revisa tu coneccion a internet")
+            }
+            else{
+              // alert(JSON.parse(resp.responseText).error)
+				  		add_error(JSON.parse(resp.responseText).error+": "+$("#exampleInputAmount").val())
+            }
 				  }
 				}
 
 				$.ajax(settings).done(function (response) {
-				  // console.log(response);
 					resp = $.parseJSON(response);
 				  clear_listgroup();
 				  $.each(resp.products, function(index, producto) {
-				  	// console.log("producto:", producto.name);
-						// $.each(producto, function(i, item) {
-					 //  	console.log(i+":", item);
-						// });
 						add_product(producto.name, 0);
 					});
 				});
@@ -124,21 +121,15 @@
     		$(".list-group").append(producto);
     	}
 
-			function go_profile(){
-			  window.location = "perfil.html";
-			}
+    	function add_error(name){
+    		var producto = '<a href="#" class="list-group-item list-group-item-danger"><span class="badge">Error</span>'+name+'</a>'
+    		$(".list-group").prepend(producto);
+    	}
 
 			function go_main_menu(){
 			  window.location = "index.html";
 			}
 
-			function go_search_id(){
-			  window.location = "busqueda_id.html";
-			}
-
-			function go_search_name(){
-			  window.location = "busqueda_nombre.html";
-			}
     </script>
 
 </head>
@@ -148,7 +139,7 @@
 	    <ul class="nav navbar-nav">
     	<li><a class="back-button" onClick="go_main_menu()">
         <span class="back-button-glyphicon glyphicon glyphicon-arrow-left aria-hidden="true"></span></a></li>
-	    <li><p class="navbar-text">BUSQUEDA</p></li>
+	    <li><p class="navbar-text">BUSQUEDA POR NOMBRE</p></li>
 	    </ul>
 	  </div>
 	</nav>

@@ -33,6 +33,7 @@
         pings.done(function (response) {
           url_server = "192.168.43.206:3000";
           console.log("Conected to", url_server);
+          get_my_data();
         })
         pings.fail(function (response) {
           console.log("fail 192.168.43.206:3000");
@@ -41,6 +42,7 @@
           pings.done(function (response) {
             url_server = "10.6.43.164:3000";
             console.log("Conected to", url_server);
+            get_my_data();
           })
           pings.fail(function (response) {
             console.log("fail 10.6.43.164:3000");
@@ -49,6 +51,7 @@
             pings.done(function (response) {
               url_server = "192.168.1.33:3000";
               console.log("Conected to", url_server);
+              get_my_data();
             })
             pings.fail(function (response) {
               console.log("fail 192.168.1.33:3000");
@@ -57,6 +60,7 @@
               pings.done(function (response) {
                 url_server = "localhost:3000";
                 console.log("Conected to", url_server);
+                get_my_data();
               })
               pings.fail(function (response) {
                 alert("Problema de conexion con el servidor");
@@ -91,19 +95,45 @@
           "mimeType": "multipart/form-data",
           "data": form,
           error: function(resp, status){
-            if (status==404){
-              alert("Error, usuario")
-            }
-            else{
+            // console.log(resp);
+            // console.log(resp.status);
+            if (resp.status==0){
               alert("Error, por favor comprueba tu conexión")
             }
-            console.log(resp);
+            else{
+              alert(JSON.parse(resp.responseText).error)
+            }
           }
         }
 
         $.ajax(settings).done(function (response) {
           console.log(response);
           window.location = "perfil.html"
+        });
+      }
+
+
+      function get_my_data(){ //para verificar que no este ya conectado
+        var settings = {
+          "async": true,
+          "crossDomain": true,
+          "url": "http://"+url_server+"/user",
+          "method": "GET",
+          xhrFields: {
+            withCredentials: true
+          },
+          "headers": {
+            "cache-control": "no-cache",
+            "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
+          },
+          error: function(resp, status){
+            console.log("Nadie conectado");
+          }
+        }
+
+        $.ajax(settings).done(function (response) {
+          console.log("Conectado como", response)
+          window.location = "perfil.html";
         });
       }
 
@@ -130,7 +160,7 @@
     </div>
     <div class="form-group">
       <label for="text" class="control-label">Email</label>
-      <input type="text" class="form-control" id="email">
+      <input type="email" class="form-control" id="email">
       <label for="text" class="control-label">Contraseña</label>
       <input type="password" class="form-control" id="pass">
       <div class="login-social">
