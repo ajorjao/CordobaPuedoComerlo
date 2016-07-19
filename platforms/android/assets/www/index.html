@@ -12,8 +12,10 @@
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript">
 
+      var all_servers = ["192.168.43.206:3000","10.6.43.164:3000","192.168.1.33:3000","192.168.2.7:3000","localhost:3000"];
+
       $(document).ready(function( $ ) {
-        ping();
+        ping(all_servers.splice(0,1)[0]);
       });
       var url_server = ""
       var settings = {}
@@ -27,52 +29,30 @@
             "cache-control": "no-cache",
             "postman-token": "4b2b1c69-8975-b182-c74e-f196b3ed57d3"
           },
-          "timeout": 1000 // sets timeout to 3 seconds
+          "timeout": 500
         }
       }
-      function ping(){
-        set_settings("192.168.43.206:3000") //ip celular
-        pings = $.ajax(settings)
+
+      function ping(url){
+        set_settings(url);
+        pings = $.ajax(settings);
         pings.done(function (response) {
-          url_server = "192.168.43.206:3000";
+          url_server = url;
           console.log("Conected to", url_server);
           get_my_data();
         })
         pings.fail(function (response) {
-          console.log("fail 192.168.43.206:3000");
-          set_settings("10.6.43.164:3000"); //ip di
-          pings = $.ajax(settings)
-          pings.done(function (response) {
-            url_server = "10.6.43.164:3000";
-            console.log("Conected to", url_server);
-            get_my_data();
-          })
-          pings.fail(function (response) {
-            console.log("fail 10.6.43.164:3000");
-            set_settings("192.168.1.33:3000"); //ip casa melipilla jorge
-            pings = $.ajax(settings)
-            pings.done(function (response) {
-              url_server = "192.168.1.33:3000";
-              console.log("Conected to", url_server);
-              get_my_data();
-            })
-            pings.fail(function (response) {
-              console.log("fail 192.168.1.33:3000");
-              set_settings("localhost:3000"); //localhost
-              pings = $.ajax(settings)
-              pings.done(function (response) {
-                url_server = "localhost:3000";
-                console.log("Conected to", url_server);
-                get_my_data();
-              })
-              pings.fail(function (response) {
-                alert("Problema de conexion con el servidor");
-                location.reload();
-              })
-            })
-          })
+          console.log("fail", url);
+          new_url = all_servers.splice(0,1)[0];
+          if (new_url != undefined){
+            ping(new_url);
+          }
+          else{
+            alert("Problema de conexion con el servidor");
+            location.reload();
+          }
         })
-      }
+      };
 
 
 
@@ -142,16 +122,7 @@
             "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
           },
           error: function(resp, status){
-            // console.log(status)
-            // alert("Error de conexión, intentalo nuevamente");
             window.location = "login.html";
-            // console.log("logeandose:");
-            // if (login()==true){
-              // get_my_data();
-            // }
-            // else{
-            //   console.log("error al logearse");
-            // }
           }
         }
 
