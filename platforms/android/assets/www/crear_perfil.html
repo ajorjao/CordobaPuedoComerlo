@@ -9,7 +9,7 @@
     <script src="js/bootstrap.min.js" "></script>
     <script type="text/javascript">
 
-      var all_servers = ["192.168.43.206:3000","10.6.43.164:3000","192.168.1.33:3000","192.168.2.7:3000","localhost:3000"];
+      var all_servers = ["10.6.43.164:3000","192.168.1.36:3000","localhost:3000"];
 
       $(document).ready(function( $ ) {
         ping(all_servers.splice(0,1)[0]);
@@ -115,16 +115,68 @@
 				  "data": form,
 				  error: function(resp, status){
 				  	// console.log(resp);
-			    	console.log("Error al agregar familiar");
-			    	alert("Error, por favor comprueba tu conexión");
+            alert("Error, por favor comprueba tu conexión");
+            location.reload();
 				  }
 				}
 
 				$.ajax(settings).done(function (response) {
-				  console.log(response);
-				  window.location = "perfil.html";
+				  // console.log(response);
+
+          var intolerances = [];
+          $('.btn-add-intolerances').find('input:checked').each(function() {
+            intolerances.push($(this).data('value'));
+          });
+          new_intolerances(JSON.parse(response).created.id, intolerances);
+
 				});
     	}
+
+      function new_intolerances(familiar, intolerancias){ //(int, array)
+        if (intolerancias==0 && familiar==0){
+          familiar = stored_id;
+          intolerancias = $(".select-intolerance").val();
+        }
+
+        var form = new FormData();
+        form.append("family_id", familiar);
+        form.append("intolerances_ids", intolerancias.toString());
+
+        var settings = {
+          "async": true,
+          "crossDomain": true,
+          "url": "http://"+url_server+"/family/intolerance",
+          "method": "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          "headers": {
+            "cache-control": "no-cache",
+            "postman-token": "04643411-9b85-17f5-0c7f-4c4375d05851"
+          },
+          "processData": false,
+          "contentType": false,
+          "mimeType": "multipart/form-data",
+          "data": form,
+          error: function(resp, status){
+            // alert("Error, no se pudieron agregar las intolerancias, por favor comprueba tu conexión")
+            // console.log(resp);
+            if (resp.status==0){
+              alert("Error, por favor comprueba tu conexión")
+            }
+            else{
+              alert(JSON.parse(resp.responseText).error)
+            }
+            location.reload();
+          }
+        }
+
+        $.ajax(settings).done(function (response) {
+          console.log(response);
+          window.location = "perfil.html";
+          // location.reload();
+        });
+      }
 
       function go_login(){
         window.location = "login.html";
@@ -166,44 +218,48 @@
 
                     <div class="btn-group-vertical btn-add-intolerances" data-toggle="buttons">
                       <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/1.png" alt="..."> Gluten
+                        <input type="checkbox" autocomplete="off" data-value="1"> <img src="img/intolerancias/1.png" alt="..."> Lactosa
                       </label>
                       <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/2.png" alt="..."> Maní
+                        <input type="checkbox" autocomplete="off" data-value="2"> <img src="img/intolerancias/2.png" alt="..."> Gluten
                       </label>
                       <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/3.png" alt="..."> Nueces
+                        <input type="checkbox" autocomplete="off" data-value="3"> <img src="img/intolerancias/3.png" alt="..."> Maní
                       </label>
                       <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/11.png" alt="..."> Apio
+                        <input type="checkbox" autocomplete="off" data-value="4"> <img src="img/intolerancias/4.png" alt="..."> Nueces
                       </label>
                       <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/13.png" alt="..."> Mostaza
+                        <input type="checkbox" autocomplete="off" data-value="5"> <img src="img/intolerancias/5.png" alt="..."> Apio
                       </label>
                       <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/4.png" alt="..."> Huevo
+                        <input type="checkbox" autocomplete="off" data-value="6"> <img src="img/intolerancias/6.png" alt="..."> Mostaza
                       </label>
                       <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/8.png" alt="..."> Sesamo
+                        <input type="checkbox" autocomplete="off" data-value="7"> <img src="img/intolerancias/7.png" alt="..."> Huevo
                       </label>
                       <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/12.png" alt="..."> Pescado
+                        <input type="checkbox" autocomplete="off" data-value="8"> <img src="img/intolerancias/8.png" alt="..."> Sesamo
                       </label>
                       <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/14.png" alt="..."> Crustaceos
+                        <input type="checkbox" autocomplete="off" data-value="9"> <img src="img/intolerancias/9.png" alt="..."> Pescado
                       </label>
                       <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/5.png" alt="..."> Mariscos
+                        <input type="checkbox" autocomplete="off" data-value="10"> <img src="img/intolerancias/10.png" alt="..."> Crustaceos
                       </label>
                       <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/7.png" alt="..."> Soya
+                        <input type="checkbox" autocomplete="off" data-value="11"> <img src="img/intolerancias/11.png" alt="..."> Mariscos
                       </label>
                       <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/9.png" alt="..."> Sulfitos
+                        <input type="checkbox" autocomplete="off" data-value="12"> <img src="img/intolerancias/12.png" alt="..."> Soya
                       </label>
                       <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/1.png" alt="..."> Lupino
+                        <input type="checkbox" autocomplete="off" data-value="13"> <img src="img/intolerancias/13.png" alt="..."> Sulfitos
                       </label>
+                      <label class="intolerance btn btn-default btn-lg">
+                        <input type="checkbox" autocomplete="off" data-value="14"> <img src="img/intolerancias/14.png" alt="..."> Lupino
+                      </label>
+
                     </div>
                   </div>
                 </div>

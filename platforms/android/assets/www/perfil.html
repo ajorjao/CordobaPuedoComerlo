@@ -9,7 +9,7 @@
     <script src="js/bootstrap.min.js" "></script>
     <script type="text/javascript">
 
-      var all_servers = ["192.168.43.206:3000","10.6.43.164:3000","192.168.1.33:3000","192.168.2.7:3000","localhost:3000"];
+      var all_servers = ["10.6.43.164:3000","192.168.1.36:3000","localhost:3000"];
 
       $(document).ready(function( $ ) {
         ping(all_servers.splice(0,1)[0]);
@@ -85,12 +85,18 @@
     		stored_id = newid;
     	}
 
-    	function add_familiar(nombre,id, intolerancias, importante){
+			// var stored_intolerance_id = 0;
+
+   //  	function guardar_intolerance_id(newid){
+   //  		stored_intolerance_id = newid;
+   //  	}
+
+    	function add_familiar(nombre, id, importante){
     		var familiar = ''+
     			'<div class="panel panel-default">'+
 				    '<div class="panel-heading" role="tab" id="heading_'+id+'">'+
 				      '<h4 class="panel-title">'+
-				        '<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_'+id+'" aria-expanded="false" aria-controls="collapseOne">'+
+				        '<a role="button" data-toggle="collapse" data-parent="#accordion" onClick="guardar_id('+id+')" href="#collapse_'+id+'" aria-expanded="false" aria-controls="collapseOne">'+
 				          nombre+
 				          '<a data-toggle="modal" onClick="guardar_id('+id+')" data-target="#nombre-familiar-modal" href=""><span class=" edit-relative glyphicon glyphicon-pencil aria-hidden="true"></span></a>'+
 				        '</a>'+
@@ -100,24 +106,77 @@
 
 				    '<div id="collapse_'+id+'" class="panel-collapse collapse'+importante+'" role="tabpanel" aria-labelledby="heading_'+id+'">'+
 				      '<div class="panel-body">'+
-				        '<ul class="list-group">'+
-				    // #############intolerancias###############
-						  // '<li class="intolerance list-group-item">'+
-						  // 	'<img src="img/intolerancias/2.png" alt="...">'+
-						  //   'Nueces'+
-						  //   '<a href=""><span class=" remove-intolerance glyphicon glyphicon-remove aria-hidden="true"></span></a>'+
-						  // '</li>'+
-				    // #############intolerancias###############
+				        '<ul class="list-group-'+id+'">'+
+						    // #############intolerancias###############
+								  // '<li class="intolerance list-group-item">'+
+								  // 	'<img src="img/intolerancias/2.png" alt="...">'+
+								  //   'Nueces'+
+								  //   '<a href=""><span class=" remove-intolerance glyphicon glyphicon-remove aria-hidden="true"></span></a>'+
+								  // '</li>'+
+						    // #############intolerancias###############
 
-						  '<button data-toggle="modal" data-target="#intolerancia-modal" type="button" class="list-group-item">'+
-							  '<a  href=""><span class=" add-intolerance glyphicon glyphicon-plus aria-hidden="true"></span></a>'+
-							  'Agregar Intolerancia'+
-						  '</button>'+
-							'</ul>'+
+								  // '<button data-toggle="modal" data-target="#intolerancia-modal" type="button" class="list-group-item">'+
+									 //  '<a  href=""><span class=" add-intolerance glyphicon glyphicon-plus aria-hidden="true"></span></a>'+
+									 //  'Agregar Intolerancia'+
+								  // '</button>'+
+								'</ul>'+
 				      '</div>'+
 				    '</div>'+
 				  '</div>'
     		$(".panel-group").append(familiar);
+    	}
+
+    	function add_intolerance(intolerance_id, family_id){
+    		all_intolerances = ["Lactosa","Gluten","Maní","Nueces","Apio","Mostaza","Huevo","Sesamo","Pescado","Crustaceos","Mariscos","Soya","Sulfitos","Lupino"]
+
+    		intolerance_name = all_intolerances[intolerance_id-1]
+
+    		var intolerance = ''+
+			  '<li class="intolerance list-group-item">'+
+			  	'<img src="img/intolerancias/'+intolerance_id+'.png" alt="..."> '+intolerance_name+
+			    // '<a href=""><span class="remove-intolerance glyphicon glyphicon-remove" onClick="delete_intolerance('+intolerance_id+')" aria-hidden="true"></span></a>'+
+			    '<a href="#"><span class="remove-intolerance glyphicon glyphicon-remove aria-hidden="true"  onClick="delete_intolerance('+intolerance_id+')"></span></a>'+
+			  '</li>'
+			  $(".list-group-"+family_id).append(intolerance)
+    	}
+
+    	// como family_id se usa el stored_id
+    	function delete_intolerance(intolerance_id){
+				var form = new FormData();
+				form.append("family_id", stored_id);
+				form.append("intolerance_id", intolerance_id);
+
+				var settings = {
+				  "async": true,
+				  "crossDomain": true,
+				  "url": "http://"+url_server+"/family/intolerance",
+				  "method": "DELETE",
+				  xhrFields: {
+				    withCredentials: true
+				  },
+				  "headers": {
+				    "cache-control": "no-cache",
+				    "postman-token": "8b5643a5-12a1-00bb-f3fb-155a6197ace5"
+				  },
+				  "processData": false,
+				  "contentType": false,
+				  "mimeType": "multipart/form-data",
+				  "data": form,
+				  error: function(resp, status){
+						if (resp.status==0){
+							alert("Error, por favor comprueba tu conexión")
+						}
+						else{
+							alert(JSON.parse(resp.responseText).error)
+						}
+						location.reload();
+				  }
+				}
+
+				$.ajax(settings).done(function (response) {
+					console.log(response);
+					location.reload();
+				});
     	}
 
 	    function get_my_data(){
@@ -134,13 +193,8 @@
 				    "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
 				  },
 				  error: function(resp, status){
-					  // alert("Error, por favor comprueba tu conexión")
-					  // window.location = "crear_perfil.html";
             alert("Error de conexión, intentalo nuevamente");
             window.location = "login.html";
-				  	// console.log(status)
-			    // 	console.log("logeandose:");
-			    // 	login()
 				  }
 				}
 
@@ -148,18 +202,53 @@
 					var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
 
 					$("#profilePicture").attr("src", foto_de_perfil);
-					$.each(response.family, function(id, familiar) {
+					$.each(response.family, function(pos, familiar) {
 				  	console.log("familiar:", familiar.name);
-						// $.each(familiar, function(i, item) {
-					 //  	console.log(i+":", item);
-						// });
-						if (id==0){
-							add_familiar(familiar.name, familiar.id, "", " in");
+
+						if (pos==0){
+							add_familiar(familiar.name, familiar.id, " in");
+							guardar_id(familiar.id)
 						}
 						else{
-							add_familiar(familiar.name, familiar.id, "", "");
+							add_familiar(familiar.name, familiar.id, "");
 						}
+						get_familiar_data(familiar.id);
 					});
+				});
+	    }
+
+	    function get_familiar_data(family_id){
+	    	var settings = {
+				  "async": true,
+				  "crossDomain": true,
+				  "url": "http://"+url_server+"/families/"+family_id,
+				  "method": "GET",
+				  xhrFields: {
+				    withCredentials: true
+				  },
+				  "headers": {
+				    "cache-control": "no-cache",
+				    "postman-token": "bc75788d-2cae-eda1-4aa1-024dbb0af657"
+				  },
+				  error: function(resp, status){
+				  	console.log(resp);
+					  alert("Error, por favor comprueba tu conexión")
+				  	location.reload();
+				  }
+				}
+
+				$.ajax(settings).done(function (response) {
+				  // console.log(response);
+					$.each(response.intolerances, function(pos, intolerancia) {
+				  	// console.log("intolerancia:", intolerancia.name);
+					  add_intolerance(intolerancia.id, family_id);
+					});
+					button_add_intolerance=''+
+					  '<button data-toggle="modal" data-target="#intolerancia-modal" type="button" class="list-group-item">'+
+						  '<a  href=""><span class="add-intolerance glyphicon glyphicon-plus" aria-hidden="true"></span></a>'+
+						  'Agregar Intolerancia'+
+					  '</button>'
+					$(".list-group-"+family_id).append(button_add_intolerance);
 				});
 	    }
 
@@ -217,8 +306,58 @@
 				  "mimeType": "multipart/form-data",
 				  "data": form,
 				  error: function(resp, status){
-				  	alert("Error, por favor comprueba tu conexión")
-				  	console.log(resp);
+				  	// console.log(resp);
+				  	alert("Error, por favor comprueba tu conexión");
+				  	location.reload();
+					}
+				}
+
+				$.ajax(settings).done(function (response) {
+
+					var intolerances = [];
+			    $('.btn-add-intolerances').find('input:checked').each(function() {
+						intolerances.push($(this).data('value'));
+			    });
+
+			    new_intolerances(JSON.parse(response).created.id, intolerances);
+				});
+	    }
+
+	    function new_intolerances(familiar, intolerancias){ //(int, array)
+    		if (intolerancias==0 && familiar==0){
+    			familiar = stored_id;
+    			intolerancias = $(".select-intolerance").val();
+    		}
+
+	    	var form = new FormData();
+				form.append("family_id", familiar);
+				form.append("intolerances_ids", intolerancias.toString());
+
+				var settings = {
+				  "async": true,
+				  "crossDomain": true,
+				  "url": "http://"+url_server+"/family/intolerance",
+				  "method": "POST",
+				  xhrFields: {
+				    withCredentials: true
+				  },
+				  "headers": {
+				    "cache-control": "no-cache",
+				    "postman-token": "04643411-9b85-17f5-0c7f-4c4375d05851"
+				  },
+				  "processData": false,
+				  "contentType": false,
+				  "mimeType": "multipart/form-data",
+				  "data": form,
+				  error: function(resp, status){
+				  	// alert("Error, no se pudieron agregar las intolerancias, por favor comprueba tu conexión")
+				  	// console.log(resp);
+						if (resp.status==0){
+							alert("Error, por favor comprueba tu conexión")
+						}
+						else{
+							alert(JSON.parse(resp.responseText).error)
+						}
 				  	location.reload();
 					}
 				}
@@ -229,6 +368,7 @@
 				});
 	    }
 
+    	// como family_id se usa el stored_id
 	    function edit_familiar(){
 	    	var form = new FormData();
 				form.append("family[name]", $("#name").val());
@@ -282,13 +422,13 @@
 				    "postman-token": "ffda9024-5df8-49dd-cbbf-af449e968378"
 				  },
 				  error: function(resp, status){
-            if (resp.status==0){
-              alert("Error, por favor comprueba tu conexión")
-            }
-            else{
-              alert(JSON.parse(resp.responseText).error)
-            }
-				  	location.reload();
+						if (resp.status==0){
+							alert("Error, por favor comprueba tu conexión")
+						}
+						else{
+							alert(JSON.parse(resp.responseText).error)
+						}
+						location.reload();
 					}
 				}
 
@@ -296,7 +436,7 @@
 				  // console.log(response);
 					location.reload();
 				});
-	    }
+			}
 
       function go_main_menu(){
         window.location = "index.html";
@@ -401,28 +541,29 @@
                 <div class="form-group">
                   <label for="select" class="col-sm-2 control-label">Intolerancia</label>
                   <div class="col-sm-10">
-                    <select class="form-control">
-					  <option>Leche</option>
-					  <option>Gluten</option>
-					  <option>Maní</option>
-					  <option>Nueces</option>
-					  <option>Apio</option>
-					  <option>Mostaza</option>
-					  <option>Huevo</option>
-					  <option>Sesamo</option>
-					  <option>Pescado</option>
-					  <option>Crustaceos</option>
-					  <option>Mariscos</option>
-					  <option>Soya</option>
-					  <option>Sulfitos</option>
-					  <option>Lupino</option>
-					</select>
+                    <select class="form-control select-intolerance">
+										  <option value="1">Lactosa</option>
+										  <option value="2">Gluten</option>
+										  <option value="3">Maní</option>
+										  <option value="4">Nueces</option>
+										  <option value="5">Apio</option>
+										  <option value="6">Mostaza</option>
+										  <option value="7">Huevo</option>
+										  <option value="8">Sesamo</option>
+										  <option value="9">Pescado</option>
+										  <option value="10">Crustaceos</option>
+										  <option value="11">Mariscos</option>
+										  <option value="12">Soya</option>
+										  <option value="13">Sulfitos</option>
+										  <option value="14">Lupino</option>
+										</select>
                   </div>
                 </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <!-- <button type="button" class="btn btn-primary" onClick="new_intolerances('+stored_id+',['+$(".select-intolerance").val()+'])">Guardar</button> -->
+            <button type="button" class="btn btn-primary" onClick="new_intolerances(0,0)">Guardar</button>
           </div>
           </form>
         </div>
@@ -449,48 +590,51 @@
                   <label for="text" class="col-sm-2 control-label">Intolerancias</label>
                   <div class="col-sm-10">
 
-					<div class="btn-group-vertical btn-add-intolerances" data-toggle="buttons">
-					  <label class="intolerance btn btn-default btn-lg">
-					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/1.png" alt="..."> Gluten
-					  </label>
-					  <label class="intolerance btn btn-default btn-lg">
-					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/2.png" alt="..."> Maní
-					  </label>
-					  <label class="intolerance btn btn-default btn-lg">
-					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/3.png" alt="..."> Nueces
-					  </label>
-					  <label class="intolerance btn btn-default btn-lg">
-					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/11.png" alt="..."> Apio
-					  </label>
-					  <label class="intolerance btn btn-default btn-lg">
-					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/13.png" alt="..."> Mostaza
-					  </label>
-					  <label class="intolerance btn btn-default btn-lg">
-					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/4.png" alt="..."> Huevo
-					  </label>
-					  <label class="intolerance btn btn-default btn-lg">
-					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/8.png" alt="..."> Sesamo
-					  </label>
-					  <label class="intolerance btn btn-default btn-lg">
-					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/12.png" alt="..."> Pescado
-					  </label>
-					  <label class="intolerance btn btn-default btn-lg">
-					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/14.png" alt="..."> Crustaceos
-					  </label>
-					  <label class="intolerance btn btn-default btn-lg">
-					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/5.png" alt="..."> Mariscos
-					  </label>
-					  <label class="intolerance btn btn-default btn-lg">
-					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/7.png" alt="..."> Soya
-					  </label>
-					  <label class="intolerance btn btn-default btn-lg">
-					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/9.png" alt="..."> Sulfitos
-					  </label>
-					  <label class="intolerance btn btn-default btn-lg">
-					    <input type="checkbox" autocomplete="off"> <img src="img/intolerancias/1.png" alt="..."> Lupino
-					  </label>
+										<div class="btn-group-vertical btn-add-intolerances" data-toggle="buttons">
+										  <label class="intolerance btn btn-default btn-lg">
+										    <input type="checkbox" autocomplete="off" data-value="1"> <img src="img/intolerancias/1.png" alt="..."> Lactosa
+										  </label>
+										  <label class="intolerance btn btn-default btn-lg">
+										    <input type="checkbox" autocomplete="off" data-value="2"> <img src="img/intolerancias/2.png" alt="..."> Gluten
+										  </label>
+										  <label class="intolerance btn btn-default btn-lg">
+										    <input type="checkbox" autocomplete="off" data-value="3"> <img src="img/intolerancias/3.png" alt="..."> Maní
+										  </label>
+										  <label class="intolerance btn btn-default btn-lg">
+										    <input type="checkbox" autocomplete="off" data-value="4"> <img src="img/intolerancias/4.png" alt="..."> Nueces
+										  </label>
+										  <label class="intolerance btn btn-default btn-lg">
+										    <input type="checkbox" autocomplete="off" data-value="5"> <img src="img/intolerancias/5.png" alt="..."> Apio
+										  </label>
+										  <label class="intolerance btn btn-default btn-lg">
+										    <input type="checkbox" autocomplete="off" data-value="6"> <img src="img/intolerancias/6.png" alt="..."> Mostaza
+										  </label>
+										  <label class="intolerance btn btn-default btn-lg">
+										    <input type="checkbox" autocomplete="off" data-value="7"> <img src="img/intolerancias/7.png" alt="..."> Huevo
+										  </label>
+										  <label class="intolerance btn btn-default btn-lg">
+										    <input type="checkbox" autocomplete="off" data-value="8"> <img src="img/intolerancias/8.png" alt="..."> Sesamo
+										  </label>
+										  <label class="intolerance btn btn-default btn-lg">
+										    <input type="checkbox" autocomplete="off" data-value="9"> <img src="img/intolerancias/9.png" alt="..."> Pescado
+										  </label>
+										  <label class="intolerance btn btn-default btn-lg">
+										    <input type="checkbox" autocomplete="off" data-value="10"> <img src="img/intolerancias/10.png" alt="..."> Crustaceos
+										  </label>
+										  <label class="intolerance btn btn-default btn-lg">
+										    <input type="checkbox" autocomplete="off" data-value="11"> <img src="img/intolerancias/11.png" alt="..."> Mariscos
+										  </label>
+										  <label class="intolerance btn btn-default btn-lg">
+										    <input type="checkbox" autocomplete="off" data-value="12"> <img src="img/intolerancias/12.png" alt="..."> Soya
+										  </label>
+										  <label class="intolerance btn btn-default btn-lg">
+										    <input type="checkbox" autocomplete="off" data-value="13"> <img src="img/intolerancias/13.png" alt="..."> Sulfitos
+										  </label>
+										  <label class="intolerance btn btn-default btn-lg">
+										    <input type="checkbox" autocomplete="off" data-value="14"> <img src="img/intolerancias/14.png" alt="..."> Lupino
+										  </label>
 
-					</div>
+										</div>
                   </div>
                 </div>
           </div>

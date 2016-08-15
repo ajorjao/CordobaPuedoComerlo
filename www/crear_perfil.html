@@ -4,136 +4,14 @@
 	<meta charset="UTF-8">
 	<title>Crear Perfil</title>
 	<link href="css/bootstrap.min.css"  rel="stylesheet">
-    <link href="css/style.css"  rel="stylesheet">
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js" "></script>
-    <script type="text/javascript">
-
-      var all_servers = ["192.168.43.206:3000","10.6.43.164:3000","192.168.1.33:3000","192.168.2.7:3000","localhost:3000"];
-
-      $(document).ready(function( $ ) {
-        ping(all_servers.splice(0,1)[0]);
-      });
-      var url_server = ""
-      var settings = {}
-      function set_settings(url_server){
-        settings = {
-          "async": true,
-          "crossDomain": true,
-          "url": "http://"+url_server+"/ping",
-          "method": "GET",
-          "headers": {
-            "cache-control": "no-cache",
-            "postman-token": "4b2b1c69-8975-b182-c74e-f196b3ed57d3"
-          },
-          "timeout": 500
-        }
-      }
-
-      function ping(url){
-        set_settings(url);
-        pings = $.ajax(settings);
-        pings.done(function (response) {
-          url_server = url;
-          console.log("Conected to", url_server);
-        })
-        pings.fail(function (response) {
-          console.log("fail", url);
-          new_url = all_servers.splice(0,1)[0];
-          if (new_url != undefined){
-            ping(new_url);
-          }
-          else{
-            alert("Problema de conexion con el servidor");
-            location.reload();
-          }
-        })
-      };
-
-
-
-    	function register(){
-				var form = new FormData();
-				form.append("user[email]", $("#email").val());
-				form.append("user[password]", $("#pass").val());
-				form.append("user[password_confirmation]", $("#pass").val());
-
-				var settings = {
-				  "async": true,
-				  "crossDomain": true,
-				  "url": "http://"+url_server+"/register",
-				  "method": "POST",
-				  xhrFields: {
-				    withCredentials: true
-				  },
-				  "headers": {
-				    "cache-control": "no-cache",
-				    "postman-token": "6929ffa6-6171-2dfa-13b0-19fcaafe723b"
-				  },
-				  "processData": false,
-				  "contentType": false,
-				  "mimeType": "multipart/form-data",
-				  "data": form,
-				  error: function(resp, status){
-				  	// console.log(resp);
-			    	// console.log("error al logearse");
-			    	// alert("Error, por favor comprueba tu conexión")
-            if (resp.status==0){
-              alert("Error, por favor comprueba tu conexión")
-            }
-            else{
-              alert(JSON.parse(resp.responseText).error)
-            }
-				  }
-				}
-
-				$.ajax(settings).done(function (response) {
-				  console.log(response);
-				  add_new_familiar();
-				});
-    	}
-
-    	function add_new_familiar(){
-    		var form = new FormData();
-				form.append("family[name]", $("#name").val());
-
-				var settings = {
-				  "async": true,
-				  "crossDomain": true,
-				  "url": "http://"+url_server+"/families",
-				  "method": "POST",
-				  xhrFields: {
-				    withCredentials: true
-				  },
-				  "headers": {
-				    "cache-control": "no-cache",
-				    "postman-token": "880451d2-bb70-c49a-a2a2-bdea0c3d7827"
-				  },
-				  "processData": false,
-				  "contentType": false,
-				  "mimeType": "multipart/form-data",
-				  "data": form,
-				  error: function(resp, status){
-				  	// console.log(resp);
-			    	console.log("Error al agregar familiar");
-			    	alert("Error, por favor comprueba tu conexión");
-				  }
-				}
-
-				$.ajax(settings).done(function (response) {
-				  console.log(response);
-				  window.location = "perfil.html";
-				});
-    	}
-
-      function go_login(){
-        window.location = "login.html";
-      }
-    </script>
+  <link href="css/style.css"  rel="stylesheet">
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js" "></script>
+  <script src="js/config.js"></script>
+  <script src="js/vistas/crear_perfil.js"></script>
 </head>
 
 <body>
-
   <nav class="navbar">
     <div class="container-fluid">
       <ul class="nav navbar-nav">
