@@ -1,10 +1,38 @@
+var consulta_exitosa = false;
+
+jQuery(document).ready(function( $ ) {
+    $( '#my-slider' ).sliderPro({
+      forceSize:'fullWidth',
+      fade:true,
+      buttons:false,
+      keyboard:false,
+      touchSwipe:false,
+      autoplayOnHover:'none',
+    });
+});
+
 function escanear(){
   cordova.plugins.barcodeScanner.scan(
     function (result) {
-        get_product(result.text);
+      $( '#my-slider' ).sliderPro({
+        forceSize:'fullWidth',
+        fade:true,
+        buttons:false,
+        keyboard:false,
+        touchSwipe:false,
+        autoplayOnHover:'none',
+      });
+
+      get_product(result.text);
+      setTimeout(function(){
+        if (!consulta_exitosa){
+          $("#modal-popup").modal('show');
+        };
+      }, 3000);
     },
     function (error) {
-        alert("Scanning failed: " + error);
+        // alert("Scanning failed: " + error);
+        alert("Ops, el escaneo ha fallado, por favor intentalo nuevamente");
     },
     {
         "preferFrontCamera" : false, // iOS and Android
@@ -15,6 +43,8 @@ function escanear(){
     }
   );
 };
+
+
 
 function get_product(id){
   // $("#modal-popup").modal('show');
@@ -35,9 +65,15 @@ function get_product(id){
       // console.log(resp)
       // alert(JSON.stringify(resp, null, 4));
       if (resp.status==0){
-        alert("Error, por favor comprueba tu conexión")
+        $("#modal-popup").modal('show');
+        setTimeout(function(){
+          get_product(id);
+          // console.log("se intenta ejecutar nuevamente el get_product");
+        }, 1000);
+        // alert("Error, por favor comprueba tu conexión");
       }
       else{
+        consulta_exitosa = true;
         alert(JSON.parse(resp.responseText).error)
       }
       // alert("Error, el producto no se encuentra disponible en nuestra base de datos.");
@@ -45,7 +81,15 @@ function get_product(id){
   }
 
   $.ajax(settings).done(function (response) {
-    alert(JSON.stringify(response, null, 4));
+    consulta_exitosa = true;
+    if ($("#modal-popup").hasClass("in")){
+      $("#modal-popup").modal('toggle');
+    }
+
+    // RAFA, estas son la linea que debes borrar, debes hacer que se redirija a una nueva vista que contenga el producto q entrega la var "response"
+      // alert(JSON.stringify(response, null, 4));
+      console.log(JSON.stringify(response, null, 4));
+    // fin comunicado a Rafa
   });
 
 }
