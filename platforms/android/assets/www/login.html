@@ -4,125 +4,13 @@
   <meta charset="UTF-8">
 	<title>Login</title>
 	<link href="css/bootstrap.min.css"  rel="stylesheet">
-    <link href="css/style.css"  rel="stylesheet">
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js" "></script>
-    <script type="text/javascript">
-
-      var all_servers = ["10.6.43.164:3000","192.168.1.36:3000","localhost:3000"];
-
-      $(document).ready(function( $ ) {
-        ping(all_servers.splice(0,1)[0]);
-      });
-      var url_server = ""
-      var settings = {}
-      function set_settings(url_server){
-        settings = {
-          "async": true,
-          "crossDomain": true,
-          "url": "http://"+url_server+"/ping",
-          "method": "GET",
-          "headers": {
-            "cache-control": "no-cache",
-            "postman-token": "4b2b1c69-8975-b182-c74e-f196b3ed57d3"
-          },
-          "timeout": 500
-        }
-      }
-
-      function ping(url){
-        set_settings(url);
-        pings = $.ajax(settings);
-        pings.done(function (response) {
-          url_server = url;
-          console.log("Conected to", url_server);
-          get_my_data();
-        })
-        pings.fail(function (response) {
-          console.log("fail", url);
-          new_url = all_servers.splice(0,1)[0];
-          if (new_url != undefined){
-            ping(new_url);
-          }
-          else{
-            alert("Problema de conexion con el servidor");
-            location.reload();
-          }
-        })
-      };
-
-
-
-      function login(){
-        var form = new FormData();
-        form.append("user[email]", $("#email").val());
-        form.append("user[password]", $("#pass").val());
-
-        var settings = {
-          "async": true,
-          "crossDomain": true,
-          "url": "http://"+url_server+"/sign_in",
-          "method": "POST",
-          xhrFields: {
-            withCredentials: true
-          },
-          "headers": {
-            "cache-control": "no-cache",
-            "postman-token": "eb313cc6-dede-ad8a-fc17-2e83b68d2d4f"
-          },
-          "processData": false,
-          "contentType": false,
-          "mimeType": "multipart/form-data",
-          "data": form,
-          error: function(resp, status){
-            // console.log(resp);
-            // console.log(resp.status);
-            if (resp.status==0){
-              alert("Error, por favor comprueba tu conexión")
-            }
-            else{
-              alert(JSON.parse(resp.responseText).error)
-            }
-          }
-        }
-
-        $.ajax(settings).done(function (response) {
-          console.log(response);
-          window.location = "perfil.html"
-        });
-      }
-
-
-      function get_my_data(){ //para verificar que no este ya conectado
-        var settings = {
-          "async": true,
-          "crossDomain": true,
-          "url": "http://"+url_server+"/user",
-          "method": "GET",
-          xhrFields: {
-            withCredentials: true
-          },
-          "headers": {
-            "cache-control": "no-cache",
-            "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
-          },
-          error: function(resp, status){
-            console.log("Nadie conectado");
-          }
-        }
-
-        $.ajax(settings).done(function (response) {
-          console.log("Conectado como", response)
-          window.location = "perfil.html";
-        });
-      }
-
-      function go_crear_perfil(){
-        window.location = "crear_perfil.html";
-      }
-
-    </script>
+  <link href="css/style.css"  rel="stylesheet">
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/vistas/login.js"></script>
 </head>
+
 <body>
   <nav class="navbar">
     <div class="container-fluid">

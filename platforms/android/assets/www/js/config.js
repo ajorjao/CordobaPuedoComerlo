@@ -13,7 +13,7 @@ function set_settings(url_server){
 	    "cache-control": "no-cache",
 	    "postman-token": "4b2b1c69-8975-b182-c74e-f196b3ed57d3"
 	  },
-	  "timeout": 1000
+	  "timeout": 500
 	}
 }
 

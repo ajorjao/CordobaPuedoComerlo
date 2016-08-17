@@ -78,6 +78,10 @@ body{
 	height: 30px;
 }
 
+.intolerance:hover {
+	background-color: #fff;
+}
+
 .menu-wrapper{
 	margin-right: 10px;
 	margin-left: 10px;
