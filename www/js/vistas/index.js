@@ -36,7 +36,7 @@ function escanear(){
     {
         "preferFrontCamera" : false, // iOS and Android
         "showFlipCameraButton" : true, // iOS and Android
-        "prompt" : "Evite acercar demaciado la camara al codigo de barras", // supported on Android only
+        "prompt" : "Evite acercar demasiado la camara al codigo de barras", // supported on Android only
         // "prompt" : "Coloque el codigo de barra frente a la camara", // supported on Android only
         // default: all but PDF_417 and RSS_EXPANDED
         //"orientation" : "landscape" // Android only (portrait|landscape), default unset so it rotates with the device
@@ -83,7 +83,9 @@ function get_product(id){
     }
 
     // RAFA, estas son las linea que debes borrar, debes hacer que se redirija a una nueva vista que contenga el producto q entrega la var "response"
-      alert(JSON.stringify(response, null, 4));
+      localStorage.myvariable = JSON.stringify(response, null, 4);
+      window.location.replace("ver_producto.html");
+
       // console.log(JSON.stringify(response, null, 4));
     // fin comunicado a Rafa
   });
