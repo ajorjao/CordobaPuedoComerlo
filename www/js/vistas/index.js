@@ -82,12 +82,18 @@ function get_product(id){
       $("#modal-popup").modal('toggle');
     }
 
-    // RAFA, estas son las linea que debes borrar, debes hacer que se redirija a una nueva vista que contenga el producto q entrega la var "response"
-      localStorage.myvariable = JSON.stringify(response, null, 4);
-      window.location.replace("ver_producto.html");
 
-      // console.log(JSON.stringify(response, null, 4));
-    // fin comunicado a Rafa
+
+
+    // guardado local
+    // FALTA el n_ing_intolerados
+    var testObject = { 'pid': response.product.id, 'pname': response.product.name, 'pnint': 0};
+    // Put the object into storage
+    localStorage.setItem('pdata', JSON.stringify(testObject));
+    window.location = "ver_producto.html";  
+
+
+      
   });
 
 }
