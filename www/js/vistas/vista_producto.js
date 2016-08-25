@@ -14,6 +14,14 @@ jQuery(document).ready(function( $ ) {
     pdata = JSON.parse(retrievedObject);
     
     get_product(pdata.pid);
+    $("#menu1").append('<div class="panel panel-primary">'+
+                                    '<div class="panel-heading">'+
+                                      '<h3 class="panel-title">Comentarios:</h3>'+
+                                    '</div>'+
+                                    '<div class="panel-body">'+
+                                      'Y aquí pondríamos nuestros comentarios si tuviéramos alguno.'+
+                                    '</div>'+
+                                  '</div>');
 });
 
 function get_product(id){
@@ -148,15 +156,8 @@ function get_familiar_data(family_id, intolerancias_producto){
                   '</div>'+
                 '</center>';
       $("#menu1").append(detalle);
-      if (n>0) $("#menu1").append('<div class="panel panel-primary">'+
-                                    '<div class="panel-heading">'+
-                                      '<h3 class="panel-title">Comentarios:</h3>'+
-                                    '</div>'+
-                                    '<div class="panel-body">'+
-                                      'Y aquí pondríamos nuestros comentarios si tuviéramos alguno.'+
-                                    '</div>'+
-                                  '</div>');
   });
+  return t;
 }
 
 function crear_mensaje_problema_con_familiar(nombre_familiar, problema_intolerancia){
