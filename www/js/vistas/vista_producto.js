@@ -12,7 +12,7 @@ jQuery(document).ready(function( $ ) {
                                             // Retrieve the object from storage
     var retrievedObject = localStorage.getItem('pdata');
     pdata = JSON.parse(retrievedObject);
-    console.log('retrievedObject: ', pdata); // para ver en consola los datos recibidos
+    //console.log('retrievedObject: ', pdata); // para ver en consola los datos recibidos
     //pdata.pnint = 1;                       // pa cachar que la wea funciona xd
     if (pdata.pnint==0){
       class1 = "alert alert-success";
@@ -22,7 +22,7 @@ jQuery(document).ready(function( $ ) {
       class1 = "alert alert-danger";
       srcimg = "img/nono.png";
     }
-    detalle = '<center><div class="'+class1+'" role="alert"><h3 class="display-3">'+pdata.pname+'</h3><p class="lead">'+pdata.pid+'</p><img  src="'+srcimg+'" alt="..." ></div></center>';
+    detalle = '<center><div class="'+class1+'" role="alert"><h3 class="display-3">'+pdata.pname+'</h3><p class="lead">'+pdata.pid+'</p><br><img  src="'+srcimg+'" alt="..." ></div></center>';
     $("#menu1").append(detalle);
 });
 
@@ -62,4 +62,7 @@ function get_my_data(){
       get_familiar_data(familiar.id);
     });
   });
+}
+function go_main_menu(){
+  window.location = "index.html";
 }
