@@ -61,8 +61,7 @@ function go_main_menu(){
 }
 
 function ver_detalle(id,name,n_ing_intolerados){
-var testObject = { 'pid': id, 'pname': name, 'pnint': n_ing_intolerados};
-
-// Put the object into storage
-localStorage.setItem('pdata', JSON.stringify(testObject));
+	var testObject = { 'pid': id, 'pname': name, 'pnint': n_ing_intolerados};
+	// Put the object into storage
+	localStorage.setItem('pdata', JSON.stringify(testObject));
 }
