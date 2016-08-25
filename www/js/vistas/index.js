@@ -84,7 +84,7 @@ function get_product(id){
 
 
 
-
+/*
     // guardado local
     // FALTA el n_ing_intolerados
     var testObject = { 'pid': response.product.id, 'pname': response.product.name, 'pnint': 0};
@@ -92,8 +92,8 @@ function get_product(id){
     localStorage.setItem('pdata', JSON.stringify(testObject));
     window.location = "ver_producto.html";  
 
+*/
 
-      
   });
 
 }
