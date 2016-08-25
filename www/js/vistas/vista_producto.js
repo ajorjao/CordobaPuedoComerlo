@@ -1,5 +1,31 @@
 var consulta_exitosa = false;
 
+// function ping(url){
+//   set_settings(url);
+//   pings = $.ajax(settings);
+//   pings.done(function (response) {
+//     url_server = url;
+//     console.log("Conected to", url_server);
+//     try {
+//       get_my_data();
+//     }
+//     catch(err) {
+//       // console.log("no se requiere un get_my_data")
+//     }
+//   })
+//   pings.fail(function (response) {
+//     console.log("fail", url);
+//     new_url = all_servers.splice(0,1)[0];
+//     if (new_url != undefined){
+//       ping(new_url);
+//     }
+//     else{
+//       alert("Problema de conexion con el servidor");
+//       location.reload();
+//     }
+//   })
+// };
+
 jQuery(document).ready(function( $ ) {
     $( '#my-slider' ).sliderPro({
       forceSize:'fullWidth',
@@ -12,16 +38,8 @@ jQuery(document).ready(function( $ ) {
                                             // Retrieve the object from storage
     var retrievedObject = localStorage.getItem('pdata');
     pdata = JSON.parse(retrievedObject);
-    
+
     get_product(pdata.pid);
-    $("#menu1").append('<div class="panel panel-primary">'+
-                                    '<div class="panel-heading">'+
-                                      '<h3 class="panel-title">Comentarios:</h3>'+
-                                    '</div>'+
-                                    '<div class="panel-body">'+
-                                      'Y aquí pondríamos nuestros comentarios si tuviéramos alguno.'+
-                                    '</div>'+
-                                  '</div>');
 });
 
 function get_product(id){
@@ -36,10 +54,10 @@ function get_product(id){
     "method": "GET",
     error: function(resp, status){
       if (resp.status==0){
-        $("#modal-popup").modal('show');
+        // $("#modal-popup").modal('show');
         setTimeout(function(){
           get_product(id);
-        }, 3000);
+        }, 1000);
       }
       else{
         consulta_exitosa = true;
@@ -56,7 +74,7 @@ function get_product(id){
 
     var intolerancias = [];
 
-    for (i = 0, len = response.intolerances.length; i < len; i++) { 
+    for (i = 0, len = response.intolerances.length; i < len; i++) {
       intolerancias.push(response.intolerances[i].id);
     }
 
@@ -91,7 +109,15 @@ function get_family_data(intolerancias){
     $.each(response.family, function(pos, familiar) {
       console.log("familiar:", familiar.name);
       get_familiar_data(familiar.id,intolerancias);
-    });
+      // $("#menu1").append('<div class="panel panel-primary">'+
+      //                                 '<div class="panel-heading">'+
+      //                                   '<h3 class="panel-title">Comentarios:</h3>'+
+      //                                 '</div>'+
+      //                                 '<div class="panel-body">'+
+      //                                   'Y aquí pondríamos nuestros comentarios si tuviéramos alguno.'+
+      //                                 '</div>'+
+      //                               '</div>');
+      });
   });
 }
 
@@ -177,6 +203,39 @@ function crear_mensaje_problema_con_familiar(nombre_familiar, problema_intoleran
 
     }
 */
+
+function denunciar(){
+  var retrievedObject = localStorage.getItem('pdata');
+  pdata2 = JSON.parse(retrievedObject);
+
+  var form = new FormData();
+  form.append("product_id", pdata2.pid);
+
+  var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://"+url_server+"/denounce_product",
+    "method": "POST",
+    "headers": {
+      "cache-control": "no-cache",
+      "postman-token": "245521af-53b1-6a74-855b-343d227a24ac"
+    },
+    "processData": false,
+    "contentType": false,
+    "mimeType": "multipart/form-data",
+    "data": form,
+    error: function(resp, status){
+      console.log(resp);
+      alert("Error, por favor comprueba tu conexión")
+      location.reload();
+    }
+  }
+
+  $.ajax(settings).done(function (response) {
+    console.log(response);
+  });
+}
+
 function go_main_menu(){
   window.location = "index.html";
 }
