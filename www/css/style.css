@@ -142,3 +142,9 @@ body{
 	margin-bottom: 10px;
 	margin-top: 10px;
 }
+
+.right-align{
+	position: relative;
+	float: right;
+	top: -10px;
+}

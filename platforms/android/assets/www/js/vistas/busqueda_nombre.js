@@ -31,7 +31,7 @@ function search(){
 		resp = $.parseJSON(response);
 	  clear_listgroup();
 	  $.each(resp.products, function(index, producto) {
-			add_product(producto.name, 0);
+			add_product(producto.name, producto.id, 0);
 		});
 	});
 }
@@ -40,12 +40,18 @@ function clear_listgroup(){
 	$(".list-group").html("");
 }
 
-function add_product(name, n_ing_intolerados){
+function ver_detalle(id,name,n_ing_intolerados){
+	var testObject = { 'pid': id, 'pname': name, 'pnint': n_ing_intolerados};
+	// Put the object into storage
+	localStorage.setItem('pdata', JSON.stringify(testObject));
+}
+
+function add_product(name, id, n_ing_intolerados){
 	if (n_ing_intolerados==0){
-		var producto = '<a href="#" class="list-group-item list-group-item-success">'+name+'</a>'
+		var producto = '<a href="vista_producto.html" onClick="ver_detalle('+id+',\''+name+'\','+n_ing_intolerados+')" class="list-group-item list-group-item-success">'+name+'</a>'
 	}
 	else {
-		var producto = '<a href="#" class="list-group-item list-group-item-danger"><span class="badge">'+n_ing_intolerados+'</span>'+name+'</a>'
+		var producto = '<a href="vista_producto.html" onClick="ver_detalle('+id+',\''+name+'\','+n_ing_intolerados+')" class="list-group-item list-group-item-danger"><span class="badge">'+n_ing_intolerados+'</span>'+name+'</a>'
 	}
 	$(".list-group").append(producto);
 }

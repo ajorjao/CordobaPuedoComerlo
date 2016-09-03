@@ -1,4 +1,4 @@
-var all_servers = ["10.6.43.67:3000","192.168.2.12:3000","localhost:3000"];
+var all_servers = ["192.168.2.12:3000","10.6.43.67:3000","localhost:3000"];
 
 var url_server = ""
 var settings = {}
@@ -27,7 +27,7 @@ function ping(url){
     	get_my_data();
     }
     catch(err) {
-    	// console.log("no se requiere un get_my_data")
+    	// "no se requiere un get_my_data"
     }
   })
   pings.fail(function (response) {

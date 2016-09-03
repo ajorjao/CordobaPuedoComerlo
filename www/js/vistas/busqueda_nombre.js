@@ -15,10 +15,10 @@ function search(){
 	  "contentType": false,
 	  "mimeType": "multipart/form-data",
 	  "data": form,
-	  error: function(resp, status){
+	  error: function(resp, status){		// cuando hay error
       if (resp.status==0){
         // alert("Error, por favor comprueba tu conexión")
-	  		add_error("Error, por favor revisa tu coneccion a internet")
+	  		add_error("Error, por favor revisa tu conexión a internet")
       }
       else{
         // alert(JSON.parse(resp.responseText).error)
@@ -40,19 +40,19 @@ function clear_listgroup(){
 	$(".list-group").html("");
 }
 
-function ver_detalle(id,name,n_ing_intolerados){
-	var testObject = { 'pid': id, 'pname': name, 'pnint': n_ing_intolerados};
+function ver_detalle(id){
+	match_product(id);
+	// console.log("product name:", pname)
+	// console.log("matchs:", matchs)
+
+	var testObject = { 'pid': id, 'pname': pname, 'matchs': matchs, 'image_route': image_route};
 	// Put the object into storage
 	localStorage.setItem('pdata', JSON.stringify(testObject));
+	go_vista_producto();
 }
 
-function add_product(name, id, n_ing_intolerados){
-	if (n_ing_intolerados==0){
-		var producto = '<a href="vista_producto.html" onClick="ver_detalle('+id+',\''+name+'\','+n_ing_intolerados+')" class="list-group-item list-group-item-success">'+name+'</a>'
-	}
-	else {
-		var producto = '<a href="vista_producto.html" onClick="ver_detalle('+id+',\''+name+'\','+n_ing_intolerados+')" class="list-group-item list-group-item-danger"><span class="badge">'+n_ing_intolerados+'</span>'+name+'</a>'
-	}
+function add_product(name, id){
+	var producto = '<a onClick="ver_detalle('+id+')" class="list-group-item list-group-item">'+name+'</a>'
 	$(".list-group").append(producto);
 }
 
@@ -63,4 +63,8 @@ function add_error(name){
 
 function go_main_menu(){
   window.location = "index.html";
+}
+
+function go_vista_producto(){
+	window.location = "vista_producto.html";
 }

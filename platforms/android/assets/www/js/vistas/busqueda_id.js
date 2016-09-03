@@ -15,8 +15,8 @@ function search(){
 	  "contentType": false,
 	  "mimeType": "multipart/form-data",
 	  "data": form,
-	  error: function(resp, status){
-      if (resp.status==0){
+	  error: function(resp, status){		// cuando hay error
+      if (resp.status==0){					
         // alert("Error, por favor comprueba tu conexión")
 	  		add_error("Error, por favor revisa tu coneccion a internet")
       }
@@ -31,7 +31,8 @@ function search(){
 		resp = $.parseJSON(response)
 	  clear_listgroup();
 	  $.each(resp.products, function(index, producto) {
-			add_product("("+producto.id+") "+producto.name, 0);
+	  	descripcion= "("+producto.id+") "+producto.name;
+			add_product(descripcion, producto.id, producto.name, 0);
 		});
 	});
 }
@@ -40,12 +41,12 @@ function clear_listgroup(){
 	$(".list-group").html("");
 }
 
-function add_product(name, n_ing_intolerados){
+function add_product(desc, id, nombre, n_ing_intolerados){
 	if (n_ing_intolerados==0){
-		var producto = '<a href="#" class="list-group-item list-group-item-success">'+name+'</a>'
+		var producto = '<a href="vista_producto.html" onClick="ver_detalle('+id+',\''+nombre+'\','+n_ing_intolerados+')" class="list-group-item list-group-item-success">'+desc+'</a>'
 	}
 	else {
-		var producto = '<a href="#" class="list-group-item list-group-item-danger"><span class="badge">'+n_ing_intolerados+'</span>'+name+'</a>'
+		var producto = '<a href="vista_producto.html" onClick="ver_detalle('+id+',\''+nombre+'\','+n_ing_intolerados+')" class="list-group-item list-group-item-danger"><span class="badge">'+n_ing_intolerados+'</span>'+desc+'</a>'
 	}
 	$(".list-group").append(producto);
 }
@@ -57,4 +58,10 @@ function add_error(name){
 
 function go_main_menu(){
   window.location = "index.html";
+}
+
+function ver_detalle(id,name,n_ing_intolerados){
+	var testObject = { 'pid': id, 'pname': name, 'pnint': n_ing_intolerados};
+	// Put the object into storage
+	localStorage.setItem('pdata', JSON.stringify(testObject));
 }

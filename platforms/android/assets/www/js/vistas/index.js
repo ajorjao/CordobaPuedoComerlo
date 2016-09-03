@@ -1,5 +1,4 @@
 var consulta_exitosa = false;
-var escaneo_completo = false;
 
 jQuery(document).ready(function( $ ) {
     $( '#my-slider' ).sliderPro({
@@ -13,11 +12,6 @@ jQuery(document).ready(function( $ ) {
 });
 
 function escanear(){
-  setTimeout(function(){
-    if (!escaneo_completo) {
-      alert("Prueba no acercando tanto la camara al codigo de barras")
-    }
-  }, 10000);
   cordova.plugins.barcodeScanner.scan(
     function (result) {
       $( '#my-slider' ).sliderPro({
@@ -28,7 +22,6 @@ function escanear(){
         touchSwipe:false,
         autoplayOnHover:'none',
       });
-
       get_product(result.text);
       setTimeout(function(){
         if (!consulta_exitosa){
@@ -43,7 +36,8 @@ function escanear(){
     {
         "preferFrontCamera" : false, // iOS and Android
         "showFlipCameraButton" : true, // iOS and Android
-        "prompt" : "Coloque el codigo de barra frente a la camara", // supported on Android only
+        "prompt" : "Evite acercar demasiado la camara al codigo de barras", // supported on Android only
+        // "prompt" : "Coloque el codigo de barra frente a la camara", // supported on Android only
         // default: all but PDF_417 and RSS_EXPANDED
         //"orientation" : "landscape" // Android only (portrait|landscape), default unset so it rotates with the device
     }
@@ -53,10 +47,6 @@ function escanear(){
 
 
 function get_product(id){
-  // $("#modal-popup").modal('show');
-  // var request_ok = false;
-  // var request_fail = false;
-
   var settings = {
     "async": true,
     "crossDomain": true,
@@ -92,10 +82,18 @@ function get_product(id){
       $("#modal-popup").modal('toggle');
     }
 
-    // RAFA, estas son las linea que debes borrar, debes hacer que se redirija a una nueva vista que contenga el producto q entrega la var "response"
-      alert(JSON.stringify(response, null, 4));
-      // console.log(JSON.stringify(response, null, 4));
-    // fin comunicado a Rafa
+
+
+
+    // guardado local
+    // FALTA el n_ing_intolerados
+    var testObject = { 'pid': response.product.id, 'pname': response.product.name, 'pnint': 0};
+    // Put the object into storage
+    localStorage.setItem('pdata', JSON.stringify(testObject));
+    window.location = "vista_producto.html";  
+
+
+
   });
 
 }

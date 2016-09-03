@@ -18,32 +18,32 @@ function logout(){
 	  }
 	}
 
-	$.ajax(settings).done(function (response) {
-	  // alert("Se recomienda que borres los datos de esta aplicacion");
-  	window.location = "login.html";
-	});
+	
+  var logout = confirm("¿Estás seguro que deseas cerrar sesion?");
+  if (logout == true) {
+		$.ajax(settings).done(function (response) {
+      alert("Cerraste sesion satisfactoriamente");
+			window.location = "login.html";
+		});
+  }
 }
 
 var stored_id = 0;
+var stored_name = ""
 
-function guardar_id(newid){
+function guardar_id(newid, name){
 	stored_id = newid;
+	stored_name = name;
 }
-
-// var stored_intolerance_id = 0;
-
-//  	function guardar_intolerance_id(newid){
-//  		stored_intolerance_id = newid;
-//  	}
 
 function add_familiar(nombre, id, importante){
 	var familiar = ''+
 		'<div class="panel panel-default">'+
 	    '<div class="panel-heading" role="tab" id="heading_'+id+'">'+
 	      '<h4 class="panel-title">'+
-	        '<a role="button" data-toggle="collapse" data-parent="#accordion" onClick="guardar_id('+id+')" href="#collapse_'+id+'" aria-expanded="false" aria-controls="collapseOne">'+
+	        '<a role="button" data-toggle="collapse" data-parent="#accordion" onClick="guardar_id('+id+',\''+nombre+'\')" href="#collapse_'+id+'" aria-expanded="false" aria-controls="collapseOne">'+
 	          nombre+
-	          '<a data-toggle="modal" onClick="guardar_id('+id+')" data-target="#nombre-familiar-modal" href=""><span class=" edit-relative glyphicon glyphicon-pencil aria-hidden="true"></span></a>'+
+	          '<a data-toggle="modal" onClick="guardar_id('+id+',\''+nombre+'\')" data-target="#nombre-familiar-modal" href=""><span class=" edit-relative glyphicon glyphicon-pencil aria-hidden="true"></span></a>'+
 	        '</a>'+
 	      '</h4>'+
 	    '</div>'+
@@ -79,7 +79,7 @@ function add_intolerance(intolerance_id, family_id){
 	var intolerance = ''+
   '<li class="intolerance list-group-item">'+
   	'<img src="img/intolerancias/'+intolerance_id+'.png" alt="..."> '+intolerance_name+
-    // '<a href=""><span class="remove-intolerance glyphicon glyphicon-remove" onClick="delete_intolerance('+intolerance_id+')" aria-hidden="true"></span></a>'+
+    // '<a href="#"><span class="remove-intolerance glyphicon glyphicon-remove aria-hidden="true"  onClick="delete_intolerance('+intolerance_id+')"></span></a>'+
     '<a href="#"><span class="remove-intolerance glyphicon glyphicon-remove aria-hidden="true"  onClick="delete_intolerance('+intolerance_id+')"></span></a>'+
   '</li>'
   $(".list-group-"+family_id).append(intolerance)
@@ -118,10 +118,14 @@ function delete_intolerance(intolerance_id){
 	  }
 	}
 
-	$.ajax(settings).done(function (response) {
-		console.log(response);
-		location.reload();
-	});
+  var eliminar_intolerancia = confirm("¿Estás seguro que deseas eliminar la intolerancia de "+stored_name+"?");
+  if (eliminar_intolerancia == true) {
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+      alert("Intolerancia eliminada");
+			location.reload();
+    });
+  }
 }
 
 function get_my_data(){
@@ -152,7 +156,7 @@ function get_my_data(){
 
 			if (pos==0){
 				add_familiar(familiar.name, familiar.id, " in");
-				guardar_id(familiar.id)
+				guardar_id(familiar.id, familiar.name)
 			}
 			else{
 				add_familiar(familiar.name, familiar.id, "");
