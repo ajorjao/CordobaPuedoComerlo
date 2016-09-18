@@ -76,10 +76,7 @@ body{
 .intolerance img{
 	width: 30px;
 	height: 30px;
-}
-
-.intolerance:hover {
-	background-color: #fff;
+	margin-left: 35%;
 }
 
 .menu-wrapper{
