@@ -27,7 +27,7 @@ function match_product(id){
       }
       else{
         consulta_exitosa = true;
-        alert(JSON.parse(resp.responseText).error)
+        send_alert(JSON.parse(resp.responseText).error, "danger");
       }
     }
   }
@@ -65,8 +65,10 @@ function get_family_data(intolerancias_producto){
       "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
     },
     error: function(resp, status){
-      alert("Error de conexión, intentalo nuevamente");
-      window.location = "login.html";
+      // send_alert("<strong>Error de conexión</strong> por favor intentalo nuevamente", "danger");
+      // window.location = "login.html";
+      alert("Error, por favor comprueba tu conexión")
+      location.reload();
     }
   }
 

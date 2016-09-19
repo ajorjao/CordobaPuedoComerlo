@@ -31,7 +31,8 @@ function escanear(){
     },
     function (error) {
         // alert("Scanning failed: " + error);
-        alert("Ops, el escaneo ha fallado, por favor intentalo nuevamente");
+        // alert("Ops, el escaneo ha fallado, por favor intentalo nuevamente");
+        send_alert("<strong>Ops</strong> el escaneo ha fallado, por favor intentalo nuevamente", "danger");
     },
     {
         "preferFrontCamera" : false, // iOS and Android
@@ -70,7 +71,7 @@ function get_product(id){
       }
       else{
         consulta_exitosa = true;
-        alert(JSON.parse(resp.responseText).error)
+        send_alert(JSON.parse(resp.responseText).error, "danger");
       }
       // alert("Error, el producto no se encuentra disponible en nuestra base de datos.");
     }

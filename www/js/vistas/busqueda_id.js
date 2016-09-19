@@ -17,11 +17,9 @@ function search(){
 	  "data": form,
 	  error: function(resp, status){		// cuando hay error
       if (resp.status==0){					
-        // alert("Error, por favor comprueba tu conexión")
 	  		add_error("Error, por favor revisa tu conexión a internet")
       }
       else{
-        // alert(JSON.parse(resp.responseText).error)
 	  		add_error(JSON.parse(resp.responseText).error+": "+$("#exampleInputAmount").val())
       }
 	  }
@@ -67,4 +65,28 @@ function go_main_menu(){
 
 function go_vista_producto(){
 	window.location = "vista_producto.html";
+}
+
+function get_my_data(){
+  var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://"+url_server+"/user",
+    "method": "GET",
+    xhrFields: {
+      withCredentials: true
+    },
+    "headers": {
+      "cache-control": "no-cache",
+      "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
+    },
+    error: function(resp, status){
+      window.location = "login.html";
+    }
+  }
+
+  $.ajax(settings).done(function (response) {
+    var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
+    $("#profilePicture").attr("src", foto_de_perfil);
+  });
 }

@@ -57,22 +57,17 @@ function get_product(id){
     },
     "method": "GET",
     error: function(resp, status){
-      // alert("Error, por favor comprueba tu conexión")
-      // console.log(resp)
-      // alert(JSON.stringify(resp, null, 4));
       if (resp.status==0){
         $("#modal-popup").modal('show');
         setTimeout(function(){
           get_product(id);
           // console.log("se intenta ejecutar nuevamente el get_product");
         }, 1000);
-        // alert("Error, por favor comprueba tu conexión");
       }
       else{
         consulta_exitosa = true;
         alert(JSON.parse(resp.responseText).error)
       }
-      // alert("Error, el producto no se encuentra disponible en nuestra base de datos.");
     }
   }
 

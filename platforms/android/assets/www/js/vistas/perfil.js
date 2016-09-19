@@ -36,7 +36,7 @@ function guardar_id(newid){
 //  		stored_intolerance_id = newid;
 //  	}
 
-function add_familiar(nombre, id, importante){
+function add_familiar(nombre, id){
 	var familiar = ''+
 		'<div class="panel panel-default">'+
 	    '<div class="panel-heading" role="tab" id="heading_'+id+'">'+
@@ -49,7 +49,7 @@ function add_familiar(nombre, id, importante){
 	    '</div>'+
 
 
-	    '<div id="collapse_'+id+'" class="panel-collapse collapse'+importante+'" role="tabpanel" aria-labelledby="heading_'+id+'">'+
+	    '<div id="collapse_'+id+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading_'+id+'">'+
 	      '<div class="panel-body">'+
 	        '<ul class="list-group-'+id+'">'+
 			    // #############intolerancias###############

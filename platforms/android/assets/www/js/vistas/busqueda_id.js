@@ -17,11 +17,9 @@ function search(){
 	  "data": form,
 	  error: function(resp, status){		// cuando hay error
       if (resp.status==0){					
-        // alert("Error, por favor comprueba tu conexión")
 	  		add_error("Error, por favor revisa tu coneccion a internet")
       }
       else{
-        // alert(JSON.parse(resp.responseText).error)
 	  		add_error(JSON.parse(resp.responseText).error+": "+$("#exampleInputAmount").val())
       }
 	  }

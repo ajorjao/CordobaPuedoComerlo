@@ -26,7 +26,7 @@ function login(){
         alert("Error, por favor comprueba tu conexión")
       }
       else{
-        alert(JSON.parse(resp.responseText).error)
+        send_alert(JSON.parse(resp.responseText).error, "danger");
       }
     }
   }

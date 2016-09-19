@@ -82,8 +82,12 @@ function denunciar(){
     "mimeType": "multipart/form-data",
     "data": form,
     error: function(resp, status){
-      console.log(resp);
-      alert("Error, por favor comprueba tu conexión")
+      if (resp.status==0){
+        alert("Error, por favor comprueba tu conexión")
+      }
+      else{
+        send_alert(JSON.parse(resp.responseText).error, "danger");
+      }
       location.reload();
     }
   }
@@ -92,6 +96,7 @@ function denunciar(){
   if (denuncia == true) {
     $.ajax(settings).done(function (response) {
       console.log(response);
+      send_alert("<strong>Producto Denunciado Correctamente</strong> gracias por avisarnos", "success");
       alert("Producto denunciado");
     });
   }

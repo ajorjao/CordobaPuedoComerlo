@@ -1,56 +1,25 @@
-function logout(){
-	var settings = {
-		"async": true,
-		"crossDomain": true,
-		"url": "http://"+url_server+"/sign_out",
-		"method": "DELETE",
-		xhrFields: {
-			withCredentials: true
-		},
-		"headers": {
-			"cache-control": "no-cache",
-			"postman-token": "0d3ea712-a98e-209b-6bcc-8b064906ed01"
-		},
-		error: function(resp, status){
-			// console.log(resp);
-			console.log("error al cerrar sesion");
-			alert("Error al cerrar sesion, por favor comprueba tu conexión")
-		}
-	}
-
-
-	var logout = confirm("¿Estás seguro que deseas cerrar sesion?");
-	if (logout == true) {
-		$.ajax(settings).done(function (response) {
-			window.location = "login.html";
-		});
-	}
-}
-
 var stored_id = 0;
 var stored_name = ""
 
 function guardar_id(newid, name){
 	stored_id = newid;
 	stored_name = name;
+	console.log("id guardardada:",name,"-", stored_id)
 }
 
-function add_familiar(nombre, id, importante){
+function add_familiar(nombre, id){
 	var familiar = ''+
 		'<div class="panel panel-default">'+
 			'<div class="panel-heading" role="tab" id="heading_'+id+'">'+
-				'<h4 class="panel-title">'+
-					'<a role="button" data-toggle="collapse" data-parent="#accordion" onClick="guardar_id('+id+',\''+nombre+'\')" href="#collapse_'+id+'" aria-expanded="false" aria-controls="collapseOne">'+
-						nombre+
-						'<a data-toggle="modal" onClick="guardar_id('+id+',\''+nombre+'\')" data-target="#nombre-familiar-modal" href=""><span class=" edit-relative glyphicon glyphicon-pencil aria-hidden="true"></span></a>'+
-					'</a>'+
+				'<h4 class="panel-title">'+nombre+
+						'<a data-toggle="modal" data-target="#nombre-familiar-modal" href=""><span class=" edit-relative glyphicon glyphicon-pencil aria-hidden="true" onClick="guardar_id('+id+',\''+nombre+'\')"></span></a>'+
 				'</h4>'+
 			'</div>'+
 
 
-			'<div id="collapse_'+id+'" class="panel-collapse collapse'+importante+'" role="tabpanel" aria-labelledby="heading_'+id+'">'+
+			'<div id="collapse_'+id+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading_'+id+'">'+
 				'<div class="panel-body">'+
-					'<ul class="list-group-'+id+'">'+
+					'<ul class="list-group-'+id+'" style="padding-left: 0;">'+
 					// #############intolerancias###############
 						// '<li class="intolerance list-group-item">'+
 						// 	'<img src="img/intolerancias/2.png" alt="...">'+
@@ -58,11 +27,6 @@ function add_familiar(nombre, id, importante){
 						//   '<a href=""><span class=" remove-intolerance glyphicon glyphicon-remove aria-hidden="true"></span></a>'+
 						// '</li>'+
 					// #############intolerancias###############
-
-						// '<button data-toggle="modal" data-target="#intolerancia-modal" type="button" class="list-group-item">'+
-						 //  '<a  href=""><span class=" add-intolerance glyphicon glyphicon-plus aria-hidden="true"></span></a>'+
-						 //  'Agregar Intolerancia'+
-						// '</button>'+
 					'</ul>'+
 				'</div>'+
 			'</div>'+
@@ -70,7 +34,7 @@ function add_familiar(nombre, id, importante){
 	$(".panel-group").append(familiar);
 }
 
-function add_intolerance(intolerance_id, family_id){
+function add_intolerance(intolerance_id, family_id, family_name){
 	all_intolerances = ["Lactosa","Gluten","Maní","Nueces","Apio","Mostaza","Huevo","Sesamo","Pescado","Crustaceos","Mariscos","Soya","Sulfitos","Lupino"]
 
 	intolerance_name = all_intolerances[intolerance_id-1]
@@ -78,16 +42,14 @@ function add_intolerance(intolerance_id, family_id){
 	var intolerance = ''+
 	'<li class="intolerance list-group-item">'+
 		'<img src="img/intolerancias/'+intolerance_id+'.png" alt="..."> '+intolerance_name+
-		// '<a href="#"><span class="remove-intolerance glyphicon glyphicon-remove aria-hidden="true"  onClick="delete_intolerance('+intolerance_id+')"></span></a>'+
-		'<a href="#"><span class="remove-intolerance glyphicon glyphicon-remove aria-hidden="true"  onClick="delete_intolerance('+intolerance_id+')"></span></a>'+
+		'<a href="#"><span class="remove-intolerance glyphicon glyphicon-remove aria-hidden="true"  onClick="delete_intolerance('+intolerance_id+','+family_id+',\''+family_name+'\')"></span></a>'+
 	'</li>'
 	$(".list-group-"+family_id).append(intolerance)
 }
 
-// como family_id se usa el stored_id
-function delete_intolerance(intolerance_id){
+function delete_intolerance(intolerance_id, family_id, family_name){
 	var form = new FormData();
-	form.append("family_id", stored_id);
+	form.append("family_id", family_id);
 	form.append("intolerance_id", intolerance_id);
 
 	var settings = {
@@ -111,17 +73,18 @@ function delete_intolerance(intolerance_id){
 				alert("Error, por favor comprueba tu conexión")
 			}
 			else{
-				alert(JSON.parse(resp.responseText).error)
+        send_alert(JSON.parse(resp.responseText).error, "danger");
 			}
 			location.reload();
 		}
 	}
 
-	var eliminar_intolerancia = confirm("¿Estás seguro que deseas eliminar la intolerancia de "+stored_name+"?");
+	var eliminar_intolerancia = confirm("¿Estás seguro que deseas eliminar la intolerancia de "+family_name+"?");
 	if (eliminar_intolerancia == true) {
 		$.ajax(settings).done(function (response) {
 			console.log(response);
-			alert("Intolerancia eliminada");
+      send_alert("<strong>Intolerancia elminada</strong>", "success");
+			// alert("Intolerancia eliminada");
 			location.reload();
 		});
 	}
@@ -152,20 +115,13 @@ function get_my_data(){
 		$("#profilePicture").attr("src", foto_de_perfil);
 		$.each(response.family, function(pos, familiar) {
 			console.log("familiar:", familiar.name);
-
-			if (pos==0){
-				add_familiar(familiar.name, familiar.id, " in");
-				guardar_id(familiar.id, familiar.name)
-			}
-			else{
-				add_familiar(familiar.name, familiar.id, "");
-			}
-			get_familiar_data(familiar.id);
+			add_familiar(familiar.name, familiar.id);
+			get_familiar_data(familiar.id, familiar.name);
 		});
 	});
 }
 
-function get_familiar_data(family_id){
+function get_familiar_data(family_id, family_name){
 	var settings = {
 		"async": true,
 		"crossDomain": true,
@@ -180,7 +136,7 @@ function get_familiar_data(family_id){
 		},
 		error: function(resp, status){
 			console.log(resp);
-			alert("Error, por favor comprueba tu conexión")
+			alert("Error, por favor comprueba tu conexión");
 			location.reload();
 		}
 	}
@@ -189,12 +145,12 @@ function get_familiar_data(family_id){
 		// console.log(response);
 		$.each(response.intolerances, function(pos, intolerancia) {
 			// console.log("intolerancia:", intolerancia.name);
-			add_intolerance(intolerancia.id, family_id);
+			add_intolerance(intolerancia.id, family_id, family_name);
 		});
 		button_add_intolerance=''+
-			'<button data-toggle="modal" data-target="#intolerancia-modal" type="button" class="list-group-item">'+
+			'<button data-toggle="modal" data-target="#intolerancia-modal" onClick="guardar_id('+family_id+',\''+family_name+'\')" type="button" class="list-group-item">'+
 				'<a  href=""><span class="add-intolerance glyphicon glyphicon-plus" aria-hidden="true"></span></a>'+
-				'Agregar Intolerancia'+
+				' Agregar Intolerancia'+
 			'</button>'
 		$(".list-group-"+family_id).append(button_add_intolerance);
 	});
@@ -263,7 +219,7 @@ function new_familiar(){
 	$.ajax(settings).done(function (response) {
 
 		var intolerances = [];
-		$('.btn-add-intolerances').find('input:checked').each(function() {
+		$("#check-list-box li.active").each(function() {
 			intolerances.push($(this).data('value'));
 		});
 
@@ -272,6 +228,7 @@ function new_familiar(){
 }
 
 function new_intolerances(familiar, intolerancias){ //(int, array)
+// stored_id en caso de que se seleccione desde el Modal Nueva Intolerancia
 	if (intolerancias==0 && familiar==0){
 		familiar = stored_id;
 		intolerancias = $(".select-intolerance").val();
@@ -304,7 +261,7 @@ function new_intolerances(familiar, intolerancias){ //(int, array)
 				alert("Error, por favor comprueba tu conexión")
 			}
 			else{
-				alert(JSON.parse(resp.responseText).error)
+        send_alert(JSON.parse(resp.responseText).error, "danger");
 			}
 			location.reload();
 		}
@@ -316,7 +273,7 @@ function new_intolerances(familiar, intolerancias){ //(int, array)
 	});
 }
 
-// como family_id se usa el stored_id
+// como family_id, se usa el stored_id ya que se reutiliza el mismo modal por cada usuario
 function edit_familiar(){
 	var form = new FormData();
 	form.append("family[name]", $("#name").val());
@@ -341,10 +298,9 @@ function edit_familiar(){
 			// console.log(resp);
 			if (resp.status==0){
 				alert("Error, por favor comprueba tu conexión")
-				// alert("Error, por favor comprueba tu conexión")
 			}
 			else{
-				alert(JSON.parse(resp.responseText).error)
+        send_alert(JSON.parse(resp.responseText).error, "danger");
 			}
 			location.reload();
 		}
@@ -356,6 +312,7 @@ function edit_familiar(){
 	});
 }
 
+// como family_id, se usa el stored_id ya que se reutiliza el mismo modal por cada usuario
 function delete_familiar(){
 	var settings = {
 		"async": true,
@@ -374,7 +331,7 @@ function delete_familiar(){
 				alert("Error, por favor comprueba tu conexión")
 			}
 			else{
-				alert(JSON.parse(resp.responseText).error)
+      	send_alert(JSON.parse(resp.responseText).error, "danger");
 			}
 			location.reload();
 		}
@@ -386,6 +343,74 @@ function delete_familiar(){
 	});
 }
 
-function go_main_menu(){
-	window.location = "index.html";
-}
+
+
+// funcion que hace que los checklist se vean bien... no es necesario ententerla, solo saber q funciona
+$(function () {
+	$('.list-group.checked-list-box .list-group-item').each(function () {
+		
+		// Settings
+		var $widget = $(this),
+			$checkbox = $('<input type="checkbox" class="hidden" />'),
+			color = ($widget.data('color') ? $widget.data('color') : "primary"),
+			style = ($widget.data('style') == "button" ? "btn-" : "list-group-item-"),
+			settings = {
+				on: {
+					icon: 'glyphicon glyphicon-check'
+				},
+				off: {
+					icon: 'glyphicon glyphicon-unchecked'
+				}
+			};
+			
+		$widget.css('cursor', 'pointer')
+		$widget.append($checkbox);
+
+		// Event Handlers
+		$widget.on('click', function () {
+			$checkbox.prop('checked', !$checkbox.is(':checked'));
+			$checkbox.triggerHandler('change');
+			updateDisplay();
+		});
+		$checkbox.on('change', function () {
+			updateDisplay();
+		});
+		  
+
+		// Actions
+		function updateDisplay() {
+			var isChecked = $checkbox.is(':checked');
+
+			// Set the button's state
+			$widget.data('state', (isChecked) ? "on" : "off");
+
+			// Set the button's icon
+			$widget.find('.state-icon')
+				.removeClass()
+				.addClass('state-icon ' + settings[$widget.data('state')].icon);
+
+			// Update the button's color
+			if (isChecked) {
+				$widget.addClass(style + color + ' active');
+			} else {
+				$widget.removeClass(style + color + ' active');
+			}
+		}
+
+		// Initialization
+		function init() {
+			
+			if ($widget.data('checked') == true) {
+				$checkbox.prop('checked', !$checkbox.is(':checked'));
+			}
+			
+			updateDisplay();
+
+			// Inject the icon if applicable
+			if ($widget.find('.state-icon').length == 0) {
+				$widget.prepend('<span class="state-icon ' + settings[$widget.data('state')].icon + '"></span>');
+			}
+		}
+		init();
+	});
+});
