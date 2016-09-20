@@ -82,7 +82,7 @@ function ver_detalle(id){
 
 function add_product(name, id, img_src, state){
 	var producto = '\
-		<a onClick="ver_detalle('+id+')" class="list-group-item list-group-item-'+state+'" style="height: 92px">\
+		<a onClick="ver_detalle('+id+')" class="list-group-item list-group-item-'+state+'" style="overflow: auto;">\
   		<div class="col-xs-3" style="text-align: center;">\
 				<img src="'+img_src+'" style="height: 70px; width: 70px;">\
   		</div>\

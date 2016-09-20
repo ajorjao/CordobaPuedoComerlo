@@ -16,6 +16,31 @@ function get_my_data(){
   pdata = JSON.parse(retrievedObject);
 
   // console.log(pdata.matchs);
+  if (pdata.matchs!={}){
+    class1 = "alert alert-danger";
+    srcimg = "img/nono.png";
+    detalle = '<div class="'+class1+'" style="overflow: auto; role="alert">\
+                <div class="col-xs-6">\
+                  <img  src="'+srcimg+'" alt="..." >\
+                </div>\
+                <div class="col-xs-6">\
+                  <h3>\
+                    <div class="row"> No Puede Comerlo: </div>\
+                  </h3>\
+                  <div class="row" style="margin: 10px 0; font-size: 16px;" id="cant-eat"> </div>\
+                </div>\
+              </div>';
+  }
+  else{
+    class1 = "alert alert-success";
+    srcimg = "img/sisi.png";
+    $("#intolerancesMatchs").append('Todos en tu familia pueden comer este producto');
+    detalle = '<div class="'+class1+'" style="overflow: auto; role="alert">\
+                Puede Comerlo\
+                <img  src="'+srcimg+'" alt="..." >\
+              </div>';
+  }
+  $("#productMatch").append(detalle);
 
   var n = 0
   $.each(pdata.matchs, function(familiar, intolerancias) {
@@ -26,24 +51,10 @@ function get_my_data(){
     }
   });
 
-  if (n>0){
-    class1 = "alert alert-danger";
-    srcimg = "img/nono.png";
-  }
-  else{
-    class1 = "alert alert-success";
-    srcimg = "img/sisi.png";
-    $("#intolerancesMatchs").append('Todos en tu familia pueden comer este producto');
-  }
-  detalle = '<center>'+
-              '<div class="'+class1+'" role="alert"><h3 class="display-3">'+
-                pdata.pname+'</h3>'+
-                '<p class="lead">'+
-                pdata.pid+'</p><br>'+
-                '<img  src="'+srcimg+'" alt="..." ><br><br>'+
-              '</div>'+
-            '</center>';
-  $("#productMatch").append(detalle);
+
+  $("#product-name").html(pdata.pname)
+  $("#product-id").html(pdata.pid)
+  $("#product-image").attr("src", pdata.image_route)
 }
 
 function crear_mensaje_problema_con_familiar(nombre_familiar, problema_intolerancias){
@@ -59,6 +70,8 @@ function crear_mensaje_problema_con_familiar(nombre_familiar, problema_intoleran
   })
   intolerancia += '.</b></p>'
   $("#intolerancesMatchs").append(intolerancia);
+  console.log('$("#cant-eat").append(\'- \''+nombre_familiar.split("_-_")[0]+'\'<br>\')')
+  $("#cant-eat").append('- '+nombre_familiar.split("_-_")[0]+'<br>');
 }
 
 function denunciar(){

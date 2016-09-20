@@ -44,7 +44,7 @@ function match_product(id){
 
     // console.log(response)
 		pname = response.product.name
-    image_route = response.product.image_file_name
+    image_route = "http://"+url_server+response.product.image_file_name
     var intolerancias_producto = [];
     for (i = 0, len = response.intolerances.length; i < len; i++) {
       intolerancias_producto.push(response.intolerances[i].id);
@@ -80,7 +80,9 @@ function get_family_data(intolerancias_producto){
     $.each(response.family, function(pos, familiar) {
       // matchs[familiar.name+"_-_"+familiar.id] = get_familiar_data(familiar.id, intolerancias_producto);
       get_familiar_data(familiar.id, intolerancias_producto);
-      matchs[familiar.name+"_-_"+familiar.id] = intolerancias_familiar
+      if (intolerancias_familiar!=[]){
+        matchs[familiar.name+"_-_"+familiar.id] = intolerancias_familiar
+      }
     });
   });
 }

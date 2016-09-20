@@ -29,25 +29,33 @@
       <!-- incluir flecha para volver atrás -->
       <li><a class="back-button" onClick="go_back()">
           <span class="back-button-glyphicon glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a></li>
-      <li><p class="navbar-text">DETALLE</p></li>
+      <li><p class="navbar-text"> DETALLE</p></li>
       </ul>
     </div>
   </nav>
 
   <!-- <button type="submit" onClick="denunciar()" class="btn btn-warning btn-lg btn-block"> Denunciar Producto </button> -->
   <div id="menu1" class="menu-wrapper">
-		<div class="panel panel-danger" style="margin-bottom:-19px;">
-      <div class="panel-body" id="productMatch">
-      	<h4>Detalle:
-				  <a class="btn btn-warning right-align" onClick="denunciar()" title="Denunciar producto">
-				    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Denunciar
-				  </a>
-			  <h4>
-			</div>
-      <div class="panel-body" id="intolerancesMatchs">
-    		<!-- aca va lo del js -->
-			</div>
+    <div class="well" style="overflow: auto;">
+		  <a class="btn btn-xs btn-warning right-align" onClick="denunciar()" title="Denunciar producto">
+		    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Denunciar
+		  </a>
+      <div class="col-xs-6" style="text-align: center;">
+        <img id="product-image" style="height: 150px; width: 150px;">
+      </div>
+      <div class="col-xs-6" style="text-align: center; font-size: 16px; top: 12px;">
+        <div class="row" style="margin: 10px 0;" id="product-name"> </div>
+        <div class="row" style="margin: 10px 0;" id="product-id"> </div>
+      </div>
 		</div>
+
+    <div id="productMatch"></div>
+
+    <div class="well" style="overflow: auto;">
+      <div class="panel-body" id="intolerancesMatchs">
+        <!-- aca va lo del js -->
+      </div>
+    </div>
 
   </div>
 <br><br>
