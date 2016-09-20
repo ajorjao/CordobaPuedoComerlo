@@ -31,7 +31,8 @@ function escanear(){
     },
     function (error) {
         // alert("Scanning failed: " + error);
-        alert("Ops, el escaneo ha fallado, por favor intentalo nuevamente");
+        // alert("Ops, el escaneo ha fallado, por favor intentalo nuevamente");
+        send_alert("<strong>Ops</strong> el escaneo ha fallado, por favor intentalo nuevamente", "danger");
     },
     {
         "preferFrontCamera" : false, // iOS and Android
@@ -57,17 +58,22 @@ function get_product(id){
     },
     "method": "GET",
     error: function(resp, status){
+      // alert("Error, por favor comprueba tu conexión")
+      // console.log(resp)
+      // alert(JSON.stringify(resp, null, 4));
       if (resp.status==0){
         $("#modal-popup").modal('show');
         setTimeout(function(){
           get_product(id);
           // console.log("se intenta ejecutar nuevamente el get_product");
         }, 1000);
+        // alert("Error, por favor comprueba tu conexión");
       }
       else{
         consulta_exitosa = true;
-        alert(JSON.parse(resp.responseText).error)
+        send_alert(JSON.parse(resp.responseText).error, "danger");
       }
+      // alert("Error, el producto no se encuentra disponible en nuestra base de datos.");
     }
   }
 
@@ -113,7 +119,7 @@ function get_my_data(){
 
   $.ajax(settings).done(function (response) {
     var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
-    $("#profilePicture").attr("src", foto_de_perfil);
+    $("#profilePicture").attr("src", foto_de_perfil.replace("/original/","/thumb/"));
   });
 }
 

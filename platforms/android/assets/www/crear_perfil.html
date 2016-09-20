@@ -4,98 +4,91 @@
 	<meta charset="UTF-8">
 	<title>Crear Perfil</title>
 	<link href="css/bootstrap.min.css"  rel="stylesheet">
-  <link href="css/style.css"  rel="stylesheet">
-  <script src="js/jquery.min.js"></script>
-  <script src="js/bootstrap.min.js" "></script>
-  <script src="js/config.js"></script>
-  <script src="js/vistas/crear_perfil.js"></script>
+	<link href="css/style.css"  rel="stylesheet">
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js" "></script>
+	<script src="js/config.js"></script>
+	<script src="js/vistas/crear_perfil.js"></script>
+	<script type="text/javascript">
+
+	</script>
+
 </head>
 
 <body>
-  <nav class="navbar">
-    <div class="container-fluid">
-      <ul class="nav navbar-nav">
-      <li><a class="back-button" onClick="go_login()">
-        <span class="back-button-glyphicon glyphicon glyphicon-arrow-left aria-hidden="true"></span></a></li>
-      <li><p class="navbar-text">CREAR PERFIL</p></li>
-      </ul>
-    </div>
-  </nav>
+	<nav class="navbar">
+		<div class="container-fluid">
+			<ul class="nav navbar-nav">
+			<li><a class="back-button" onClick="go_login()">
+				<span class="back-button-glyphicon glyphicon glyphicon-arrow-left aria-hidden="true"></span></a></li>
+			<li><p class="navbar-text">REGISTRARSE</p></li>
+			</ul>
+		</div>
+	</nav>
 
-  <div class="intolerance-wrap">
-          <form class="form-horizontal">
-                <div class="form-group">
-                    <label for="text" class="col-sm-2 control-label">Email</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="email" placeholder="email@ejemplo.com">
-                    </div>
-                    <label for="text" class="col-sm-2 control-label">Contraseña</label>
-                    <div class="col-sm-10">
-                      <input type="password" class="form-control" id="pass" placeholder="Minimo 8 digitos">
-                    </div>
-                </div>
-                <div class="form-group">
-                  <label for="text" class="col-sm-2 control-label">Nombre</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="name" placeholder="Tu Nombre">
-                  </div>
-                  <label for="text" class="col-sm-2 control-label">Intolerancias</label>
-                  <div class="col-sm-10">
+	<div class="intolerance-wrap">
+		<form class="form-horizontal">
+			<div class="form-group">
 
-                    <div class="btn-group-vertical btn-add-intolerances" data-toggle="buttons">
-                      <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off" data-value="1"> <img src="img/intolerancias/1.png" alt="..."> Lactosa
-                      </label>
-                      <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off" data-value="2"> <img src="img/intolerancias/2.png" alt="..."> Gluten
-                      </label>
-                      <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off" data-value="3"> <img src="img/intolerancias/3.png" alt="..."> Maní
-                      </label>
-                      <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off" data-value="4"> <img src="img/intolerancias/4.png" alt="..."> Nueces
-                      </label>
-                      <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off" data-value="5"> <img src="img/intolerancias/5.png" alt="..."> Apio
-                      </label>
-                      <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off" data-value="6"> <img src="img/intolerancias/6.png" alt="..."> Mostaza
-                      </label>
-                      <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off" data-value="7"> <img src="img/intolerancias/7.png" alt="..."> Huevo
-                      </label>
-                      <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off" data-value="8"> <img src="img/intolerancias/8.png" alt="..."> Sesamo
-                      </label>
-                      <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off" data-value="9"> <img src="img/intolerancias/9.png" alt="..."> Pescado
-                      </label>
-                      <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off" data-value="10"> <img src="img/intolerancias/10.png" alt="..."> Crustaceos
-                      </label>
-                      <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off" data-value="11"> <img src="img/intolerancias/11.png" alt="..."> Mariscos
-                      </label>
-                      <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off" data-value="12"> <img src="img/intolerancias/12.png" alt="..."> Soya
-                      </label>
-                      <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off" data-value="13"> <img src="img/intolerancias/13.png" alt="..."> Sulfitos
-                      </label>
-                      <label class="intolerance btn btn-default btn-lg">
-                        <input type="checkbox" autocomplete="off" data-value="14"> <img src="img/intolerancias/14.png" alt="..."> Lupino
-                      </label>
+				<div class="col-sm-10">
+					<div class="well" style="overflow: auto;">
+						<label for="text" class="control-label">Email</label>
+						<input type="text" class="form-control" id="email" placeholder="email@ejemplo.com">
+						<label for="text" class="control-label">Contraseña</label>
+						<input type="password" class="form-control" id="pass" placeholder="Minimo 8 caracteres">
+							<span class="back-button-glyphicon glyphicon glyphicon-eye-open" style="
+							    position: absolute;
+							    top: inherit;
+							    margin-top: -25px;
+							    right: 50px;
+								" onClick="showhidepass()"></span>
+						<input type="password" class="form-control" id="pass_conf" placeholder="Confirmar contraseña">
+					</div>
+				</div>
 
-                    </div>
-                  </div>
-                </div>
-                 <div class="form-group">
-                  <div class="col-sm-offset-2 col-sm-10">
-                    <button type="button" onClick="register()" class="btn btn-success">Crear</button>
-                  </div>
-                </div>
-          </form>
-  </div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-10">
+
+
+
+						<div class="well" style="overflow: auto;">
+							<label for="text" class="control-label">Nombre</label>
+
+							<!-- <div class="col-sm-12"> -->
+								<input type="text" class="form-control" id="name" placeholder="Nombre del propietario de la cuenta"><br>
+							<!-- </div> -->
+
+							<label for="text" class="control-label">Intolerancias</label>
+							
+							<ul id="check-list-box" class="list-group checked-list-box">
+								<li class="list-group-item intolerance" data-value="1"><img src="img/intolerancias/1.png" alt="..."> Lactosa</li>
+								<li class="list-group-item intolerance" data-value="2"><img src="img/intolerancias/2.png" alt="..."> Gluten</li> 
+								<li class="list-group-item intolerance" data-value="3"><img src="img/intolerancias/3.png" alt="..."> Maní</li>
+								<li class="list-group-item intolerance" data-value="4"><img src="img/intolerancias/4.png" alt="..."> Nueces</li>
+								<li class="list-group-item intolerance" data-value="5"><img src="img/intolerancias/5.png" alt="..."> Apio</li>
+								<li class="list-group-item intolerance" data-value="6"><img src="img/intolerancias/6.png" alt="..."> Mostaza</li>
+								<li class="list-group-item intolerance" data-value="7"><img src="img/intolerancias/7.png" alt="..."> Huevo</li>
+								<li class="list-group-item intolerance" data-value="8"><img src="img/intolerancias/8.png" alt="..."> Sesamo</li>
+								<li class="list-group-item intolerance" data-value="9"><img src="img/intolerancias/9.png" alt="..."> Pescado</li>
+								<li class="list-group-item intolerance" data-value="10"><img src="img/intolerancias/10.png" alt="..."> Crustaceos</li>
+								<li class="list-group-item intolerance" data-value="11"><img src="img/intolerancias/11.png" alt="..."> Mariscos</li>
+								<li class="list-group-item intolerance" data-value="12"><img src="img/intolerancias/12.png" alt="..."> Soya</li>
+								<li class="list-group-item intolerance" data-value="13"><img src="img/intolerancias/13.png" alt="..."> Sulfitos</li>
+								<li class="list-group-item intolerance" data-value="14"><img src="img/intolerancias/14.png" alt="..."> Lupino</li>
+							</ul>
+						</div>
+
+
+				</div>
+			</div>
+			 <div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="button" onClick="register()" class="btn btn-success">Crear</button>
+				</div>
+			</div>
+		</form>
+	</div>
 
 </body>
 </html>

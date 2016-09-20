@@ -9,26 +9,26 @@
   <link href="css/style.css"  rel="stylesheet">
   <link href="css/slider-pro.min.css" rel="stylesheet">
 
+  <!-- Basics Scrypts -->
+  <script type="text/javascript" src="cordova.js"></script>
   <script type="text/javascript" src="js/jquery.min.js"></script>
-
   <script src="js/jquery.sliderPro.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
 
-  <!-- <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script> -->
+  <!-- Scripts -->
   <script src="js/config.js"></script>
   <script src="js/vistas/index.js"></script>
-  <script type="text/javascript" src="cordova.js"></script>
+
+  <!-- Modals -->
+  <script src="html-injections/main-navbar.js"></script>
 </head>
 
 <body>
-  <nav class="navbar">
-    <div class="container-fluid">
-      <ul class="nav navbar-nav">
-      <li><a onClick="go_profile()"> <img id="profilePicture" alt="..." class="img-circle"></a></li>
-      <li><p class="navbar-text navbar-text-menu">¿Puedo comerlo?</p></li>
-      </ul>
-    </div>
-  </nav>
+
+  <div id="main-navbar"></div>
+
+  <div id="alert"></div>
+
   
   <div class="menu-wrapper">
     <div class="row">
@@ -36,11 +36,11 @@
         <button onClick="escanear()" type="button" class="btn btn-default btn-lg btn-block">
             <img  src="img/barcode-search.png" alt="..." >
             <br>
-            <p>Escanear Producto</p>
+            <p>Aqui se deberia estar mostrando la Camara, lista para escanear</p>
         </button>
       </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-xs-6 ">
         <button type="button" onClick="go_search_name()" class="btn btn-default btn-lg btn-block">
           <span class="glyphicon glyphicon-search aria-hidden="true"></span>
@@ -60,8 +60,10 @@
         <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
         Contáctanos</button>
       </div>
-    </div>
+    </div> -->
   </div>
+
+
 
     <!-- Modal Contactanos -->
     <div class="modal fade" id="contacto-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -103,51 +105,9 @@
     </div>
 
 
-    <!-- Modal Error de Conexion -->
-    <div id="modal-popup" class="modal fade" role="dialog">
-      <div class="modal-dialog">
-        <div class="modal-content" style="height: 400px;">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Problemas de Conexión</h4>
-          </div>
-          <div class="modal-body">
-              <h4>Oops, la consulta se está tardando más de lo normal</h4>
-             <img src="img/loader.gif" alt="HTML5 Icon" style="display: block;margin-left:auto;margin-right:auto;width:100px;height:100px;">
-              <ul>
-                <li>Compruebe su conexión a internet</li>
-                <li>Por favor espere unos segundos si su conexión está muy lenta</li>
-                <li>Si no tiene problemas de conexión, podría haber problemas con el servidor, por favor intentelo de nuevo en unos segundos</li>
-              </ul>
-              <div>
-                <h4>Sabías que?</h4>
-                <div class="slider-pro" id="my-slider">
-                <div class="sp-slides">
-                  <!-- Slide 1 -->
-                  <div class="sp-slide">
-                    <p>la cantidad de alergias alimenticias actualmente conocidas son 14</p>
-                  </div>
-                  <!-- Slide 2 -->
-                  <div class="sp-slide">
-                    <p>el porcentaje de alérgicos en chile es del 25%</p>
-                  </div>
-                  <!-- Slide 3 -->
-                  <div class="sp-slide">
-                    <p>el 33% de los adultos en Chile poeen intolerancia a la lactosa</p>
-                  </div>
-                  <!-- Slide 4 -->
-                  <div class="sp-slide">
-                    <p>tienes la posibilidad de ganar premios al ingresar productos que no se encuentren<br>en nuestra base de datos</p>
-                  </div>
-                </div>
-                </div>
-              </div>
-          </div>
-          <!-- <div class="modal-footer"> -->
-            <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button> -->
-          <!-- </div> -->
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+
+    <div id="modal-conexion"></div>
+    
+
 </body>
 </html>

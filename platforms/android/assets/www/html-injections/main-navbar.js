@@ -40,10 +40,10 @@ $(function(){
   $('a[href$="'+filename+'"] .btn-default').toggleClass("active")
 
   if (filename=="busqueda_id.html"){
-  	$('.navbar-text.navbar-text-menu').html("Buscar por Codigo")
+  	$('.navbar-text.navbar-text-menu').html("Busqueda por Codigo")
   }
   else if (filename=="busqueda_nombre.html"){
-  	$('.navbar-text.navbar-text-menu').html("Buscar por Nombre")
+  	$('.navbar-text.navbar-text-menu').html("Busqueda por Nombre")
   }
   else if (filename=="configuraciones.html"){
   	$('.navbar-text.navbar-text-menu').html("Configuraciones")

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=9">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Configuraciones</title>
+	<link href="css/bootstrap.min.css"  rel="stylesheet">
+  <link href="css/style.css"  rel="stylesheet">
+
+  
+  <!-- Basics Scrypts -->
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/vistas/configuraciones.js"></script>
+
+  <!-- Modals -->
+  <script src="html-injections/main-navbar.js"></script>
+</head>
+
+<body>
+
+  <div id="main-navbar"></div>
+
+  <div id="alert"></div>
+  
+  
+  <div class="menu-wrapper">
+    <div class="row" style="margin-top: 120px;margin-bottom: 40px;">
+      <div class="col-xs-12 ">
+        <button  type="button" class="btn btn-default btn-lg btn-block" data-toggle="modal" data-target="#contacto-modal">
+          <span class="glyphicon glyphicon-send" aria-hidden="true"></span> Contáctanos
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 ">
+        <button type="button" onClick="logout()" class="btn btn-danger btn-lg btn-block">
+          <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Cerrar Sesión
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+
+    <!-- Modal Contactanos -->
+    <div class="modal fade" id="contacto-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Contacto</h4>
+          </div>
+          <form class="form-horizontal">
+            <div class="modal-body">
+                <div class="form-group">
+                  <label for="text" class="col-sm-2 control-label">Nombre</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="name" placeholder="Nombre">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="message" class="col-sm-2 control-label">Mensaje</label>
+                  <div class="col-sm-10">
+                    <textarea id="message" class="form-control" rows="3"></textarea>
+                  </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary" onclick="sendMail()">Enviar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+</body>
+</html>

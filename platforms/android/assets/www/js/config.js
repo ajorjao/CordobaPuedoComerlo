@@ -1,4 +1,4 @@
-var all_servers = ["10.6.43.67:3000","192.168.2.12:3000","localhost:3000"];
+var all_servers = ["192.168.2.5:3000","10.6.43.67:3000","localhost:3000"];
 
 var url_server = ""
 var settings = {}
@@ -23,11 +23,12 @@ function ping(url){
   pings.done(function (response) {
     url_server = url;
     console.log("Conected to", url_server);
+    read_alerts();
     try {
     	get_my_data();
     }
     catch(err) {
-    	// console.log("no se requiere un get_my_data")
+    	// "no se requiere un get_my_data"
     }
   })
   pings.fail(function (response) {
@@ -43,6 +44,50 @@ function ping(url){
   })
 };
 
+
+// el mensaje debe venir con el formato que se quiere mostrar... status debe ser: success, info, warning o danger
+function send_alert(message, status){
+  // Guardar mensaje
+  localStorage.setItem('alert_data', JSON.stringify({ 'alert_message': message, 'alert_status': status }));
+}
+
+function read_alerts(){
+  // Ver mensaje
+  var exist_alert = localStorage.getItem('alert_data')
+
+  if (exist_alert){
+    console.log("Existe una alerta")
+
+    var alert_data = JSON.parse(exist_alert);
+    message = alert_data.alert_message
+    status = alert_data.alert_status
+
+    localStorage.removeItem('alert_data');
+
+    $("#alert").html('\
+      <div class="alert alert-'+status+' alert-dismissible fade in" role="alert">\
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">\
+          <span aria-hidden="true">&times;</span>\
+        </button>\
+        '+message+'\
+      </div>');
+  }
+}
+
 $(document).ready(function( $ ) {
   ping(all_servers.splice(0,1)[0]);
+
+  var filename = window.location.pathname.split("/").pop();
+  var back = JSON.parse(localStorage.getItem('now'));
+  if (back!=null){
+    if (back.location!=filename){ // si no es el mismo archivo
+      localStorage.setItem('back', JSON.stringify({'location': back.location}));
+      localStorage.setItem('now', JSON.stringify({'location': filename}));
+    }
+  }
+  else{
+    localStorage.setItem('back', JSON.stringify({'location': "index.html"}));    
+    localStorage.setItem('now', JSON.stringify({'location': filename}));
+  }
+  
 });
