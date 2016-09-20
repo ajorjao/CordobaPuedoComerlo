@@ -8,7 +8,7 @@ $(function(){
             <span style="font-size: 15px; position: absolute; top: 57px; left: 15px; color: white;">Mi perfil</span>\
           </a>\
         </li>\
-        <li><p class="navbar-text navbar-text-menu">¿Puedo comerlo?</p></li>\
+        <li><p class="navbar-text navbar-text-menu" style="font-size: 90%">¿Puedo comerlo?</p></li>\
         </ul>\
       </div>\
     </nav>\

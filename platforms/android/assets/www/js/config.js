@@ -84,6 +84,9 @@ $(document).ready(function( $ ) {
       localStorage.setItem('back', JSON.stringify({'location': back.location}));
       localStorage.setItem('now', JSON.stringify({'location': filename}));
     }
+    if (back.location=="login.html"){
+      localStorage.setItem('back', JSON.stringify({'location': "index.html"}));    
+    }
   }
   else{
     localStorage.setItem('back', JSON.stringify({'location': "index.html"}));    

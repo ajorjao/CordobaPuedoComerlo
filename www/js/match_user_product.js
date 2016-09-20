@@ -31,6 +31,7 @@ function match_product(id){
       else{
         consulta_exitosa = true;
         send_alert(JSON.parse(resp.responseText).error, "danger");
+        location.reload();
       }
     }
   }

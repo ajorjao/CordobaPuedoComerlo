@@ -97,7 +97,7 @@ function denunciar(){
     $.ajax(settings).done(function (response) {
       console.log(response);
       send_alert("<strong>Producto Denunciado Correctamente</strong> gracias por avisarnos", "success");
-      alert("Producto denunciado");
+      location.reload();
     });
   }
 }

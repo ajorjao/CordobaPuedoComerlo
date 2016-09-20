@@ -8,7 +8,7 @@ $(function(){
             <span style="font-size: 15px; position: absolute; top: 57px; left: 15px; color: white;">Mi perfil</span>\
           </a>\
         </li>\
-        <li><p class="navbar-text navbar-text-menu">¿Puedo comerlo?</p></li>\
+        <li><p class="navbar-text navbar-text-menu" style="font-size: 90%">¿Puedo comerlo?</p></li>\
         </ul>\
       </div>\
     </nav>\
@@ -40,10 +40,10 @@ $(function(){
   $('a[href$="'+filename+'"] .btn-default').toggleClass("active")
 
   if (filename=="busqueda_id.html"){
-  	$('.navbar-text.navbar-text-menu').html("Busqueda por Codigo")
+  	$('.navbar-text.navbar-text-menu').html("Buscar por Codigo")
   }
   else if (filename=="busqueda_nombre.html"){
-  	$('.navbar-text.navbar-text-menu').html("Busqueda por Nombre")
+  	$('.navbar-text.navbar-text-menu').html("Buscar por Nombre")
   }
   else if (filename=="configuraciones.html"){
   	$('.navbar-text.navbar-text-menu').html("Configuraciones")

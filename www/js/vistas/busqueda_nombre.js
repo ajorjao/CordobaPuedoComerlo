@@ -86,7 +86,7 @@ function add_product(name, id, img_src, state){
   		<div class="col-xs-3" style="text-align: center;">\
 				<img src="'+img_src+'" style="height: 70px; width: 70px;">\
   		</div>\
-  		<div class="col-xs-9" style="text-align: center; font-size: 16px; top: 15px;">\
+  		<div class="col-xs-9" style="text-align: center; font-size: 14px; top: 12px;">\
   			<div class="row">\
 					'+name+'\
   			</div>\

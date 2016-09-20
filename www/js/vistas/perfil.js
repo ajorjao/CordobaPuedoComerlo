@@ -84,7 +84,6 @@ function delete_intolerance(intolerance_id, family_id, family_name){
 		$.ajax(settings).done(function (response) {
 			console.log(response);
       send_alert("<strong>Intolerancia elminada</strong>", "success");
-			// alert("Intolerancia eliminada");
 			localStorage.removeItem('intolerancias-familia');
 			location.reload();
 		});

@@ -1,3 +1,10 @@
+$(function () {
+  $('#login-submit').submit(function(e) {
+    e.preventDefault();
+  });
+});
+
+
 function login(){
   var form = new FormData();
   form.append("user[email]", $("#email").val());
@@ -28,6 +35,7 @@ function login(){
       else{
         send_alert(JSON.parse(resp.responseText).error, "danger");
       }
+      location.reload();
     }
   }
 
@@ -35,6 +43,18 @@ function login(){
     console.log(response);
     window.location = "perfil.html"
   });
+}
+
+
+function showhidepass(){
+  if ($('#pass').attr('type') == 'password'){
+    $('#pass').attr('type', 'text');
+    $('#pass_conf').attr('type', 'text');
+  }
+  else{
+    $('#pass').attr('type', 'password');
+    $('#pass_conf').attr('type', 'password');
+  }
 }
 
 function get_my_data(){ //para verificar que no este ya conectado
@@ -59,8 +79,4 @@ function get_my_data(){ //para verificar que no este ya conectado
     console.log("Conectado como", response)
     window.location = "perfil.html";
   });
-}
-
-function go_crear_perfil(){
-  window.location = "crear_perfil.html";
 }
