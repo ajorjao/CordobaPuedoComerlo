@@ -85,9 +85,18 @@ function delete_intolerance(intolerance_id, family_id, family_name){
 			console.log(response);
       send_alert("<strong>Intolerancia elminada</strong>", "success");
 			// alert("Intolerancia eliminada");
+			localStorage.removeItem('intolerancias-familia');
 			location.reload();
 		});
 	}
+}
+
+last_intolerancias = localStorage.getItem('intolerancias-familia');
+if (last_intolerancias){
+	var intolerancias_familia = JSON.parse(last_intolerancias).intolerancias;
+}
+else{
+	var intolerancias_familia = [];
 }
 
 function get_my_data(){
@@ -111,19 +120,20 @@ function get_my_data(){
 
 	$.ajax(settings).done(function (response) {
 		var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
+		$("#profilePicture").attr("src", foto_de_perfil.replace("/original/","/medium/"));
 
-		$("#profilePicture").attr("src", foto_de_perfil);
 		$.each(response.family, function(pos, familiar) {
 			console.log("familiar:", familiar.name);
 			add_familiar(familiar.name, familiar.id);
 			get_familiar_data(familiar.id, familiar.name);
 		});
+  	localStorage.setItem('intolerancias-familia', JSON.stringify({ 'intolerancias': intolerancias_familia }));
 	});
 }
 
 function get_familiar_data(family_id, family_name){
 	var settings = {
-		"async": true,
+		"async": false,
 		"crossDomain": true,
 		"url": "http://"+url_server+"/families/"+family_id,
 		"method": "GET",
@@ -146,6 +156,9 @@ function get_familiar_data(family_id, family_name){
 		$.each(response.intolerances, function(pos, intolerancia) {
 			// console.log("intolerancia:", intolerancia.name);
 			add_intolerance(intolerancia.id, family_id, family_name);
+			if (intolerancias_familia.indexOf(intolerancia.id)==-1){
+				intolerancias_familia.push(intolerancia.id)
+			}
 		});
 		button_add_intolerance=''+
 			'<button data-toggle="modal" data-target="#intolerancia-modal" onClick="guardar_id('+family_id+',\''+family_name+'\')" type="button" class="list-group-item">'+
@@ -177,9 +190,13 @@ function new_picture(){
 		"mimeType": "multipart/form-data",
 		"data": form,
 		error: function(resp, status){
-			console.log(resp);
-			alert("Error, por favor comprueba tu conexión")
-			location.reload();
+      if (resp.status==0){
+        alert("Error de conexión con el servidor, por favor intentelo mas tarde");
+      }
+      else{
+        send_alert(JSON.parse(resp.responseText).error, "danger");
+      }
+      location.reload();
 		}
 	}
 
@@ -210,9 +227,13 @@ function new_familiar(){
 		"mimeType": "multipart/form-data",
 		"data": form,
 		error: function(resp, status){
-			// console.log(resp);
-			alert("Error, por favor comprueba tu conexión");
-			location.reload();
+      if (resp.status==0){
+        alert("Error de conexión con el servidor, por favor intentelo mas tarde");
+      }
+      else{
+        send_alert(JSON.parse(resp.responseText).error, "danger");
+      }
+      location.reload();
 		}
 	}
 
@@ -257,13 +278,13 @@ function new_intolerances(familiar, intolerancias){ //(int, array)
 		error: function(resp, status){
 			// alert("Error, no se pudieron agregar las intolerancias, por favor comprueba tu conexión")
 			// console.log(resp);
-			if (resp.status==0){
-				alert("Error, por favor comprueba tu conexión")
-			}
-			else{
+      if (resp.status==0){
+        alert("Error de conexión con el servidor, por favor intentelo mas tarde");
+      }
+      else{
         send_alert(JSON.parse(resp.responseText).error, "danger");
-			}
-			location.reload();
+      }
+      location.reload();
 		}
 	}
 
@@ -344,8 +365,13 @@ function delete_familiar(){
 }
 
 
+function go_back(){
+  var back = JSON.parse(localStorage.getItem('back'));
+  window.location = back.location;
+}
 
-// funcion que hace que los checklist se vean bien... no es necesario ententerla, solo saber q funciona
+
+// funcion que hace que los checklist se vean bien... ### no es necesario ententerla, solo saber q funciona xd ###
 $(function () {
 	$('.list-group.checked-list-box .list-group-item').each(function () {
 		

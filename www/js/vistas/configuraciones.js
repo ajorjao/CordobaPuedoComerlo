@@ -21,7 +21,7 @@ function get_my_data(){
   $.ajax(settings).done(function (response) {
     var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
     email = response.user.email
-    $("#profilePicture").attr("src", foto_de_perfil);
+    $("#profilePicture").attr("src", foto_de_perfil.replace("/original/","/thumb/"));
   });
 }
 
@@ -49,6 +49,7 @@ function logout(){
   var logout = confirm("¿Estás seguro que deseas cerrar sesion?");
   if (logout == true) {
     $.ajax(settings).done(function (response) {
+      localStorage.removeItem('intolerancias-familia');
       window.location = "login.html";
     });
   }

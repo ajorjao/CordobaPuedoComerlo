@@ -17,6 +17,9 @@ function match_product(id){
       "cache-control": "no-cache",
       "postman-token": "81b17c9b-b428-8799-911e-b183185f6434"
     },
+    xhrFields: {
+      withCredentials: true
+    },
     "method": "GET",
     error: function(resp, status){
       if (resp.status==0){

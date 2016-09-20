@@ -102,6 +102,7 @@ function denunciar(){
   }
 }
 
-function go_main_menu(){
-  window.location = "index.html";
+function go_back(){
+  var back = JSON.parse(localStorage.getItem('back'));
+  window.location = back.location;
 }

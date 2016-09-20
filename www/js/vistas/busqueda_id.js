@@ -1,12 +1,27 @@
-function search(){
+$(function () {
+	// se ejecuta cada vez que se escribe alguna letra
+	$('#search_id').on('input', function(){
+		if ($(this).val().length>3){
+			search(true);
+		}
+	});
+	$('#busqueda').submit(function(e) {
+    e.preventDefault();
+	});
+});
+
+function search(auto){
 	var form = new FormData();
-	form.append("product[id]", $("#exampleInputAmount").val());
+	form.append("product[id]", $("#search_id").val());
 
 	var settings = {
     "async": true,
 	  "crossDomain": true,
 	  "url": "http://"+url_server+"/products",
 	  "method": "PUT",
+    xhrFields: {
+      withCredentials: true
+    },
 	  "headers": {
 	    "cache-control": "no-cache",
 	    "postman-token": "6416ff29-c90c-b556-c237-e6d5c5e57efa"
@@ -16,20 +31,36 @@ function search(){
 	  "mimeType": "multipart/form-data",
 	  "data": form,
 	  error: function(resp, status){		// cuando hay error
-      if (resp.status==0){					
-	  		add_error("Error, por favor revisa tu conexión a internet")
-      }
-      else{
-	  		add_error(JSON.parse(resp.responseText).error+": "+$("#exampleInputAmount").val())
-      }
+	  	// si la busqueda se realizo automaticamente
+	  	if (!auto){
+	      if (resp.status==0){
+		  		add_error("Error, por favor revisa tu conexión a internet")
+	      }
+	      else{
+		  		add_error(JSON.parse(resp.responseText).error+": "+$("#search_id").val())
+	      }
+	  	}
 	  }
 	}
 
 	$.ajax(settings).done(function (response) {
 		resp = $.parseJSON(response);
 	  clear_listgroup();
-	  $.each(resp.products, function(index, producto) {
-			add_product(producto.name, producto.id, 0);
+	  $.each(resp.products, function(index, productandintolerances) {
+	  	producto = productandintolerances.product
+	  	url_image_product = "http://"+url_server+producto.image_file_name.replace("/original/","/thumb/") //para que la velocidad de carga sea menor
+	  	intolerancias = productandintolerances.intolerancias
+	  	state = "success"
+
+			intolerancias_familia = JSON.parse(localStorage.getItem('intolerancias-familia')).intolerancias;
+
+	  	$.each(intolerancias, function(pos, intolerancia){
+	  		if (intolerancias_familia.indexOf(intolerancia.id) != -1){
+	  			state = "danger"
+	  			return false;
+	  		}
+	  	})
+			add_product(producto.name, producto.id, url_image_product, state);
 		});
 	});
 }
@@ -46,11 +77,24 @@ function ver_detalle(id){
 	var testObject = { 'pid': id, 'pname': pname, 'matchs': matchs, 'image_route': image_route};
 	// Put the object into storage
 	localStorage.setItem('pdata', JSON.stringify(testObject));
-	go_vista_producto();
+	window.location = "vista_producto.html";
 }
 
-function add_product(name, id){
-	var producto = '<a onClick="ver_detalle('+id+')" class="list-group-item list-group-item">'+name+'</a>'
+function add_product(name, id, img_src, state){
+	var producto = '\
+		<a onClick="ver_detalle('+id+')" class="list-group-item list-group-item-'+state+'" style="height: 92px">\
+  		<div class="col-xs-3" style="text-align: center;">\
+				<img src="'+img_src+'" style="height: 70px; width: 70px;">\
+  		</div>\
+  		<div class="col-xs-9" style="text-align: center; font-size: 16px; top: 15px;">\
+  			<div class="row">\
+					'+id+'\
+  			</div>\
+  			<div class="row">\
+					'+name+'\
+  			</div>\
+  		</div>\
+		</a>'
 	$(".list-group").append(producto);
 }
 
@@ -59,13 +103,6 @@ function add_error(name){
 	$(".list-group").prepend(producto);
 }
 
-function go_main_menu(){
-  window.location = "index.html";
-}
-
-function go_vista_producto(){
-	window.location = "vista_producto.html";
-}
 
 function get_my_data(){
   var settings = {
@@ -87,6 +124,6 @@ function get_my_data(){
 
   $.ajax(settings).done(function (response) {
     var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
-    $("#profilePicture").attr("src", foto_de_perfil);
+    $("#profilePicture").attr("src", foto_de_perfil.replace("/original/","/thumb/"));
   });
 }

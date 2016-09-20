@@ -119,7 +119,7 @@ function get_my_data(){
 
   $.ajax(settings).done(function (response) {
     var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
-    $("#profilePicture").attr("src", foto_de_perfil);
+    $("#profilePicture").attr("src", foto_de_perfil.replace("/original/","/thumb/"));
   });
 }
 

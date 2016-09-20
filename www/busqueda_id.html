@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-	<title>Busqueda por codigo</title>
+	<meta charset="UTF-8">
+	<title>Busqueda por nombre</title>
 	<link href="css/bootstrap.min.css"  rel="stylesheet">
 	<link href="css/style.css"  rel="stylesheet">
 
@@ -10,7 +10,7 @@
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js" "></script>
 
-  <!-- Scripts -->
+  <!-- Scrypts -->
 	<script src="js/config.js"></script>
 	<script src="js/match_user_product.js"></script>
 	<script src="js/vistas/busqueda_id.js"></script>
@@ -26,29 +26,22 @@
   <div id="alert"></div>
 
 
-
-	  <div class="search-wrapper">
-			<form class="form-inline busqueda">
-			  <div class="form-group">
-			    <div class="input-group">
-			      <input type="text" class="form-control" id="exampleInputAmount" placeholder="Codigo de barra del producto">
-			      <div class="input-group-addon">
-			      <button onClick="search()" type="button" class="btn btn-primary search-btn"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+  <div class="search-wrapper">
+		<form class="form-inline" id="busqueda">
+		  <div class="form-group">
+		    <div class="input-group">
+		      <input type="number" class="form-control" id="search_id" placeholder="Codigo de barra del producto">
+		      <div class="input-group-addon">
+			      <button onClick="search()" type="submit" class="btn btn-primary search-btn"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 			      </button>
-			      </div>
-			    </div>
-			  </div>
-			</form>
+		      </div>
+		    </div>
+		  </div>
+		</form>
 
-			<div class="list-group">
-			  <a href="#" class="list-group-item list-group-item">Por favor realiza tu busqueda utilizando la id del producto</a>
-			  <!-- <a href="#" class="list-group-item list-group-item-success">Tocomple</a>
-			  <a href="#" class="list-group-item list-group-item-danger"><span class="badge">3</span>Porotos</a>
-			  <a href="#" class="list-group-item list-group-item-success">Corbatas Carozzi</a>
-			  <a href="#" class="list-group-item list-group-item-danger"><span class="badge">1</span>Helado Soprole</a>
-			  <a href="#" class="list-group-item list-group-item-success">Galletas Toddy</a>
-			  <a href="#" class="list-group-item list-group-item-danger"><span class="badge">5</span>Pollito al velador</a> -->
-			</div>
-	  </div>
+		<div class="list-group">
+		  <a href="#" class="list-group-item list-group-item">Por favor realiza tu busqueda utilizando el codigo de barra del producto</a>
+		</div>
+  </div>
 </body>
 </html>

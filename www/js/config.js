@@ -1,4 +1,4 @@
-var all_servers = ["192.168.1.37:3000","10.6.43.67:3000","localhost:3000"];
+var all_servers = ["192.168.2.5:3000","10.6.43.67:3000","localhost:3000"];
 
 var url_server = ""
 var settings = {}
@@ -76,4 +76,18 @@ function read_alerts(){
 
 $(document).ready(function( $ ) {
   ping(all_servers.splice(0,1)[0]);
+
+  var filename = window.location.pathname.split("/").pop();
+  var back = JSON.parse(localStorage.getItem('now'));
+  if (back!=null){
+    if (back.location!=filename){ // si no es el mismo archivo
+      localStorage.setItem('back', JSON.stringify({'location': back.location}));
+      localStorage.setItem('now', JSON.stringify({'location': filename}));
+    }
+  }
+  else{
+    localStorage.setItem('back', JSON.stringify({'location': "index.html"}));    
+    localStorage.setItem('now', JSON.stringify({'location': filename}));
+  }
+  
 });
