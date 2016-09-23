@@ -1,11 +1,11 @@
 $(function(){
   $("#main-navbar").html('\
     <nav class="navbar" style="margin-bottom: 0;">\
-      <div class="container-fluid">\
+      <div class="container-fluid" style="padding-left: 2px;">\
         <ul class="nav navbar-nav" style="margin: 0;">\
         <li>\
-          <a href="perfil.html"> <img id="profilePicture" alt="..." class="img-circle">\
-            <span style="font-size: 15px; position: absolute; top: 57px; left: 15px; color: white;">Mi perfil</span>\
+          <a style="padding-top: 4px;padding-bottom: 17px;" href="perfil.html"> <img id="profilePicture" alt="..." style="margin-top: 3px;" class="img-circle">\
+            <span style="font-size: 15px; position: absolute; top: 62px; left: 18px; color: white;">Mi perfil</span>\
           </a>\
         </li>\
         <li><p class="navbar-text navbar-text-menu" style="font-size: 90%">¿Puedo comerlo?</p></li>\

@@ -120,6 +120,7 @@ function get_my_data(){
 	$.ajax(settings).done(function (response) {
 		var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
 		$("#profilePicture").attr("src", foto_de_perfil.replace("/original/","/medium/"));
+		$("#profilePicture2").attr("src", foto_de_perfil.replace("/original/","/medium/"));
 
 		$.each(response.family, function(pos, familiar) {
 			console.log("familiar:", familiar.name);
