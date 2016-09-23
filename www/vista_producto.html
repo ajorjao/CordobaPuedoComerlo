@@ -34,43 +34,35 @@
     </div>
   </nav>
 
-  <!-- <button type="submit" onClick="denunciar()" class="btn btn-warning btn-lg btn-block"> Denunciar Producto </button> -->
   <div id="menu1" class="menu-wrapper">
     <div class="well" style="overflow: auto;">
 		  <a class="btn btn-xs btn-warning right-align" onClick="denunciar()" title="Denunciar producto">
 		    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Denunciar
 		  </a>
       <div class="col-xs-6" style="text-align: center;">
-        <img id="product-image" style="height: 150px; width: 150px;">
+        <img id="product-image" style="height: 120px; width: 120px; margin-top: 15px;">
       </div>
-      <div class="col-xs-6" style="text-align: center; font-size: 16px; top: 12px;">
+      <div class="col-xs-6" style="text-align: center; font-size: 16px; top: -10px;">
         <div class="row" style="margin: 10px 0;" id="product-name"> </div>
         <div class="row" style="margin: 10px 0;" id="product-id"> </div>
       </div>
 		</div>
+  </div>
+
+  <div id="menu2" class="menu-wrapper">
 
     <div id="productMatch"></div>
 
-    <div class="well" style="overflow: auto;">
-      <div class="panel-body" id="intolerancesMatchs">
-        <!-- aca va lo del js -->
-      </div>
-    </div>
+		<div class="panel panel-primary">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Comentarios:</h3>
+		  </div>
+		  <div class="panel-body">
+		    Y aquí pondríamos nuestros comentarios si tuviéramos alguno.
+		  </div>
+		</div>
 
   </div>
-<br><br>
-
-    <div id="menu2" class="menu-wrapper">
-      <!-- aca va lo de comentarios (ver js) -->
-			<div class="panel panel-primary">
-			  <div class="panel-heading">
-			    <h3 class="panel-title">Comentarios:</h3>
-			  </div>
-			  <div class="panel-body">
-			    Y aquí pondríamos nuestros comentarios si tuviéramos alguno.
-			  </div>
-			</div>
-    </div>
 
     <!-- Modal Error de Conexion -->
     <div id="modal-popup" class="modal fade" role="dialog">
