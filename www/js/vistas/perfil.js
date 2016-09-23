@@ -121,7 +121,7 @@ function get_my_data(){
 		var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
 		$("#profilePicture").attr("src", foto_de_perfil.replace("/original/","/medium/"));
 		$("#profilePicture2").attr("src", foto_de_perfil.replace("/original/","/medium/"));
-
+		$("#nombredelwn").html(response.user.username);
 		$.each(response.family, function(pos, familiar) {
 			console.log("familiar:", familiar.name);
 			add_familiar(familiar.name, familiar.id);
