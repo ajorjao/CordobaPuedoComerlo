@@ -1,4 +1,4 @@
-var all_servers = ["192.168.43.206:3000","10.6.43.67:3000","localhost:3000"];
+var all_servers = ["localhost:3000","192.168.43.206:3000","10.6.43.67:3000"];
 
 var url_server = ""
 var settings = {}

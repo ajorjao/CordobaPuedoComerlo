@@ -16,19 +16,30 @@ function get_my_data(){
   pdata = JSON.parse(retrievedObject);
 
   // console.log(pdata.matchs);
-  if (pdata.matchs!={}){
+  if (!$.isEmptyObject(pdata.matchs)){
     class1 = "alert alert-danger";
     srcimg = "img/nono.png";
     detalle = '<div class="'+class1+'" style="overflow: auto; role="alert">\
-                <div class="col-xs-6">\
-                  <img  src="'+srcimg+'" alt="..." >\
+                <h3 style="margin: 0px;">\
+                  <div class="row">\
+                    <div class="col-xs-3">\
+                      <img  src="'+srcimg+'" alt="..." style="width: 65px;" >\
+                    </div>\
+                    <div class="col-xs-9" style="top: 20px;">\
+                      No Puede Comerlo:\
+                    </div>\
+                  </div>\
+                </h3>\
+                <div class="row" style="margin: -10px 0 0 85px; font-size: 16px;" id="cant-eat"> </div>\
+              </div>\
+              <p style="color: white;">Posibles Sintomas:</p>\
+              <div class="well" style="overflow: auto;">\
+                <div class="panel-body" id="intolerancesMatchs">\
                 </div>\
-                <div class="col-xs-6">\
-                  <h3>\
-                    <div class="row"> No Puede Comerlo: </div>\
-                  </h3>\
-                  <div class="row" style="margin: 10px 0; font-size: 16px;" id="cant-eat"> </div>\
-                </div>\
+              </div>\
+              <!--<div class="well" style="overflow: auto;">\
+                <div class="panel-body" id="recomendedMatchs">\
+                </div>-->\
               </div>';
   }
   else{

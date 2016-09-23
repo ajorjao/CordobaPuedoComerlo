@@ -80,7 +80,7 @@ function get_family_data(intolerancias_producto){
     $.each(response.family, function(pos, familiar) {
       // matchs[familiar.name+"_-_"+familiar.id] = get_familiar_data(familiar.id, intolerancias_producto);
       get_familiar_data(familiar.id, intolerancias_producto);
-      if (intolerancias_familiar!=[]){
+      if (intolerancias_familiar[0]!=null){
         matchs[familiar.name+"_-_"+familiar.id] = intolerancias_familiar
       }
     });
