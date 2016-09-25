@@ -25,7 +25,7 @@
 
 
   <div class="menu-wrapper-gris">
-    <center><h3 style="padding-top: 35px;">Iniciar Sesión</h3></center>
+    <center><h3 style="padding-top: 15px;margin-top: 0px;color:white;">Iniciar Sesión</h3></center>
     <div class="logo-img">
       <div class="col-xs-12" align="middle">
         <br>
@@ -35,9 +35,9 @@
     <div class="menu-wrapper">
       <form id="login-submit">
         <div class="form-group" style="margin: 15px;">
-          <label for="text" class="control-label">Email</label>
+          <label for="text" style="color:white;" class="control-label">Email</label>
           <input type="email" class="form-control" id="email">
-          <label for="text" class="control-label">Contraseña</label>
+          <label for="text" style="color:white;margin-top: 10px;" class="control-label">Contraseña</label>
           <input type="password" class="form-control" id="pass">
             <span class="back-button-glyphicon glyphicon glyphicon-eye-open" style="
                 position: absolute;
@@ -47,15 +47,17 @@
               " onClick="showhidepass()"></span>
           <br>
 
-          <button  type="submit" onClick="login()" class="btn btn-default btn-lg btn-block">
+          <button type="submit" style="color: white;background-color: #2389bb;border-color: transparent;" onClick="login()" class="btn btn-default btn-lg btn-block">
           Iniciar sesión</button>
+
+
+          <a href="crear_perfil.html" style="color: #2389bb;background-color: white;border-color: transparent;" class="btn btn-default btn-lg btn-block">
+          Registrarse</a>
+
         </div>
       </form>
       <div class="row" style="padding-bottom: 10px;">
-        <div class="col-xs-12">
-          <a href="crear_perfil.html" class="btn btn-lg btn-link btn-block">
-          Registrarse</a>
-        </div>
+       
         <!-- <div class="login-social">
           <div class="col-xs-6 ">
             <button type="button" class="btn btn-default btn-lg btn-block">
