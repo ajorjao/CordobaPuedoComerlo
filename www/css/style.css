@@ -47,6 +47,10 @@ body{
   height: 65px;
 }
 
+.navbar2 {
+    margin-bottom: 20px;
+}
+
 .perfil-img{
 	margin-right: auto;
 	margin-left: auto;

@@ -74,7 +74,7 @@ function ver_detalle(id){
 	// console.log("product name:", pname)
 	// console.log("matchs:", matchs)
 
-	var testObject = { 'pid': id, 'pname': pname, 'matchs': matchs, 'image_route': image_route};
+	var testObject = { 'pid': id, 'pname': pname, 'matchs': matchs, 'ingredients': ingredients, 'image_route': image_route};
 	// Put the object into storage
 	localStorage.setItem('pdata', JSON.stringify(testObject));
 	window.location = "vista_producto.html";

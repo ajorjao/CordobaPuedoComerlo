@@ -22,12 +22,23 @@ function escanear(){
         touchSwipe:false,
         autoplayOnHover:'none',
       });
-      get_product(result.text);
       setTimeout(function(){
         if (!consulta_exitosa){
           $("#modal-popup").modal('show');
         };
       }, 3000);
+
+      // get_product(result.text);
+      match_product(result.text);
+      
+      consulta_exitosa = true;
+      if ($("#modal-popup").hasClass("in")){
+        $("#modal-popup").modal('toggle');
+      }
+
+      var testObject = { 'pid': id, 'pname': pname, 'matchs': matchs, 'ingredients': ingredients, 'image_route': image_route};
+      localStorage.setItem('pdata', JSON.stringify(testObject));
+      window.location = "vista_producto.html";
     },
     function (error) {
         // alert("Scanning failed: " + error);
@@ -48,58 +59,45 @@ function escanear(){
 
 
 
-function get_product(id){
-  var settings = {
-    "async": true,
-    "crossDomain": true,
-    "url": "http://"+url_server+"/products/"+id,
-    "headers": {
-      "cache-control": "no-cache",
-      "postman-token": "81b17c9b-b428-8799-911e-b183185f6434"
-    },
-    "method": "GET",
-    error: function(resp, status){
-      // alert("Error, por favor comprueba tu conexión")
-      // console.log(resp)
-      // alert(JSON.stringify(resp, null, 4));
-      if (resp.status==0){
-        $("#modal-popup").modal('show');
-        setTimeout(function(){
-          get_product(id);
-          // console.log("se intenta ejecutar nuevamente el get_product");
-        }, 1000);
-        // alert("Error, por favor comprueba tu conexión");
-      }
-      else{
-        consulta_exitosa = true;
-        send_alert(JSON.parse(resp.responseText).error, "danger");
-        location.reload();
-      }
-      // alert("Error, el producto no se encuentra disponible en nuestra base de datos.");
-    }
-  }
+// function get_product(id){
+//   var settings = {
+//     "async": true,
+//     "crossDomain": true,
+//     "url": "http://"+url_server+"/products/"+id,
+//     "headers": {
+//       "cache-control": "no-cache",
+//       "postman-token": "81b17c9b-b428-8799-911e-b183185f6434"
+//     },
+//     "method": "GET",
+//     error: function(resp, status){
+//       if (resp.status==0){
+//         $("#modal-popup").modal('show');
+//         setTimeout(function(){
+//           get_product(id);
+//         }, 1000);
+//       }
+//       else{
+//         consulta_exitosa = true;
+//         send_alert(JSON.parse(resp.responseText).error, "danger");
+//         location.reload();
+//       }
+//       // alert("Error, el producto no se encuentra disponible en nuestra base de datos.");
+//     }
+//   }
 
-  $.ajax(settings).done(function (response) {
-    consulta_exitosa = true;
-    if ($("#modal-popup").hasClass("in")){
-      $("#modal-popup").modal('toggle');
-    }
+//   $.ajax(settings).done(function (response) {
+//     consulta_exitosa = true;
+//     if ($("#modal-popup").hasClass("in")){
+//       $("#modal-popup").modal('toggle');
+//     }
+//     match_product(id);
+//     var testObject = { 'pid': id, 'pname': pname, 'matchs': matchs, 'ingredients': ingredients, 'image_route': image_route};
+//     localStorage.setItem('pdata', JSON.stringify(testObject));
+//     window.location = "vista_producto.html";  
 
+//   });
 
-
-
-    // guardado local
-    // FALTA el n_ing_intolerados
-    var testObject = { 'pid': response.product.id, 'pname': response.product.name, 'pnint': 0};
-    // Put the object into storage
-    localStorage.setItem('pdata', JSON.stringify(testObject));
-    window.location = "vista_producto.html";  
-
-
-
-  });
-
-}
+// }
 
 function get_my_data(){
   var settings = {

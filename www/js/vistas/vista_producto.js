@@ -19,7 +19,7 @@ function get_my_data(){
   if (!$.isEmptyObject(pdata.matchs)){
     class1 = "alert alert-danger";
     srcimg = "img/nono.png";
-    detalle = '<div class="'+class1+'" style="overflow: auto; role="alert">\
+    detalle = '<div class="'+class1+'" style="overflow: auto;" role="alert">\
                 <h3 style="margin: 0px;">\
                   <div class="row">\
                     <div class="col-xs-3">\
@@ -32,13 +32,13 @@ function get_my_data(){
                 </h3>\
                 <div class="row" style="margin: -10px 0 0 85px; font-size: 16px;" id="cant-eat"> </div>\
               </div>\
-              <p style="color: white;">Posibles Sintomas:</p>\
+              <span style="color: white;">Posibles Sintomas:</span>\
               <div class="well" style="overflow: auto;">\
-                <div class="panel-body" id="intolerancesMatchs">\
+                <div id="intolerancesMatchs">\
                 </div>\
               </div>\
               <!--<div class="well" style="overflow: auto;">\
-                <div class="panel-body" id="recomendedMatchs">\
+                <div id="recomendedMatchs">\
                 </div>-->\
               </div>';
   }
@@ -46,8 +46,8 @@ function get_my_data(){
     class1 = "alert alert-success";
     srcimg = "img/sisi.png";
     $("#intolerancesMatchs").append('Todos en tu familia pueden comer este producto');
-    detalle = '<div class="'+class1+'" style="overflow: auto; role="alert">\
-                Puede Comerlo\
+    detalle = '<div class="'+class1+'" style="overflow: auto; text-align: center;" role="alert">\
+                <h3 style="margin:  0 0 10px 0;">Puede Comerlo</h3>\
                 <img  src="'+srcimg+'" alt="..." >\
               </div>';
   }
@@ -65,25 +65,57 @@ function get_my_data(){
 
   $("#product-name").html(pdata.pname)
   $("#product-id").html(pdata.pid)
+  $("#product-ingredients").html(pdata.ingredients)
   $("#product-image").attr("src", pdata.image_route)
+
+  // centrar la imagen cuando esta descuadrada (ej: 120x30)
+  setTimeout(function(){
+    imgheight = $("#product-image").height()
+    imgwidth = $("#product-image").width()
+    if (imgheight < 120){
+      $("#product-image").css('margin-top',60-imgheight/2+'px');
+    }
+    if (imgwidth < 120){
+      $("#product-image").css('margin-top',60-imgwidth/2+'px');
+    }
+  }, 100);
 }
 
-function crear_mensaje_problema_con_familiar(nombre_familiar, problema_intolerancias){
-  intolerancia = '<p class="lead"><b>'+ nombre_familiar.split("_-_")[0] +' no puede comerlo, el producto tiene';
-  $.each(problema_intolerancias, function(pos, problema_intolerancia){
-    if (pos==problema_intolerancias.length-1 && problema_intolerancias.length!=1){
-      intolerancia += ' y'
+
+
+
+
+
+function crear_mensaje_problema_con_familiar(nombre_familiar, problemas_intolerancias){
+  familiar = '\
+    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#sintomas_'+nombre_familiar+'" aria-expanded="false" aria-controls="collapseOne" style="font-size: 20px; color:#333;">\
+      <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> '+ nombre_familiar.split("_-_")[0] +'\
+    </a><br>\
+    <div id="sintomas_'+nombre_familiar+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_'+nombre_familiar+'" style="margin-bottom: 20px;">';
+
+  // console.log(problemas_intolerancias)
+  for (i = 0, len = problemas_intolerancias.length; i < len; i++) {
+    for (var familiar_intolerance in problemas_intolerancias[i]) {
+      // console.log(problemas_intolerancias[i]);
+      familiar += '\
+      <div style="margin-left: 30px; font-size: 16px;">\
+        <b>'+ familiar_intolerance +':</b> '+problemas_intolerancias[i][familiar_intolerance]+'\
+      </div>';
     }
-    else if (pos!=0){
-      intolerancia += ','
-    }
-    intolerancia += ' '+problema_intolerancia
-  })
-  intolerancia += '.</b></p>'
-  $("#intolerancesMatchs").append(intolerancia);
-  console.log('$("#cant-eat").append(\'- \''+nombre_familiar.split("_-_")[0]+'\'<br>\')')
+  }
+
+  familiar += '\
+    </div>'
+  $("#intolerancesMatchs").append(familiar);
+  // console.log('$("#cant-eat").append(\'- \''+nombre_familiar.split("_-_")[0]+'\'<br>\')')
   $("#cant-eat").append('- '+nombre_familiar.split("_-_")[0]+'<br>');
 }
+
+
+
+
+
+
 
 function denunciar(){
   // var retrievedObject = localStorage.getItem('pdata');

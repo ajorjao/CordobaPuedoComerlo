@@ -6,7 +6,7 @@
 var pname = ""
 var matchs = {}
 var image_route = ""
-
+var ingredients = ""
 
 function match_product(id){
   var settings = {
@@ -25,7 +25,7 @@ function match_product(id){
       if (resp.status==0){
         $("#modal-popup").modal('show');
         setTimeout(function(){
-          get_product(id);
+          match_product(id);
         }, 1000);
       }
       else{
@@ -44,18 +44,20 @@ function match_product(id){
 
     // console.log(response)
 		pname = response.product.name
+    ingredients = response.product.ingredients
     image_route = "http://"+url_server+response.product.image_file_name
     var intolerancias_producto = [];
+    var sintomas_producto = [];
     for (i = 0, len = response.intolerances.length; i < len; i++) {
       intolerancias_producto.push(response.intolerances[i].id);
+      sintomas_producto.push(response.intolerances[i].medium_symptom);
     }
-
-  	get_family_data(intolerancias_producto);
+  	get_family_data(intolerancias_producto, sintomas_producto);
   });
 }
 
 var intolerancias_familiar = [] //se utiliza para obtener las intolerancias de cada familiar y ingresarlas al match
-function get_family_data(intolerancias_producto){
+function get_family_data(intolerancias_producto, sintomas_producto){
   var settings = {
     "async": false,
     "crossDomain": true,
@@ -79,7 +81,7 @@ function get_family_data(intolerancias_producto){
   $.ajax(settings).done(function (response) {
     $.each(response.family, function(pos, familiar) {
       // matchs[familiar.name+"_-_"+familiar.id] = get_familiar_data(familiar.id, intolerancias_producto);
-      get_familiar_data(familiar.id, intolerancias_producto);
+      get_familiar_data(familiar.id, intolerancias_producto, sintomas_producto);
       if (intolerancias_familiar[0]!=null){
         matchs[familiar.name+"_-_"+familiar.id] = intolerancias_familiar
       }
@@ -89,7 +91,7 @@ function get_family_data(intolerancias_producto){
 
 
 
-function get_familiar_data(family_id, intolerancias_producto){
+function get_familiar_data(family_id, intolerancias_producto, sintomas_producto){
   var settings = {
     "async": false,
     "crossDomain": true,
@@ -110,13 +112,16 @@ function get_familiar_data(family_id, intolerancias_producto){
   }
 
   $.ajax(settings).done(function (response) {
-    intolerancias_familiar = []
-    $.each(response.intolerances, function(pos, intolerancia) {
+    intolerancias_familiar = [] // lo reinicia para que no se choquen las intolerancias
+    for (i = 0, len = response.intolerances.length; i < len; i++) {
+      intolerancia = {}
       //si existe la intolerancia de la persona entre las intolerancias del producto
-      if ( intolerancias_producto.indexOf(intolerancia.id) != -1){
-        intolerancias_familiar.push(intolerancia.name);
+      if ( intolerancias_producto.indexOf(response.intolerances[i].id) != -1){
+        // alert("sintoma de "+response.intolerances[i].name+" esta en la pos: "+intolerancias_producto.indexOf(response.intolerances[i].id) )
+        intolerancia[response.intolerances[i].name] = sintomas_producto[intolerancias_producto.indexOf(response.intolerances[i].id)]
+        intolerancias_familiar.push(intolerancia);
       }
-    });
+    }
     // console.log(response.family.name)
     // console.log(intolerancias_familiar);
   });
