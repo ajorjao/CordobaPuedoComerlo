@@ -132,8 +132,8 @@ body{
 }
 
 .logo-img img{
-	width: 150px;
-	height: 150px;
+	width: 200px;
+	height: 200px;
 }
 
 .login-social img{
@@ -144,12 +144,7 @@ body{
 }
 
 .menu-wrapper-gris{
-	background-color: #EDE9DE;
-	margin-right: 10px;
-	margin-left: 10px;
-	margin-bottom: 10px;
-	margin-top: 10px;
-	border-radius: 10px;
+	background: linear-gradient(#2389BB,#0F4058);
 }
 
 .right-align{
