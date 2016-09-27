@@ -23,18 +23,18 @@ function get_my_data(){
                 <h3 style="margin: 0px;">\
                   <div class="row">\
                     <div class="col-xs-3">\
-                      <img  src="'+srcimg+'" alt="..." style="width: 65px;" >\
+                      <img  src="'+srcimg+'" alt="..." style="width: 65px;margin-left: 6px;position: fixed;"> \
                     </div>\
-                    <div class="col-xs-9" style="top: 20px;">\
+                    <div class="col-xs-9" style="top: 4px;margin-bottom: 8px;font-size: 28px;">\
                       No Puede Comerlo:\
                     </div>\
                   </div>\
                 </h3>\
-                <div class="row" style="margin: -10px 0 0 85px; font-size: 16px;" id="cant-eat"> </div>\
+                <div class="row" style="margin: 0 0 0 100px; font-size: 16px;" id="cant-eat"> </div>\
               </div>\
               <div class="panel panel-danger">\
                 <div class="panel-heading">\
-                  <span>Posibles Sintomas:</span>\
+                  <span>Posibles Síntomas para tus familiares:</span>\
                 </div>\
                 <div class="well panel" style="overflow: auto; margin-bottom: 0;">\
                   <div id="intolerancesMatchs">\
@@ -47,12 +47,20 @@ function get_my_data(){
               </div>';
   }
   else{
-    class1 = "alert alert-success";
-    srcimg = "img/sisi.png";
     $("#intolerancesMatchs").append('Todos en tu familia pueden comer este producto');
-    detalle = '<div class="'+class1+'" style="overflow: auto; text-align: center;" role="alert">\
-                <h3 style="margin:  0 0 10px 0;">Puede Comerlo</h3>\
-                <img  src="'+srcimg+'" alt="..." >\
+    detalle = '<div class="alert alert-success" style="overflow: auto; margin-bottom: 10px;" role="alert"> \
+                <h3 style="margin: 0px;"> \
+                  <div class="row">\
+                    <div class="col-xs-3"> \
+                      <img src="img/sisi.png" alt="..." style="width: 65px;margin-left: 6px;margin-top: 13px;position: fixed;"> \
+                    </div>\
+                    <div class="col-xs-9" style="top: 4px;margin-bottom: 8px;font-size: 30px;"> \
+                      Pueden Comerlo! \
+                    </div> \
+                  </div> \
+                </h3>\
+              <div class="row" style="margin: 0 0 0 100px; font-size: 16px;" id="cant-eat">\
+              - Este producto no presenta ingredientes que afecten la salud de tu familia.<br></div>\
               </div>';
   }
   $("#productMatch").append(detalle);
