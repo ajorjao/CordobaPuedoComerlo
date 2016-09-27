@@ -176,10 +176,10 @@ function add_comment(hash_comentario){
         '+hash_comentario["prom_likes"]+'\
       </div>\
       <a onClick="like('+hash_comentario["id"]+',\'like\')" id="likes_'+hash_comentario["id"]+'">\
-        <span class="glyphicon glyphicon-thumbs-up"></span>\
+        <span class="glyphicon glyphicon-thumbs-up" style="font-size: 2em;"></span>\
       </a>&nbsp;\
       <a onClick="like('+hash_comentario["id"]+',\'dislike\')" id="dislikes_'+hash_comentario["id"]+'">\
-        <span class="glyphicon glyphicon-thumbs-down"></span>\
+        <span class="glyphicon glyphicon-thumbs-down" style="font-size: 2em;"></span>\
       </a>\
     </div>\
   </div>'
@@ -225,17 +225,17 @@ function like(id_comentario, like_dislike){
 
     if (like_dislike=="like"){
       $("#prom_likes_"+id_comentario).text(prom_likes+1)
-      
-      $("#dislikes_"+id_comentario).css('color','gray');
-      $("#likes_"+id_comentario).css('color','black');
+
+      $("#dislikes_"+id_comentario).css('color','grey');
+      $("#likes_"+id_comentario).css('color','red');
       
       $("#likes_"+id_comentario).attr('onclick',"like("+id_comentario+",\'like_cancel\')");
     }
     else if (like_dislike=="dislike") {
       $("#prom_likes_"+id_comentario).text(prom_likes-1)
       
-      $("#likes_"+id_comentario).css('color','gray');
-      $("#dislikes_"+id_comentario).css('color','black');
+      $("#likes_"+id_comentario).css('background-color','gray');
+      $("#dislikes_"+id_comentario).css('background-color','black');
       
       $("#dislikes_"+id_comentario).attr('onclick',"like("+id_comentario+",\'dislike_cancel\')");
     }
