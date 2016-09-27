@@ -47,8 +47,12 @@
         <div class="row" style="margin: 10px 0;" id="product-id"> </div>
       </div>
       <div style="font-size: 13px;">
-        <div><b>Ingedientes:</b></div>
-        <div id="product-ingredients"> </div>
+        <div>
+          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#product-ingredients" aria-expanded="false" aria-controls="collapseOne" style="color:#333;">
+            <br><span class="glyphicon glyphicon-minus" aria-hidden="true"></span> <b>Ingedientes:</b>
+          </a>
+        </div>
+        <div id="product-ingredients" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_'+nombre_familiar+'" style="margin-bottom: 20px;"> </div>
       </div>
 		</div>
   </div>
@@ -63,58 +67,47 @@
       <div class="panel-heading">
         <h3 class="panel-title">Comentarios:</h3>
       </div>
-      <div class="panel-body" id="product-comments">
-        <!-- Y aquí pondríamos nuestros comentarios si tuviéramos alguno. -->
+      <div class="panel" id="product-comments" style="font-size: 13px;">
+        <!-- <input type="text" class="form-control" name="Comentar" placeholder="Danos tu opinion"> -->
+        <div style="text-align: right;">
+          <button style="width: 75%; margin: 5px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#comentar-modal">Comentar</button>
+        </div>
       </div>
     </div>
 
   </div>
 
-    <!-- Modal Error de Conexion -->
-    <div id="modal-popup" class="modal fade" role="dialog">
-      <div class="modal-dialog">
-        <div class="modal-content" style="height: 400px;">
+
+    <!-- Modal comentar -->
+    <div class="modal fade" id="comentar-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Problemas de Conexión</h4>
+            <h4 class="modal-title">Comentario</h4>
           </div>
-          <div class="modal-body">
-              <h4>Ups, la consulta se está tardando más de lo normal</h4>
-             <img src="img/loader.gif" alt="HTML5 Icon" style="display: block;margin-left:auto;margin-right:auto;width:100px;height:100px;">
-              <ul>
-                <li>Compruebe su conexión a internet</li>
-                <li>Por favor espere unos segundos si su conexión está muy lenta</li>
-                <li>Si no tiene problemas de conexión, podría haber problemas con el servidor, por favor intentelo de nuevo</li>
-              </ul>
-              <div>
-                <h4>Sabias que?</h4>
-                <div class="slider-pro" id="my-slider">
-                <div class="sp-slides">
-                  <!-- Slide 1 -->
-                  <div class="sp-slide">
-                    <p>la cantidad de alergias alimenticias actualmente son 14</p>
-                  </div>
-                  <!-- Slide 2 -->
-                  <div class="sp-slide">
-                    <p>el porcentaje de alergicos en chile es del 25%</p>
-                  </div>
-                  <!-- Slide 3 -->
-                  <div class="sp-slide">
-                    <p>el 33% de los adultos en Chile poeen intolerancia a la lactosa</p>
-                  </div>
-                  <!-- Slide 4 -->
-                  <div class="sp-slide">
-                    <p>tienes la posibilidad de ganar premios al ingresar productos que no se encuentren<br>en nuestra base de datos</p>
+          <form class="form-horizontal">
+            <div class="modal-body">
+                <div class="form-group">
+                  <label for="title" class="col-sm-2 control-label">Titulo</label>
+                  <div class="col-sm-10">
+                    <input id="title" type="title" class="form-control" placeholder="Titulo">
                   </div>
                 </div>
+                <div class="form-group">
+                  <label for="description" class="col-sm-2 control-label">Comentario</label>
+                  <div class="col-sm-10">
+                    <textarea id="description" class="form-control" rows="3" placeholder="Deja tu opinion sobre este producto"></textarea>
+                  </div>
                 </div>
-              </div>
-          </div>
-          <!-- <div class="modal-footer"> -->
-            <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button> -->
-          <!-- </div> -->
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+                
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" onclick="comentar()">Comentar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 </body>
 </html>
