@@ -234,8 +234,8 @@ function like(id_comentario, like_dislike){
     else if (like_dislike=="dislike") {
       $("#prom_likes_"+id_comentario).text(prom_likes-1)
       
-      $("#likes_"+id_comentario).css('background-color','gray');
-      $("#dislikes_"+id_comentario).css('background-color','black');
+      $("#likes_"+id_comentario).css('color','gray');
+      $("#dislikes_"+id_comentario).css('color','red');
       
       $("#dislikes_"+id_comentario).attr('onclick',"like("+id_comentario+",\'dislike_cancel\')");
     }
