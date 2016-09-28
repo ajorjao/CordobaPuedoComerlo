@@ -1,5 +1,8 @@
+
 var consulta_exitosa = false;
 var pdata = {};
+var current_user = 0;
+var comment_stored = 0;
 
 function get_my_data(){
   $( '#my-slider' ).sliderPro({
@@ -23,7 +26,7 @@ function get_my_data(){
                 <h3 style="margin: 0px;">\
                   <div class="row">\
                     <div class="col-xs-3">\
-                      <img  src="'+srcimg+'" alt="..." style="width: 65px;margin-left: 6px;position: fixed;"> \
+                      <img  src="'+srcimg+'" alt="..." style="width: 65px;margin-left: 6px;position: absolute;"> \
                     </div>\
                     <div class="col-xs-9" style="top: 4px;margin-bottom: 8px;font-size: 28px;">\
                       No Puede Comerlo:\
@@ -52,7 +55,7 @@ function get_my_data(){
                 <h3 style="margin: 0px;"> \
                   <div class="row">\
                     <div class="col-xs-3"> \
-                      <img src="img/sisi.png" alt="..." style="width: 65px;margin-left: 6px;margin-top: 13px;position: fixed;"> \
+                      <img src="img/sisi.png" alt="..." style="width: 65px;margin-left: 6px;margin-top: 13px;position: absolute;"> \
                     </div>\
                     <div class="col-xs-9" style="top: 4px;margin-bottom: 8px;font-size: 30px;"> \
                       Pueden Comerlo! \
@@ -74,12 +77,32 @@ function get_my_data(){
     }
   });
 
-  get_comments();
-
   $("#product-name").html(pdata.pname);
   $("#product-id").html(pdata.pid);
   $("#product-ingredients").html(pdata.ingredients);
   $("#product-image").attr("src", pdata.image_route);
+
+  var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://"+url_server+"/user",
+    "method": "GET",
+    xhrFields: {
+      withCredentials: true
+    },
+    "headers": {
+      "cache-control": "no-cache",
+      "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
+    },
+    error: function(resp, status){
+      window.location = "login.html";
+    }
+  }
+
+  $.ajax(settings).done(function (response) {
+    current_user = response.user.id;
+    get_comments(current_user);
+  });
 
   // centrar la imagen cuando esta descuadrada (ej: 120x30)
   setTimeout(function(){
@@ -121,7 +144,7 @@ function crear_mensaje_problema_con_familiar(nombre_familiar, problemas_intolera
 }
 
 
-function get_comments(){
+function get_comments( user_id ){
   var settings = {
     "async": true,
     "crossDomain": true,
@@ -150,11 +173,16 @@ function get_comments(){
     // console.log(response);
     for (i = 0, len = response.comments.length; i < len; i++) {
       if (response.comments[i]["prom_likes"]>-15) {
-        add_comment(response.comments[i]);
+        if (response.comments[i].user.id == user_id){
+          add_comment(response.comments[i], true);
+        }
+        else{
+          add_comment(response.comments[i], false);
+        }
       }
       else{
         $("#product-comments").append('\
-          <div class="panel-body" style="margin-left: 25px; color: red;">\
+          <div class="panel-body" style="padding-left: 40px; color: red; border: 1px solid rgba(0,0,0,0.17);">\
             <div class="row">\
               '+response.comments[i]["user"]["username"]+': <b><i>Comentario bloqueado</i></b>\
             </div>\
@@ -168,18 +196,25 @@ function get_comments(){
 }
 
 
-function add_comment(hash_comentario){
+function add_comment(hash_comentario, ask_my_comment){
   comment = '\
-  <div class="panel-body">\
-    <div class="col-xs-9">\
-      <div class="row">\
-        '+hash_comentario["user"]["username"]+': <b>'+hash_comentario["title"]+'</b>\
+  <div class="panel-body" style="border: 1px solid rgba(0,0,0,0.17)">\
+    <div class="col-xs-8">\
+      <div class="row">'
+  if (ask_my_comment){
+    comment += '\
+      <a class="btn-default" data-toggle="modal" data-target="#editar-comentario-modal">\
+        <i class="fa fa-pencil" aria-hidden="true" onclick="editar_comentario('+hash_comentario["id"]+',\''+hash_comentario["title"]+'\',\''+hash_comentario["description"]+'\')"></i>\
+      </a>'
+  }
+  comment += '\
+      '+hash_comentario["user"]["username"]+': <b>'+hash_comentario["title"]+'</b>\
       </div>\
       <div class="row">\
         '+hash_comentario["description"]+'\
       </div>\
     </div>\
-    <div class="col-xs-3" style="text-align: center;">\
+    <div class="col-xs-4" style="text-align: center;">\
       <div id="prom_likes_'+hash_comentario["id"]+'">\
         '+hash_comentario["prom_likes"]+'\
       </div>\
@@ -192,6 +227,21 @@ function add_comment(hash_comentario){
     </div>\
   </div>'
   $("#product-comments").append(comment);
+}
+
+function editar_comentario(comment_id, title, description){
+  comment_stored = comment_id
+  // script para escribir lo que dice el comentario en el modal
+  $("#edit-title").val(title)
+  $("#edit-description").val(description)
+}
+
+function delete_comentario(){
+  
+}
+
+function update_comentario(){
+  
 }
 
 
@@ -235,7 +285,7 @@ function like(id_comentario, like_dislike){
       $("#prom_likes_"+id_comentario).text(prom_likes+1)
 
       $("#dislikes_"+id_comentario).css('color','grey');
-      $("#likes_"+id_comentario).css('color','red');
+      $("#likes_"+id_comentario).css('color','#23ff00');
       
       $("#likes_"+id_comentario).attr('onclick',"like("+id_comentario+",\'like_cancel\')");
     }
@@ -308,7 +358,7 @@ function comentar(){
         <div style="text-align: right;">\
           <button style="width: 75%; margin: 5px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#comentar-modal">Comentar</button>\
         </div>');
-    get_comments();
+    get_comments(current_user);
   });
 }
 
