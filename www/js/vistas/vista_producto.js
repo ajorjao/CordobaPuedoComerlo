@@ -187,7 +187,7 @@ function get_comments( user_id ){
               '+response.comments[i]["user"]["username"]+': <b><i>Comentario bloqueado</i></b>\
             </div>\
             <div class="row">\
-              Este comentario fue bloqueado por tener demaciados votos negativos\
+              [Este comentario fue bloqueado por tener demasiados votos negativos]\
             </div>\
           </div>');
       }
