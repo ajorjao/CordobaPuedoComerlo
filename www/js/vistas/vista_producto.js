@@ -237,11 +237,69 @@ function editar_comentario(comment_id, title, description){
 }
 
 function delete_comentario(){
-  
+  var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://"+url_server+"/comments/"+comment_stored,
+    "method": "DELETE",
+    xhrFields: {
+      withCredentials: true
+    },
+    "headers": {
+      "cache-control": "no-cache",
+      "postman-token": "a0cdee86-b34e-60fe-5224-619d0cb27c30"
+    },
+    error: function(resp, status){
+      if (resp.status==0){
+        alert("Error, por favor comprueba tu conexión");
+      }
+      else{
+        send_alert(JSON.parse(resp.responseText).error, "danger");
+      }
+      location.reload();
+    }
+  }
+
+  $.ajax(settings).done(function (response) {
+    location.reload();
+  });
 }
 
 function update_comentario(){
-  
+  var form = new FormData();
+  form.append("title", $("#edit-title").val());
+  form.append("description", $("#edit-description").val());
+
+  var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://"+url_server+"/comments/"+comment_stored,
+    "method": "PUT",
+    xhrFields: {
+      withCredentials: true
+    },
+    "headers": {
+      "cache-control": "no-cache",
+      "postman-token": "a0cdee86-b34e-60fe-5224-619d0cb27c30"
+    },
+    "processData": false,
+    "contentType": false,
+    "mimeType": "multipart/form-data",
+    "data": form,
+    error: function(resp, status){
+      if (resp.status==0){
+        alert("Error, por favor comprueba tu conexión");
+      }
+      else{
+        send_alert(JSON.parse(resp.responseText).error, "danger");
+      }
+      location.reload();
+    }
+  }
+
+  $.ajax(settings).done(function (response) {
+    location.reload();
+  });
 }
 
 
