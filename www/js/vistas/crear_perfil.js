@@ -85,6 +85,7 @@ function add_new_familiar(){
   new_intolerances(JSON.parse(response).created.id, intolerances);
   // alert("Te has registrado exitosamente");
   send_alert("<strong>Bienvenido!</strong> ya puedes utilizar Puedo Comerlo. Si tienes dudas o inquietudes no dudes en contactarte con nosotros en la sección de configuraciones.", "success");
+
   });
 }
 
