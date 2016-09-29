@@ -418,7 +418,7 @@ function comentar(){
     $("#description").val("");
     // console.log("comentado:"+response);
     $("#product-comments").html('\
-        <div style="text-align: right;">\
+        <div style="width: 95%; margin: 5px">\
           <button style="width: 75%; margin: 5px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#comentar-modal">Comentar</button>\
         </div>');
     get_comments(current_user);
