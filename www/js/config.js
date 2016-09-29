@@ -56,12 +56,12 @@ function read_alerts(){
   var exist_alert = localStorage.getItem('alert_data')
 
   if (exist_alert){
-    console.log("Existe una alerta")
 
     var alert_data = JSON.parse(exist_alert);
     message = alert_data.alert_message
     status = alert_data.alert_status
 
+    console.log("Existe una alerta: "+message)
     localStorage.removeItem('alert_data');
 
     $("#alert").html('\
