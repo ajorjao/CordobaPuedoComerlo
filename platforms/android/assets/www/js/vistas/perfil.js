@@ -10,15 +10,12 @@ function guardar_id(newid, name){
 function add_familiar(nombre, id){
 	var familiar = ''+
 		'<div class="panel panel-default">'+
-			'<div class="panel-heading" role="tab" id="heading_'+id+'">'+
+			'<div class="panel-heading" role="tab" id="heading_'+id+'" data-toggle="collapse" data-parent="#accordion" href="#collapse_'+id+'" aria-expanded="true" aria-controls="collapseOne">'+
 				'<h4 class="panel-title">'+nombre+
 						'<a data-toggle="modal" data-target="#nombre-familiar-modal" href=""><span class=" edit-relative glyphicon glyphicon-pencil aria-hidden="true" onClick="guardar_id('+id+',\''+nombre+'\')"></span></a>'+
 				'</h4>'+
 			'</div>'+
-
-
-			'<div id="collapse_'+id+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading_'+id+'">'+
-				'<div class="panel-body">'+
+			'<div id="collapse_'+id+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_'+id+'" aria-expanded="false">'+
 					'<ul class="list-group-'+id+'" style="padding-left: 0;">'+
 					// #############intolerancias###############
 						// '<li class="intolerance list-group-item">'+
@@ -28,10 +25,9 @@ function add_familiar(nombre, id){
 						// '</li>'+
 					// #############intolerancias###############
 					'</ul>'+
-				'</div>'+
 			'</div>'+
 		'</div>'
-	$(".panel-group").append(familiar);
+	$("#familiares").append(familiar);
 }
 
 function add_intolerance(intolerance_id, family_id, family_name){
@@ -84,7 +80,6 @@ function delete_intolerance(intolerance_id, family_id, family_name){
 		$.ajax(settings).done(function (response) {
 			console.log(response);
       send_alert("<strong>Intolerancia elminada</strong>", "success");
-			// alert("Intolerancia eliminada");
 			localStorage.removeItem('intolerancias-familia');
 			location.reload();
 		});
@@ -121,7 +116,8 @@ function get_my_data(){
 	$.ajax(settings).done(function (response) {
 		var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
 		$("#profilePicture").attr("src", foto_de_perfil.replace("/original/","/medium/"));
-
+		$("#profilePicture2").attr("src", foto_de_perfil.replace("/original/","/medium/"));
+		$("#nombredelwn").html(response.user.username);
 		$.each(response.family, function(pos, familiar) {
 			console.log("familiar:", familiar.name);
 			add_familiar(familiar.name, familiar.id);

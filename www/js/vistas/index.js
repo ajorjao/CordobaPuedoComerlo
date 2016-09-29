@@ -36,7 +36,7 @@ function escanear(){
         $("#modal-popup").modal('toggle');
       }
 
-      var testObject = { 'pid': id, 'pname': pname, 'matchs': matchs, 'ingredients': ingredients, 'image_route': image_route};
+      var testObject = { 'pid': result.text, 'pname': pname, 'matchs': matchs, 'ingredients': ingredients, 'image_route': image_route};
       localStorage.setItem('pdata', JSON.stringify(testObject));
       window.location = "vista_producto.html";
     },

@@ -25,11 +25,12 @@ function register(){
       // console.log("error al logearse");
       // alert("Error, por favor comprueba tu conexión")
       if (resp.status==0){
-      alert("Error, por favor comprueba tu conexión");
+        alert("Error, por favor comprueba tu conexión");
       }
       else{
-      send_alert(JSON.parse(resp.responseText).error, "danger");
+        send_alert(JSON.parse(resp.responseText).error, "danger");
       }
+      location.reload();
     }
   }
 
@@ -83,7 +84,7 @@ function add_new_familiar(){
   });
   new_intolerances(JSON.parse(response).created.id, intolerances);
   // alert("Te has registrado exitosamente");
-  send_alert("<strong>Bienbenido</strong> ya puedes utilizar Puedo Comerlo, si tienes dudas o inquietudes no dudes en contactarte con nosotros", "success");
+  send_alert("<strong>Bienvenido!</strong> ya puedes utilizar Puedo Comerlo. Si tienes dudas o inquietudes no dudes en contactarte con nosotros en la sección de configuraciones.", "success");
   });
 }
 

@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Perfil</title>
 	<link href="css/bootstrap.min.css"  rel="stylesheet">
+  <link rel="stylesheet" href="font-awesome-4.6.3/css/font-awesome.min.css">
   <link href="css/style.css"  rel="stylesheet">
   <script src="js/jquery.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
@@ -16,7 +17,7 @@
     <div class="container-fluid">
       <ul class="nav navbar-nav">
       <li><a class="back-button" onClick="go_back()">
-          <span class="back-button-glyphicon glyphicon glyphicon-arrow-left aria-hidden="true"></span></a></li>
+          <span class="back-button-glyphicon glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a></li>
       <li><p class="navbar-text">Mi Perfil</p></li>
       </ul>
     </div>
@@ -25,17 +26,40 @@
   <div id="alert"></div>
   
 
-  <div class="perfil-img">
-  	<img id="profilePicture" alt="..." class="img-circle">
-  	<a href="" data-toggle="modal" data-target="#foto-perfil-modal" ><span class="glyphicon glyphicon-camera aria-hidden="true"></span></a>
-  </div>
+<!-- foto de perfil -->
+<div class="card hovercard">
+        <div class="card-background">
+          <img id="profilePicture" class="card-bkimg" alt="...">
+        </div>
+        <div class="useravatar">
+          <img alt="..." id="profilePicture2">
+          <a href="" data-toggle="modal" data-target="#foto-perfil-modal" >
+          </a> 
+        </div>
+
+        <div class="card-info"> <span id="nombredelwn" class="card-title"></span>
+
+        </div>
+    </div>
+
+<a href="" data-toggle="modal" data-target="#foto-perfil-modal" >
+  <span class="glyphicon glyphicon-camera" style="top: -87px;left: calc(50% + 37px);font-size: 40px;" aria-hidden="true">
+  </span>
+</a>
+<!-- fin de foto --> 
 
   <!-- <div class="intolerance-wrap"> -->
 
-  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-primary" id="familiares" role="tablist" aria-multiselectable="true">
+  <div class="panel-heading">
+    <h2 class="panel-title">Grupo familiar</h2>
+    (Selecciona a cada miembro para mostrar su información)
   </div>
 
-  <button data-toggle="modal" data-target="#new-relative-modal" type="button" class="btn btn-success">Agregar Integrante</button>
+  </div>
+
+  <button data-toggle="modal" data-target="#new-relative-modal" type="button" class="btn btn-success" style="position: relative;bottom: 0px;border-color: transparent;
+    width: 100%;padding: 16px;font-size: 20px;background-color:#168cc5;border-radius: 0px;">Agregar Integrante</button>
 
   <!-- </div> -->
 
@@ -89,7 +113,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" onClick="delete_familiar()" class="btn btn-delete btn-danger" data-dismiss="modal">Eliminar familiar</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button> -->
             <button type="button" onClick="edit_familiar()" class="btn btn-primary">Guardar</button>
           </div>
           </form>
@@ -106,7 +130,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Agregar nueva intolerancias</h4>
+            <h4 class="modal-title">Agregar nuevas intolerancias</h4>
           </div>
           <div class="modal-body">
               <form class="form-horizontal">
@@ -121,7 +145,7 @@
 										  <option value="5">Apio</option>
 										  <option value="6">Mostaza</option>
 										  <option value="7">Huevo</option>
-										  <option value="8">Sesamo</option>
+										  <option value="8">Sésamo</option>
 										  <option value="9">Pescado</option>
 										  <option value="10">Crustaceos</option>
 										  <option value="11">Mariscos</option>
@@ -133,7 +157,7 @@
                 </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button> -->
             <button type="button" class="btn btn-primary" onClick="new_intolerances(0,0)">Agregar</button>
           </div>
           </form>
@@ -173,7 +197,7 @@
                     <li class="list-group-item intolerance" data-value="5"><img src="img/intolerancias/5.png" alt="..."> Apio</li>
                     <li class="list-group-item intolerance" data-value="6"><img src="img/intolerancias/6.png" alt="..."> Mostaza</li>
                     <li class="list-group-item intolerance" data-value="7"><img src="img/intolerancias/7.png" alt="..."> Huevo</li>
-                    <li class="list-group-item intolerance" data-value="8"><img src="img/intolerancias/8.png" alt="..."> Sesamo</li>
+                    <li class="list-group-item intolerance" data-value="8"><img src="img/intolerancias/8.png" alt="..."> Sésamo</li>
                     <li class="list-group-item intolerance" data-value="9"><img src="img/intolerancias/9.png" alt="..."> Pescado</li>
                     <li class="list-group-item intolerance" data-value="10"><img src="img/intolerancias/10.png" alt="..."> Crustaceos</li>
                     <li class="list-group-item intolerance" data-value="11"><img src="img/intolerancias/11.png" alt="..."> Mariscos</li>

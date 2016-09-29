@@ -23,13 +23,16 @@ function match_product(id){
     "method": "GET",
     error: function(resp, status){
       if (resp.status==0){
-        $("#modal-popup").modal('show');
-        setTimeout(function(){
-          match_product(id);
-        }, 1000);
+        // $("#modal-popup").modal('show');
+        // setTimeout(function(){
+        //   match_product(id);
+        // }, 1000);
+        alert("Problema de conexión");
+        location.reload();
       }
       else{
         consulta_exitosa = true;
+        alert(JSON.parse(resp.responseText).error);
         send_alert(JSON.parse(resp.responseText).error, "danger");
         location.reload();
       }

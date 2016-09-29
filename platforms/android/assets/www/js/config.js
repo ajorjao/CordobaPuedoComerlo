@@ -1,4 +1,4 @@
-var all_servers = ["192.168.2.5:3000","10.6.43.67:3000","localhost:3000"];
+var all_servers = ["10.6.43.204:3000","192.168.2.8:3000","localhost:3000"];
 
 var url_server = ""
 var settings = {}
@@ -56,12 +56,12 @@ function read_alerts(){
   var exist_alert = localStorage.getItem('alert_data')
 
   if (exist_alert){
-    console.log("Existe una alerta")
 
     var alert_data = JSON.parse(exist_alert);
     message = alert_data.alert_message
     status = alert_data.alert_status
 
+    console.log("Existe una alerta: "+message)
     localStorage.removeItem('alert_data');
 
     $("#alert").html('\
@@ -84,7 +84,7 @@ $(document).ready(function( $ ) {
       localStorage.setItem('back', JSON.stringify({'location': back.location}));
       localStorage.setItem('now', JSON.stringify({'location': filename}));
     }
-    if (back.location=="login.html"){
+    if (back.location=="login.html" || back.location=="crear_perfil.html"){
       localStorage.setItem('back', JSON.stringify({'location': "index.html"}));    
     }
   }

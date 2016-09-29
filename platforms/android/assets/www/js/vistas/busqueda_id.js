@@ -2,7 +2,7 @@ $(function () {
 	// se ejecuta cada vez que se escribe alguna letra
 	$('#search_id').on('input', function(){
 		if ($(this).val().length>3){
-			search(true);
+			search();
 		}
 	});
 	$('#busqueda').submit(function(e) {
@@ -10,7 +10,7 @@ $(function () {
 	});
 });
 
-function search(auto){
+function search(){
 	var form = new FormData();
 	form.append("product[id]", $("#search_id").val());
 
@@ -31,15 +31,14 @@ function search(auto){
 	  "mimeType": "multipart/form-data",
 	  "data": form,
 	  error: function(resp, status){		// cuando hay error
-	  	// si la busqueda se realizo automaticamente
-	  	if (!auto){
-	      if (resp.status==0){
-		  		add_error("Error, por favor revisa tu conexión a internet")
-	      }
-	      else{
-		  		add_error(JSON.parse(resp.responseText).error+": "+$("#search_id").val())
-	      }
-	  	}
+      if (resp.status==0){
+      	clear_listgroup();
+	  		add_error("Error, por favor revisa tu conexión a internet")
+      }
+      else{
+      	clear_listgroup();
+	  		add_error(JSON.parse(resp.responseText).error+": "+$("#search_id").val())
+      }
 	  }
 	}
 
@@ -74,7 +73,7 @@ function ver_detalle(id){
 	// console.log("product name:", pname)
 	// console.log("matchs:", matchs)
 
-	var testObject = { 'pid': id, 'pname': pname, 'matchs': matchs, 'image_route': image_route};
+	var testObject = { 'pid': id, 'pname': pname, 'matchs': matchs, 'ingredients': ingredients, 'image_route': image_route};
 	// Put the object into storage
 	localStorage.setItem('pdata', JSON.stringify(testObject));
 	window.location = "vista_producto.html";
@@ -82,11 +81,11 @@ function ver_detalle(id){
 
 function add_product(name, id, img_src, state){
 	var producto = '\
-		<a onClick="ver_detalle('+id+')" class="list-group-item list-group-item-'+state+'" style="height: 92px">\
+		<a onClick="ver_detalle('+id+')" class="list-group-item list-group-item-'+state+'" style="overflow: auto;">\
   		<div class="col-xs-3" style="text-align: center;">\
 				<img src="'+img_src+'" style="height: 70px; width: 70px;">\
   		</div>\
-  		<div class="col-xs-9" style="text-align: center; font-size: 16px; top: 15px;">\
+  		<div class="col-xs-9" style="text-align: center; font-size: 14px; top: 12px;">\
   			<div class="row">\
 					'+id+'\
   			</div>\

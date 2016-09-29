@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Menu</title>
 	<link href="css/bootstrap.min.css"  rel="stylesheet">
+  <link rel="stylesheet" href="font-awesome-4.6.3/css/font-awesome.min.css">
   <link href="css/style.css"  rel="stylesheet">
   <link href="css/slider-pro.min.css" rel="stylesheet">
 
@@ -18,97 +19,133 @@
   
   <script src="js/config.js"></script>
   <script src="js/vistas/vista_producto.js"></script>
+  
   <!-- <script type="text/javascript" src="cordova.js"></script> -->
   
 </head>
 
 <body>
-  <nav class="navbar">
+  <nav class="navbar" style="margin-bottom: 20px;">
     <div class="container-fluid">
       <ul class="nav navbar-nav">
       <!-- incluir flecha para volver atrás -->
       <li><a class="back-button" onClick="go_back()">
           <span class="back-button-glyphicon glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a></li>
-      <li><p class="navbar-text">DETALLE</p></li>
+      <li><p class="navbar-text"> Detalle de Producto</p></li>
       </ul>
     </div>
   </nav>
 
-  <!-- <button type="submit" onClick="denunciar()" class="btn btn-warning btn-lg btn-block"> Denunciar Producto </button> -->
+  <div id="alert"></div>
+
   <div id="menu1" class="menu-wrapper">
-		<div class="panel panel-danger" style="margin-bottom:-19px;">
-      <div class="panel-body" id="productMatch">
-      	<h4>Detalle:
-				  <a class="btn btn-warning right-align" onClick="denunciar()" title="Denunciar producto">
-				    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Denunciar
-				  </a>
-			  <h4>
-			</div>
-      <div class="panel-body" id="intolerancesMatchs">
-    		<!-- aca va lo del js -->
-			</div>
+    <div class="well" style="overflow: auto;">
+		  <a class="btn btn-xs btn-warning right-align" onClick="denunciar()" title="Denunciar producto">
+		    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Reportar un Error
+		  </a>
+      <div class="col-xs-6" style="text-align: center;">
+        <img id="product-image" style="max-height: 120px; max-width: 120px; margin-top: 15px;">
+      </div>
+      <div class="col-xs-6" style="text-align: center; font-size: 16px; top: -10px;">
+        <div class="row" style="margin: 10px 0;" id="product-name"> </div>
+        <div class="row" style="margin: 10px 0;" id="product-id"> </div>
+      </div>
+      <div style="font-size: 13px;">
+        <div>
+          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#product-ingredients" aria-expanded="false" aria-controls="collapseOne" style="color:#333;">
+            <br><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <b>Ingredientes:</b>
+          </a>
+        </div>
+        <div id="product-ingredients" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_'+nombre_familiar+'" style="margin-bottom: 20px;"> </div>
+      </div>
 		</div>
-
   </div>
-<br><br>
 
-    <div id="menu2" class="menu-wrapper">
-      <!-- aca va lo de comentarios (ver js) -->
-			<div class="panel panel-primary">
-			  <div class="panel-heading">
-			    <h3 class="panel-title">Comentarios:</h3>
-			  </div>
-			  <div class="panel-body">
-			    Y aquí pondríamos nuestros comentarios si tuviéramos alguno.
-			  </div>
-			</div>
+  <div id="menu2" class="menu-wrapper">
+    <div id="productMatch"></div>
+  </div>
+
+  <div id="menu3" class="menu-wrapper">
+
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">Comentarios:</h3>
+      </div>
+      <div class="panel" id="product-comments" style="font-size: 13px;">
+        <!-- <input type="text" class="form-control" name="Comentar" placeholder="Danos tu opinion"> -->
+        <div style="text-align: center;">
+          <button style="width: 95%; margin: 5px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#comentar-modal">Comentar</button>
+        </div>
+      </div>
     </div>
 
-    <!-- Modal Error de Conexion -->
-    <div id="modal-popup" class="modal fade" role="dialog">
-      <div class="modal-dialog">
-        <div class="modal-content" style="height: 400px;">
+  </div>
+
+
+    <!-- Modal comentar -->
+    <div class="modal fade" id="comentar-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Problemas de Conexión</h4>
+            <h4 class="modal-title">Comentario</h4>
           </div>
-          <div class="modal-body">
-              <h4>Ups, la consulta se está tardando más de lo normal</h4>
-             <img src="img/loader.gif" alt="HTML5 Icon" style="display: block;margin-left:auto;margin-right:auto;width:100px;height:100px;">
-              <ul>
-                <li>Compruebe su conexión a internet</li>
-                <li>Por favor espere unos segundos si su conexión está muy lenta</li>
-                <li>Si no tiene problemas de conexión, podría haber problemas con el servidor, por favor intentelo de nuevo</li>
-              </ul>
-              <div>
-                <h4>Sabias que?</h4>
-                <div class="slider-pro" id="my-slider">
-                <div class="sp-slides">
-                  <!-- Slide 1 -->
-                  <div class="sp-slide">
-                    <p>la cantidad de alergias alimenticias actualmente son 14</p>
-                  </div>
-                  <!-- Slide 2 -->
-                  <div class="sp-slide">
-                    <p>el porcentaje de alergicos en chile es del 25%</p>
-                  </div>
-                  <!-- Slide 3 -->
-                  <div class="sp-slide">
-                    <p>el 33% de los adultos en Chile poeen intolerancia a la lactosa</p>
-                  </div>
-                  <!-- Slide 4 -->
-                  <div class="sp-slide">
-                    <p>tienes la posibilidad de ganar premios al ingresar productos que no se encuentren<br>en nuestra base de datos</p>
+          <form class="form-horizontal">
+            <div class="modal-body">
+                <div class="form-group">
+                  <label for="title" class="col-sm-2 control-label">Título</label>
+                  <div class="col-sm-10">
+                    <input id="title" type="title" class="form-control" placeholder="Titulo">
                   </div>
                 </div>
+                <div class="form-group">
+                  <label for="description" class="col-sm-2 control-label">Comentario</label>
+                  <div class="col-sm-10">
+                    <textarea id="description" class="form-control" rows="3" placeholder="Deja tu opinion sobre este producto"></textarea>
+                  </div>
                 </div>
-              </div>
+                
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" onclick="comentar()" style="width: 98%;">Comentar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Modal editar comentario -->
+    <div class="modal fade" id="editar-comentario-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Comentario</h4>
           </div>
-          <!-- <div class="modal-footer"> -->
-            <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button> -->
-          <!-- </div> -->
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+          <form class="form-horizontal">
+            <div class="modal-body">
+                <div class="form-group">
+                  <label for="title" class="col-sm-2 control-label">Título</label>
+                  <div class="col-sm-10">
+                    <input id="edit-title" type="title" class="form-control" placeholder="Titulo">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="description" class="col-sm-2 control-label">Comentario</label>
+                  <div class="col-sm-10">
+                    <textarea id="edit-description" class="form-control" rows="3" placeholder="Deja tu opinion sobre este producto"></textarea>
+                  </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+              <button type="button" onclick="delete_comentario()" class="btn btn-delete btn-danger" data-dismiss="modal">Eliminar</button>
+              <button type="button" class="btn btn-primary" onclick="update_comentario()">Editar Comentario</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 </body>
 </html>
