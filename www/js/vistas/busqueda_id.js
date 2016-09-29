@@ -2,7 +2,7 @@ $(function () {
 	// se ejecuta cada vez que se escribe alguna letra
 	$('#search_id').on('input', function(){
 		if ($(this).val().length>3){
-			search(true);
+			search();
 		}
 	});
 	$('#busqueda').submit(function(e) {
@@ -10,7 +10,7 @@ $(function () {
 	});
 });
 
-function search(auto){
+function search(){
 	var form = new FormData();
 	form.append("product[id]", $("#search_id").val());
 
@@ -31,15 +31,14 @@ function search(auto){
 	  "mimeType": "multipart/form-data",
 	  "data": form,
 	  error: function(resp, status){		// cuando hay error
-	  	// si la busqueda se realizo automaticamente
-	  	if (!auto){
-	      if (resp.status==0){
-		  		add_error("Error, por favor revisa tu conexión a internet")
-	      }
-	      else{
-		  		add_error(JSON.parse(resp.responseText).error+": "+$("#search_id").val())
-	      }
-	  	}
+      if (resp.status==0){
+      	clear_listgroup();
+	  		add_error("Error, por favor revisa tu conexión a internet")
+      }
+      else{
+      	clear_listgroup();
+	  		add_error(JSON.parse(resp.responseText).error+": "+$("#search_id").val())
+      }
 	  }
 	}
 

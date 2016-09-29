@@ -38,7 +38,13 @@ function get_my_data(){
               <div class="panel panel-danger">\
                 <div class="panel-heading">\
                   <span>Posibles síntomas para tu familia:</span>\
-                </div><p style="text-align:center;margin-top:10px;">(Selecciona a cada uno para ver sus detalles)</p>\
+                </div>\
+                <div class="alert alert-info alert-dismissible fade in" role="alert" style="margin-bottom: 0; padding-top: 10px; padding-bottom: 10px;">\
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="margin-bottom: 0;">\
+                    <span aria-hidden="true">&times;</span>\
+                  </button>\
+                  (Selecciona a cada uno para ver sus detalles)\
+                </div>\
                 <div class="well panel" style="overflow: auto; margin-bottom: 0;">\
                   <div id="intolerancesMatchs">\
                   </div>\
@@ -107,12 +113,8 @@ function get_my_data(){
   // centrar la imagen cuando esta descuadrada (ej: 120x30)
   setTimeout(function(){
     imgheight = $("#product-image").height()
-    imgwidth = $("#product-image").width()
     if (imgheight < 120){
       $("#product-image").css('margin-top',60-imgheight/2+'px');
-    }
-    if (imgwidth < 120){
-      $("#product-image").css('margin-top',60-imgwidth/2+'px');
     }
   }, 100);
 }
@@ -229,12 +231,14 @@ function add_comment(hash_comentario, ask_my_comment){
   $("#product-comments").append(comment);
 }
 
+
 function editar_comentario(comment_id, title, description){
   comment_stored = comment_id
   // script para escribir lo que dice el comentario en el modal
   $("#edit-title").val(title)
   $("#edit-description").val(description)
 }
+
 
 function delete_comentario(){
   var settings = {
@@ -264,6 +268,7 @@ function delete_comentario(){
     location.reload();
   });
 }
+
 
 function update_comentario(){
   var form = new FormData();
