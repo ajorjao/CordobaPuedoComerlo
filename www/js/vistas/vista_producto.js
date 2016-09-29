@@ -37,8 +37,8 @@ function get_my_data(){
               </div>\
               <div class="panel panel-danger">\
                 <div class="panel-heading">\
-                  <span>Posibles Síntomas para tus familiares:</span>\
-                </div>\
+                  <span>Posibles síntomas para tu familia:</span>\
+                </div><p style="text-align:center;margin-top:10px;">(Selecciona a cada uno para ver sus detalles)</p>\
                 <div class="well panel" style="overflow: auto; margin-bottom: 0;">\
                   <div id="intolerancesMatchs">\
                   </div>\
@@ -121,7 +121,7 @@ function get_my_data(){
 function crear_mensaje_problema_con_familiar(nombre_familiar, problemas_intolerancias){
   familiar = '\
     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#sintomas_'+nombre_familiar+'" aria-expanded="false" aria-controls="collapseOne" style="font-size: 20px; color:#333;">\
-      <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> '+ nombre_familiar.split("_-_")[0] +'\
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> '+ nombre_familiar.split("_-_")[0] +'\
     </a><br>\
     <div id="sintomas_'+nombre_familiar+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_'+nombre_familiar+'" style="margin-bottom: 20px;">';
 
