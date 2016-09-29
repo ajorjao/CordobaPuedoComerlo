@@ -40,7 +40,7 @@ $(function(){
   $('a[href$="'+filename+'"] .btn-default').toggleClass("active")
 
   if (filename=="busqueda_id.html"){
-  	$('.navbar-text.navbar-text-menu').html("Buscar por Codigo")
+  	$('.navbar-text.navbar-text-menu').html("Buscar por Código")
   }
   else if (filename=="busqueda_nombre.html"){
   	$('.navbar-text.navbar-text-menu').html("Buscar por Nombre")
