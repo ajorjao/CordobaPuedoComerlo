@@ -89,7 +89,7 @@ function sendMail() {
   var confirmsend = confirm("¿Estas seguro que deseas enviar el mensaje?");
   if (confirmsend == true) {
     $.ajax(settings).done(function (response) {
-      send_alert("<strong>Gracias por contactarnos</strong> Revisaremos tu mensaje y nos contactaremos contigo mediante el email de tu cuenta", "success");
+      send_alert("<strong>Gracias por contactarnos.</strong> Revisaremos tu mensaje y nos contactaremos contigo mediante el email de tu cuenta.", "success");
       location.reload();
     });
   }

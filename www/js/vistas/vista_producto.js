@@ -457,7 +457,7 @@ function denunciar(){
   if (denuncia == true) {
     $.ajax(settings).done(function (response) {
       console.log(response);
-      send_alert("<strong>Producto Denunciado Correctamente</strong> gracias por avisarnos", "success");
+      send_alert("<strong>Producto Denunciado Correctamente.</strong> Gracias por avisarnos.", "success");
       location.reload();
     });
   }
