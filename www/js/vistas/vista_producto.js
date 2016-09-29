@@ -37,8 +37,8 @@ function get_my_data(){
               </div>\
               <div class="panel panel-danger">\
                 <div class="panel-heading">\
-                  <span>Posibles Síntomas para tus familiares:</span>\
-                </div>\
+                  <span>Posibles síntomas para tu familia:</span>\
+                </div><p style="text-align:center;margin-top:10px;">(Selecciona a cada uno para ver sus detalles)</p>\
                 <div class="well panel" style="overflow: auto; margin-bottom: 0;">\
                   <div id="intolerancesMatchs">\
                   </div>\
