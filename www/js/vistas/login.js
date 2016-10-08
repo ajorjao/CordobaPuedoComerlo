@@ -46,6 +46,67 @@ function login(){
 }
 
 
+function login_facebook(){
+  var dis = this;
+  $.oauth2({
+    auth_url: 'https://www.facebook.com/dialog/oauth',
+    response_type: 'token',
+    client_id: '971158276296257', //aqui se debiera anotar el id de la api de puedo comerlo
+    // redirect_uri: 'http://'+url_server+'/callback',
+    redirect_uri: "http://"+url_server+"/sign_up",
+    other_params: {scope: ['public_profile','email'], display: 'popup'},
+    hidden: true
+  }, function(token, response){
+    console.log('token: '+token);
+    console.log(JSON.stringify(response, null, 4));
+    dis.register_provider(token,"facebook");
+  }, function(error, response){
+    console.log("error", response);
+    alert("Error");
+    navigator.notification.alert("Ocurrió un error iniciando sesión con Facebook, intenta nuevamente.", function(){}, "VivaBien", "Aceptar");
+  });
+}
+
+function register_provider(access_token, provider){
+  access_token = access_token.split("&")[0];
+  //var dis = this;
+  $.ajax({
+      type: "POST",
+      url: "http://"+url_server+"/social",
+      data: {"access_token": access_token, "provider": provider},
+      success: function(data){
+      console.log("User Login");
+      console.log(JSON.stringify(data));
+      //dis.props.on_user_login(data.login);
+    },
+    error: function(data){
+      console.log("Error login");
+      console.log(JSON.stringify(data));
+      alert("Error");
+      // $("#errors-text").html(JSON.parse(data.responseText).error);
+    }, 
+      dataType: "json"
+  });
+}
+
+function login_google(){
+  $.oauth2({
+        auth_url: 'https://accounts.google.com/o/oauth2/auth',
+        response_type: 'token',
+        logout_url: 'https://accounts.google.com/logout',
+        client_id: '204037512129-h6sqi35uj0hqaivlruj40f8qcigon35j.apps.googleusercontent.com',
+        // redirect_uri: "http://"+url_server+"/callback",
+        redirect_uri: "http://"+url_server+"/sign_up",
+        other_params: {scope: 'profile email'}
+    }, function(token, response){
+      console.log("Google Login", token, response);
+        dis.register_provider(token,"google");
+    }, function(error, response){
+        navigator.notification.alert("Ocurrió un error iniciando sesión con Google, intenta nuevamente.", function(){}, "VivaBien", "Aceptar");
+    });
+}
+
+
 function showhidepass(){
   if ($('#pass').attr('type') == 'password'){
     $('#pass').attr('type', 'text');
