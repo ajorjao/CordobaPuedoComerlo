@@ -23,7 +23,9 @@ function ping(url){
 
   new_url = all_servers.splice(0,1)[0];
   if (new_url!=undefined && url_server=="") {
-    ping(new_url);
+    setTimeout( function(){
+      ping(new_url);
+    }, 10);
   }
 
   set_settings(url);

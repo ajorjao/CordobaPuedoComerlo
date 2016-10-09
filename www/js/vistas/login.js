@@ -51,9 +51,11 @@ function login_facebook(){
   $.oauth2({
     auth_url: 'https://www.facebook.com/dialog/oauth',
     response_type: 'token',
-    client_id: '971158276296257', //aqui se debiera anotar el id de la api de puedo comerlo
+    client_id: '1041073662677910', //ok
     // redirect_uri: 'http://'+url_server+'/callback',
-    redirect_uri: "http://"+url_server+"/sign_up",
+    redirect_uri: "http://"+url_server.split(":")[0]+".xip.io:3000/callback",
+    // redirect_uri: "http://"+url_server.split(":")[0]+".xip.io:3000/auth/facebook/callback",
+    // redirect_uri: "http://"+url_server+"/sign_up",
     other_params: {scope: ['public_profile','email'], display: 'popup'},
     hidden: true
   }, function(token, response){
@@ -91,13 +93,13 @@ function register_provider(access_token, provider){
 
 function login_google(){
   $.oauth2({
-        auth_url: 'https://accounts.google.com/o/oauth2/auth',
-        response_type: 'token',
-        logout_url: 'https://accounts.google.com/logout',
-        client_id: '204037512129-h6sqi35uj0hqaivlruj40f8qcigon35j.apps.googleusercontent.com',
-        // redirect_uri: "http://"+url_server+"/callback",
-        redirect_uri: "http://"+url_server+"/sign_up",
-        other_params: {scope: 'profile email'}
+      auth_url: 'https://accounts.google.com/o/oauth2/auth',
+      response_type: 'token',
+      logout_url: 'https://accounts.google.com/logout',
+      client_id: '942948165956-d0hjrqdpbb1pmqe63i5n8iip1p02v1t0.apps.googleusercontent.com', //ok
+      redirect_uri: "http://"+url_server.split(":")[0]+".xip.io:3000/callback",
+      // redirect_uri: "http://"+url_server.split(":")[0]+".xip.io:3000/auth/google_oauth2/callback",
+      other_params: {scope: 'profile email'}
     }, function(token, response){
       console.log("Google Login", token, response);
         dis.register_provider(token,"google");
