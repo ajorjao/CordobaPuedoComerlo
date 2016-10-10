@@ -47,12 +47,28 @@ function ping(url){
         pings.fail(function (response) {
           console.log("fail", url);
           if (new_url == undefined && url_server==""){
-            alert("Problema de conexion con el servidor");
-            location.reload();
+            read_alerts();
+            send_alert('\
+              <!--<span style="font-size: 10px">\
+                Problema de conexion con el servidor\
+              </span><br> -->\
+              <b>Modo sin conexion activado</b>', "danger");
+            // solo se recaarga la pagina si no esta el mensaje de alerta de sin conexion
+            if ($('#alert').text() == ""){
+              location.reload();
+            }
+            else{
+              // console.log("$('#alert').text() != ''")
+              $('.alert.alert-danger button').remove()
+              $('.alert.alert-danger').append('\
+                <button type="button" class="close" onclick="location.reload();">\
+                  <span class="fa fa-refresh" aria-hidden="true"></span>\
+                </button>')
+            }
           }
         })
       }
-    }, 500)
+    }, 1000)
   }
   else{
     pings = $.ajax(settings);
@@ -67,13 +83,13 @@ function ping(url){
         // "no se requiere un get_my_data"
       }
     })
-    pings.fail(function (response) {
-      console.log("fail", url);
-      if (new_url == undefined && url_server==""){
-        alert("Problema de conexion con el servidor");
-        location.reload();
-      }
-    })
+    // pings.fail(function (response) {
+    //   console.log("fail", url);
+    //   if (new_url == undefined && url_server==""){
+    //     alert("Problema de conexion con el servidor");
+    //     location.reload();
+    //   }
+    // })
   }
 
 };
@@ -99,7 +115,7 @@ function read_alerts(){
     localStorage.removeItem('alert_data');
 
     $("#alert").html('\
-      <div class="alert alert-'+status+' alert-dismissible fade in" role="alert">\
+      <div class="alert alert-'+status+' alert-dismissible fade in" role="alert" style="margin-bottom: 0;">\
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">\
           <span aria-hidden="true">&times;</span>\
         </button>\
