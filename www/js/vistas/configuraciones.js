@@ -19,10 +19,25 @@ function get_my_data(){
   }
 
   $.ajax(settings).done(function (response) {
-    var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
-    email = response.user.email
-    $("#profilePicture").attr("src", foto_de_perfil.replace("/original/","/thumb/"));
+    email = response.user.email //para enviar un mensaje de contactanos
+    userdata = JSON.parse(localStorage.getItem('usuario'));
+    if (userdata){
+      $("#profilePicture").attr("src", userdata.foto_de_perfil);
+    }
+    else{
+      var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
+      $("#profilePicture").attr("src", foto_de_perfil.replace("/original/","/thumb/"));
+    }
   });
+}
+
+function modo_sin_conexion(){
+  userdata = JSON.parse(localStorage.getItem('usuario'));
+  if (userdata){
+    setTimeout( function (){ //ni idea de porq el Timeout 0 pero es necesario para q se cargue la imagen
+      $("#profilePicture").attr("src", userdata.foto_de_perfil);
+    },0)
+  }
 }
 
 function logout(){

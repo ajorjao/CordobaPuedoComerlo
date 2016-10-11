@@ -40,7 +40,7 @@ function login(){
   }
 
   $.ajax(settings).done(function (response) {
-    console.log(response);
+    // console.log(response);
     window.location = "perfil.html"
   });
 }
@@ -118,6 +118,7 @@ function showhidepass(){
     $('#pass').attr('type', 'password');
     $('#pass_conf').attr('type', 'password');
   }
+  $(".glyphicon-eye-open").toggleClass("glyphicon-eye-close")
 }
 
 function get_my_data(){ //para verificar que no este ya conectado
