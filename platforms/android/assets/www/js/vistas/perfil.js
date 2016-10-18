@@ -1,3 +1,81 @@
+function modo_sin_conexion(){
+	userdata = JSON.parse(localStorage.getItem('usuario'));
+	$("#profilePicture").attr("src", userdata.foto_de_perfil);
+	$("#profilePicture2").attr("src", userdata.foto_de_perfil);
+	$("#nombredelwn").html(userdata.username);
+	$.each(userdata.grupo_familiar, function(pos, familiar) {
+		console.log("familiar:", familiar.name);
+		add_familiar(familiar.name, familiar.id);
+		$(".list-group-"+familiar.id).append('<li class="intolerance list-group-item">En el modo sin conexion no se pueden ver las intolerancias</li>')
+		$('#heading_'+familiar.id+' a').remove()
+	});
+	$('.panel-heading .info').text("")
+	$('.btn.btn-success').remove();
+}
+
+
+function get_my_data(){
+	var settings = {
+		"async": true,
+		"crossDomain": true,
+		"url": "http://"+url_server+"/user",
+		"method": "GET",
+		xhrFields: {
+			withCredentials: true
+		},
+		"headers": {
+			"cache-control": "no-cache",
+			"postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
+		},
+		error: function(resp, status){
+      if (resp.status==0){
+      	clear_listgroup();
+	  		add_error("Error, por favor revisa tu conexión a internet")
+      }
+      else{
+      	clear_listgroup();
+	  		add_error(JSON.parse(resp.responseText).error+": "+$("#search_id").val())
+      }
+		}
+	}
+
+	$.ajax(settings).done(function (response) {
+
+		// se intenta reducir las consultas al servidor
+		userdata = JSON.parse(localStorage.getItem('usuario'));
+		if (userdata){
+			$("#profilePicture").attr("src", userdata.foto_de_perfil);
+			$("#profilePicture2").attr("src", userdata.foto_de_perfil);
+			$("#nombredelwn").html(userdata.username);
+			$.each(userdata.grupo_familiar, function(pos, familiar) {
+				console.log("familiar:", familiar.name);
+				add_familiar(familiar.name, familiar.id);
+				get_familiar_data(familiar.id, familiar.name);
+			});
+		}
+		else{
+			var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
+			foto_de_perfil = foto_de_perfil.replace("/original/","/medium/")
+			$("#profilePicture").attr("src", foto_de_perfil);
+			$("#profilePicture2").attr("src", foto_de_perfil);
+			$("#nombredelwn").html(response.user.username);
+			$.each(response.family, function(pos, familiar) {
+				console.log("familiar:", familiar.name);
+				add_familiar(familiar.name, familiar.id);
+				get_familiar_data(familiar.id, familiar.name);
+			});
+			//aqui se guardan/actualizan los datos del usuario
+			foto_de_perfil_base64 = ""
+			toDataUrl(foto_de_perfil, function(base64Img) {
+			  foto_de_perfil_base64 = base64Img;
+		    localStorage.setItem('usuario', JSON.stringify({'username': response.user.username, 'intolerancias': intolerancias_familia, 'grupo_familiar': response.family, 'foto_de_perfil': foto_de_perfil_base64 }))
+			});
+		}
+
+	});
+}
+
+
 var stored_id = 0;
 var stored_name = ""
 
@@ -66,7 +144,7 @@ function delete_intolerance(intolerance_id, family_id, family_name){
 		"data": form,
 		error: function(resp, status){
 			if (resp.status==0){
-				alert("Error, por favor comprueba tu conexión")
+				alert("Error, por favor comprueba tu conexión");
 			}
 			else{
         send_alert(JSON.parse(resp.responseText).error, "danger");
@@ -80,52 +158,20 @@ function delete_intolerance(intolerance_id, family_id, family_name){
 		$.ajax(settings).done(function (response) {
 			console.log(response);
       send_alert("<strong>Intolerancia elminada</strong>", "success");
-			localStorage.removeItem('intolerancias-familia');
+			localStorage.removeItem('usuario'); //se rehace el usuario ya que las intolerancias del grupo famliar pudieron haber cambiado
 			location.reload();
 		});
 	}
 }
 
-last_intolerancias = localStorage.getItem('intolerancias-familia');
-if (last_intolerancias){
-	var intolerancias_familia = JSON.parse(last_intolerancias).intolerancias;
+user = localStorage.getItem('usuario');
+if (user){
+	var intolerancias_familia = JSON.parse(user).intolerancias;
 }
 else{
 	var intolerancias_familia = [];
 }
 
-function get_my_data(){
-	var settings = {
-		"async": true,
-		"crossDomain": true,
-		"url": "http://"+url_server+"/user",
-		"method": "GET",
-		xhrFields: {
-			withCredentials: true
-		},
-		"headers": {
-			"cache-control": "no-cache",
-			"postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
-		},
-		error: function(resp, status){
-			alert("Error de conexión, intentalo nuevamente");
-			window.location = "login.html";
-		}
-	}
-
-	$.ajax(settings).done(function (response) {
-		var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
-		$("#profilePicture").attr("src", foto_de_perfil.replace("/original/","/medium/"));
-		$("#profilePicture2").attr("src", foto_de_perfil.replace("/original/","/medium/"));
-		$("#nombredelwn").html(response.user.username);
-		$.each(response.family, function(pos, familiar) {
-			console.log("familiar:", familiar.name);
-			add_familiar(familiar.name, familiar.id);
-			get_familiar_data(familiar.id, familiar.name);
-		});
-  	localStorage.setItem('intolerancias-familia', JSON.stringify({ 'intolerancias': intolerancias_familia }));
-	});
-}
 
 function get_familiar_data(family_id, family_name){
 	var settings = {
@@ -245,7 +291,7 @@ function new_familiar(){
 }
 
 function new_intolerances(familiar, intolerancias){ //(int, array)
-// stored_id en caso de que se seleccione desde el Modal Nueva Intolerancia
+// stored_id guarda el familiar en caso de que se seleccione desde el Modal de Agregar Intolerancia
 	if (intolerancias==0 && familiar==0){
 		familiar = stored_id;
 		intolerancias = $(".select-intolerance").val();
@@ -280,6 +326,7 @@ function new_intolerances(familiar, intolerancias){ //(int, array)
       else{
         send_alert(JSON.parse(resp.responseText).error, "danger");
       }
+			localStorage.removeItem('usuario'); //se rehace el usuario ya que las intolerancias del grupo famliar pudieron haber cambiado
       location.reload();
 		}
 	}
@@ -325,6 +372,7 @@ function edit_familiar(){
 
 	$.ajax(settings).done(function (response) {
 		// console.log(response);
+		localStorage.removeItem('usuario'); //se rehace el usuario ya que las intolerancias del grupo famliar pudieron haber cambiado
 		location.reload();
 	});
 }
@@ -356,6 +404,7 @@ function delete_familiar(){
 
 	$.ajax(settings).done(function (response) {
 		// console.log(response);
+		localStorage.removeItem('usuario'); //se rehace el usuario ya que las intolerancias del grupo famliar pudieron haber cambiado
 		location.reload();
 	});
 }

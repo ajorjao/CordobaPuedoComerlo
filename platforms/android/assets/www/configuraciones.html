@@ -29,16 +29,23 @@
   <div id="alert"></div>
   
   
-  <div class="menu-wrapper">
-    <div class="row" style="margin-top: 120px;margin-bottom: 40px;">
-      <div class="col-xs-12 ">
+  <div class="menu-wrapper content">
+    <div style="margin-top: 90px;">
+      <div class="col-xs-12">
         <button  type="button" class="btn btn-default btn-lg btn-block" data-toggle="modal" data-target="#contacto-modal">
           <span class="glyphicon glyphicon-send" aria-hidden="true"></span> Contáctanos
         </button>
       </div>
     </div>
-    <div class="row">
-      <div class="col-xs-12 ">
+    <div>
+      <div class="col-xs-12">
+        <button type="button" onClick="modo_sin_conexion()" class="btn btn-default btn-lg btn-block">
+          <span class="fa fa-download" aria-hidden="true"></span> Descargar modo sin conexión
+        </button>
+      </div>
+    </div>
+    <div>
+      <div class="col-xs-12">
         <button type="button" onClick="logout()" class="btn btn-danger btn-lg btn-block">
           <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Cerrar Sesión
         </button>

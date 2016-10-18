@@ -19,10 +19,25 @@ function get_my_data(){
   }
 
   $.ajax(settings).done(function (response) {
-    var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
-    email = response.user.email
-    $("#profilePicture").attr("src", foto_de_perfil.replace("/original/","/thumb/"));
+    email = response.user.email //para enviar un mensaje de contactanos
+    userdata = JSON.parse(localStorage.getItem('usuario'));
+    if (userdata){
+      $("#profilePicture").attr("src", userdata.foto_de_perfil);
+    }
+    else{
+      var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
+      $("#profilePicture").attr("src", foto_de_perfil.replace("/original/","/thumb/"));
+    }
   });
+}
+
+function modo_sin_conexion(){
+  userdata = JSON.parse(localStorage.getItem('usuario'));
+  if (userdata){
+    setTimeout( function (){ //ni idea de porq el Timeout 0 pero es necesario para q se cargue la imagen
+      $("#profilePicture").attr("src", userdata.foto_de_perfil);
+    },0)
+  }
 }
 
 function logout(){
@@ -89,7 +104,7 @@ function sendMail() {
   var confirmsend = confirm("¿Estas seguro que deseas enviar el mensaje?");
   if (confirmsend == true) {
     $.ajax(settings).done(function (response) {
-      send_alert("<strong>Gracias por contactarnos</strong> Revisaremos tu mensaje y nos contactaremos contigo mediante el email de tu cuenta", "success");
+      send_alert("<strong>Gracias por contactarnos.</strong> Revisaremos tu mensaje y nos contactaremos contigo mediante el email de tu cuenta.", "success");
       location.reload();
     });
   }

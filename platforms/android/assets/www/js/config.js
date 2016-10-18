@@ -1,11 +1,11 @@
-var all_servers = ["192.168.203.22:3000","10.6.40.153:3000","10.6.43.204:3000","192.168.2.8:3000","localhost:3000"];
+var all_servers = ["192.168.1.35:3000","192.168.2.4:3000","10.6.40.153:3000","10.6.43.204:3000","192.168.2.8:3000","localhost:3000"];
 
 var url_server = ""
 var settings = {}
 
 function set_settings(url_server){
 	settings = {
-	  // "async": true,
+	  "async": true,
 	  "crossDomain": true,
 	  "url": "http://"+url_server+"/ping",
 	  "method": "GET",
@@ -17,38 +17,148 @@ function set_settings(url_server){
 	}
 }
 
+
+// hace todos los ping consecutivamente
 function ping(url){
-  set_settings(url);
-  pings = $.ajax(settings);
-  pings.done(function (response) {
-    url_server = url;
-    console.log("Conected to", url_server);
-    read_alerts();
+
+  read_alerts();
+
+  if ($('#alert').text().includes("Modo sin conexion")){
     try {
-    	get_my_data();
+      modo_sin_conexion();
     }
     catch(err) {
-    	// "no se requiere un get_my_data"
+      // "no se soporta un modo sin conexion, ej en login & register"
     }
-  })
-  pings.fail(function (response) {
-    console.log("fail", url);
-    new_url = all_servers.splice(0,1)[0];
-    if (new_url != undefined){
+
+    $('.alert.alert-danger button').remove()
+    $('.alert.alert-danger').append('\
+      <button type="button" class="close" onclick="location.reload();">\
+        <span class="fa fa-refresh" aria-hidden="true"></span>\
+      </button>')
+    dis_path = window.location.pathname.split("/").pop()
+    if (dis_path == "login.html" || dis_path=="crear_perfil.html"){
+      $('.alert b').text("");
+      $('.alert b').append("ERROR: Necesitas conexion a internet");
+      $('.alert').css("margin-bottom","0");
+    }
+    return;
+  }
+
+  new_url = all_servers.splice(0,1)[0];
+  if (new_url!=undefined && url_server=="") {
+    setTimeout( function(){
       ping(new_url);
-    }
-    else{
-      alert("Problema de conexion con el servidor");
-      location.reload();
-    }
-  })
+    }, 10);
+  }
+
+  set_settings(url);
+  if (url == "localhost:3000"){
+    setTimeout( function(){
+      if (url_server==""){
+        pings = $.ajax(settings);
+        pings.done(function (response) {
+          url_server = url;
+          console.log("Conected to", url_server);
+          // read_alerts();
+          try {
+            get_my_data();
+          }
+          catch(err) {
+            // "no se requiere un get_my_data"
+          }
+        })
+        pings.fail(function (response) {
+          console.log("fail", url);
+          // read_alerts();
+          if (new_url == undefined && url_server==""){
+            // if ($('#alert').text() == ""){ //se recarga la pagina si no hay conexion a internet y no se ha enviado la alerta
+              send_alert('<b>Modo sin conexion activado</b>', "danger");
+              location.reload();
+            // }
+            // else{ //si el modo sin conexion esta activado (y el mensaje se esta mostrando)
+
+            //   try {
+            //     modo_sin_conexion();
+            //   }
+            //   catch(err) {
+            //     // "no se soporta un modo sin conexion"
+            //   }
+
+            //   $('.alert.alert-danger button').remove()
+            //   $('.alert.alert-danger').append('\
+            //     <button type="button" class="close" onclick="location.reload();">\
+            //       <span class="fa fa-refresh" aria-hidden="true"></span>\
+            //     </button>')
+            //   dis_path = window.location.pathname.split("/").pop()
+            //   if (dis_path == "login.html" || dis_path=="crear_perfil.html"){
+            //     $('.alert b').text("");
+            //     $('.alert b').append("ERROR: Necesitas conexion a internet");
+            //     $('.alert').css("margin-bottom","0");
+            //   }
+            // }
+          }
+        })
+      }
+    }, 1000)
+  }
+  else{
+    pings = $.ajax(settings);
+    pings.done(function (response) {
+      url_server = url;
+      console.log("Conected to", url_server);
+      // read_alerts();
+      try {
+        get_my_data();
+      }
+      catch(err) {
+        // "no se requiere un get_my_data"
+      }
+    })
+  }
 };
+
+// para poder almacenar imagenes con local storage (la foto de perfil del usuario)
+function toDataUrl(url, callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.responseType = 'blob';
+  xhr.onload = function() {
+    var reader = new FileReader();
+    reader.onloadend = function() {
+      callback(reader.result);
+    }
+    reader.readAsDataURL(xhr.response);
+  };
+  xhr.open('GET', url);
+  xhr.send();
+}
+// se usa:
+// toDataUrl('http://example/url', function(base64Img) {
+//   console.log(base64Img);
+// });
+
+
 
 
 // el mensaje debe venir con el formato que se quiere mostrar... status debe ser: success, info, warning o danger
 function send_alert(message, status){
-  // Guardar mensaje
-  localStorage.setItem('alert_data', JSON.stringify({ 'alert_message': message, 'alert_status': status }));
+  var exist_alert = localStorage.getItem('alert_data')
+  if (exist_alert){
+    append_on_alert(message);
+  }
+  else{
+    // Guardar mensaje
+    localStorage.setItem('alert_data', JSON.stringify({ 'alert_message': message, 'alert_status': status }));
+  }
+}
+
+// para que se pueda agregar algo a una alerta ya existente
+function append_on_alert(message){
+  
+  alert = JSON.parse(localStorage.getItem('alert_data'));
+
+  localStorage.setItem('alert_data', JSON.stringify({ 'alert_message': alert.alert_message+'<br>'+message, 'alert_status': status }));
+
 }
 
 function read_alerts(){

@@ -47,11 +47,11 @@ function search(){
 	  clear_listgroup();
 	  $.each(resp.products, function(index, productandintolerances) {
 	  	producto = productandintolerances.product
-	  	url_image_product = "http://"+url_server+producto.image_file_name.replace("/original/","/thumb/") //para que la velocidad de carga sea menor
+	  	url_image_product = "http://"+url_server+producto.image_file_name.replace("/original/","/thumb/") //para que la velocidad de carga para el usuario sea menor
 	  	intolerancias = productandintolerances.intolerancias
 	  	state = "success"
 
-			intolerancias_familia = JSON.parse(localStorage.getItem('intolerancias-familia')).intolerancias;
+			intolerancias_familia = JSON.parse(localStorage.getItem('usuario')).intolerancias;
 
 	  	$.each(intolerancias, function(pos, intolerancia){
 	  		if (intolerancias_familia.indexOf(intolerancia.id) != -1){
@@ -122,7 +122,22 @@ function get_my_data(){
   }
 
   $.ajax(settings).done(function (response) {
-    var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
-    $("#profilePicture").attr("src", foto_de_perfil.replace("/original/","/thumb/"));
+    userdata = JSON.parse(localStorage.getItem('usuario'));
+    if (userdata){
+      $("#profilePicture").attr("src", userdata.foto_de_perfil);
+    }
+    else{
+      var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
+      $("#profilePicture").attr("src", foto_de_perfil.replace("/original/","/thumb/"));
+    }
   });
+}
+
+function modo_sin_conexion(){
+  userdata = JSON.parse(localStorage.getItem('usuario'));
+  if (userdata){
+    setTimeout( function (){ //ni idea de porq el Timeout 0 pero es necesario para q se cargue la imagen
+      $("#profilePicture").attr("src", userdata.foto_de_perfil);
+    },0)
+  }
 }

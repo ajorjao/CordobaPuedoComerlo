@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="font-awesome-4.6.3/css/font-awesome.min.css">
   <link href="css/style.css"  rel="stylesheet">
   <script src="js/jquery.min.js"></script>
+  <script src="js/cordova.oauth2.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/config.js"></script>
   <script src="js/vistas/login.js"></script>
@@ -34,6 +35,7 @@
       </div>
     </div>
     <div class="menu-wrapper">
+
       <form id="login-submit">
         <div class="form-group" style="margin: 15px;">
           <label for="text" style="color:white;" class="control-label">Email</label>
@@ -57,22 +59,24 @@
 
 
         </div>
+        <a href="facebook_try.html">Facebook</a>
       </form>
-      <div class="row" style="padding-bottom: 10px;">
-       
-        <!-- <div class="login-social">
-          <div class="col-xs-6 ">
-            <button type="button" class="btn btn-default btn-lg btn-block">
-              <img src="img/facebook-logo.png" alt="..." >
-            </button>
-          </div>
-          <div class="col-xs-6 ">
-            <button type="button" class="btn btn-default btn-lg btn-block">
-              <img src="img/google-logo.png" alt="..." >
-            </button>
-          </div>
-        </div> -->
+
+      <div class="login-social">
+        <div class="col-xs-6 ">
+          <a onclick="login_facebook()"><img src="img/facebook-logo.png" alt="..." ></a>
+          <!-- <button onclick="login_facebook()" type="button" class="btn btn-default btn-lg btn-block">
+            <img src="img/facebook-logo.png" alt="..." >
+          </button> -->
+        </div>
+        <div class="col-xs-6">
+          <a onclick="login_google()"><img src="img/google-logo.png" alt="..." ></a>
+          <!-- <button onclick="login_google()" type="button" class="btn btn-default btn-lg btn-block">
+            <img src="img/google-logo.png" alt="..." >
+          </button> -->
+        </div>
       </div>
+      
     </div>
   </div>
 </body>

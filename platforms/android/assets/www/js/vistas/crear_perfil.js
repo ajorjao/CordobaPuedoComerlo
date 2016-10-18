@@ -150,6 +150,7 @@ function showhidepass(){
     $('#pass').attr('type', 'password');
     $('#pass_conf').attr('type', 'password');
   }
+  $(".glyphicon-eye-open").toggleClass("glyphicon-eye-close")
 }
 
 
