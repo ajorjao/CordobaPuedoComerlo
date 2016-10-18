@@ -39,6 +39,7 @@ function search(){
       	clear_listgroup();
 	  		add_error(JSON.parse(resp.responseText).error+": "+$("#search_name").val());
       }
+	  	// add_error("Error, por favor descarga el modo sin conexion");
 	  }
 	}
 
