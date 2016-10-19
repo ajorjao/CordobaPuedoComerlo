@@ -4,6 +4,48 @@ var pdata = {};
 var current_user = 0;
 var comment_stored = 0;
 
+function modo_sin_conexion(){
+  // Retrieve the object from storage
+  var retrievedObject = localStorage.getItem('pdata');
+  pdata = JSON.parse(retrievedObject);
+
+  srcimg = "img/nono.png";
+  detalle = '<div class="alert alert-danger" style="overflow: auto;" role="alert">\
+                <div class="row">\
+                  <div class="col-xs-3">\
+                    <img  src="'+srcimg+'" alt="..." style="width: 65px;margin-left: 6px;position: absolute;"> \
+                  </div>\
+                  <div class="col-xs-9" style="top: 4px;margin-bottom: 8px;font-size: 18px;">\
+                    Alguien de tu familia no puede comerlo debido a que posee problemas con  \
+                  </div>\
+                </div>\
+            </div>';
+  $("#productMatch").append(detalle);
+  $('#menu1 .well a.btn').remove() //se borra el boton para reportar
+  $('#menu3').remove()
+
+  var n = 0
+  userdata = JSON.parse(localStorage.getItem('usuario'))
+  console.log(userdata.intolerancias)
+  console.log(pdata.matchs)
+  all_intolerances = ["la lactosa","el gluten","el maní","las nueces","el apio","la mostaza","el huevo","el sesamo","el pescado","los crustaceos","los mariscos","la soya","los sulfitos","el lupino"]
+  $.each(pdata.matchs, function(pos, intolerancia) {
+    if ( userdata.intolerancias.indexOf(intolerancia) != -1){
+      console.log("problema con la intolerancia: "+intolerancia);
+      $('#menu2 .alert.alert-danger .row .col-xs-9').append(" "+all_intolerances[intolerancia-1])
+    }
+  });
+
+  $("#product-name").html(pdata.pname);
+  $("#product-id").html(pdata.pid);
+  $("#product-ingredients").html(pdata.ingredients);
+  $("#product-image").attr("src", pdata.image_route);
+
+  setTimeout(function(){
+    $('#alert .alert.alert-danger button').remove() //se borra el boton de recargar la pagina ya que el producto no aparecerá nunca con conexion
+  }, 0);
+}
+
 function get_my_data(){
   $( '#my-slider' ).sliderPro({
     forceSize:'fullWidth',

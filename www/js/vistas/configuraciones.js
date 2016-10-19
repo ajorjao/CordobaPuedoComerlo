@@ -80,7 +80,7 @@ function preguntar_modo_sin_conexion(){
 
   $.ajax(settings).done(function (response) {
     // var ask_database = confirm("se descargaran "+(JSON.parse(response).size_products)+" caracteres entre los productos");
-    var ask_database = confirm("Deseas descargar "+(JSON.parse(response).size_products*2/1024).toFixed(2)+" KB con nuestros productos?");
+    var ask_database = confirm("Deseas descargar "+(JSON.parse(response).size_products*8/1024).toFixed(2)+" KB con nuestros productos?");
     if (ask_database == true) {
       descargar_modo_sin_conexion(userdata.intolerancias.toString());
     }
@@ -122,7 +122,7 @@ function descargar_modo_sin_conexion(user_intolerances){
     localStorage.removeItem('products');
     localStorage.setItem('products', response);
     // console.log("descargado "+ (productsss)+" KB");
-    // console.log("descargado "+ (response.length*2/1024).toFixed(2)+" KB");
+    // console.log("descargado "+ (response.length*8/1024).toFixed(2)+" KB");
     send_alert("<b>Bien echo!</b> Has descargado nuestros productos satisfactoriamente", "success");
     location.reload();
   });

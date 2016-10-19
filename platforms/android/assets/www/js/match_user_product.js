@@ -32,9 +32,10 @@ function match_product(id){
       }
       else{
         consulta_exitosa = true;
-        alert(JSON.parse(resp.responseText).error);
+        // alert(JSON.parse(resp.responseText).error);
         send_alert(JSON.parse(resp.responseText).error, "danger");
-        location.reload();
+        // location.reload();
+        window.location="index.html";
       }
     }
   }

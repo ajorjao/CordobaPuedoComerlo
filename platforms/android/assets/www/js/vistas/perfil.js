@@ -29,31 +29,33 @@ function get_my_data(){
 		},
 		error: function(resp, status){
       if (resp.status==0){
-      	clear_listgroup();
-	  		add_error("Error, por favor revisa tu conexión a internet")
+        alert("Error, por favor comprueba tu conexión")
       }
       else{
-      	clear_listgroup();
-	  		add_error(JSON.parse(resp.responseText).error+": "+$("#search_id").val())
+        send_alert(JSON.parse(resp.responseText).error, "danger");
       }
+      location.reload();
 		}
 	}
 
-	$.ajax(settings).done(function (response) {
 
-		// se intenta reducir las consultas al servidor
-		userdata = JSON.parse(localStorage.getItem('usuario'));
-		if (userdata){
-			$("#profilePicture").attr("src", userdata.foto_de_perfil);
-			$("#profilePicture2").attr("src", userdata.foto_de_perfil);
-			$("#nombredelwn").html(userdata.username);
-			$.each(userdata.grupo_familiar, function(pos, familiar) {
-				console.log("familiar:", familiar.name);
-				add_familiar(familiar.name, familiar.id);
-				get_familiar_data(familiar.id, familiar.name);
-			});
-		}
-		else{
+	// se intenta reducir las consultas al servidor
+	userdata = JSON.parse(localStorage.getItem('usuario'));
+	if (userdata){
+		console.log("la info del perfil se obtuvo localmente");
+		$("#profilePicture").attr("src", userdata.foto_de_perfil);
+		$("#profilePicture2").attr("src", userdata.foto_de_perfil);
+		$("#nombredelwn").html(userdata.username);
+		$.each(userdata.grupo_familiar, function(pos, familiar) {
+			console.log("familiar:", familiar.name);
+			add_familiar(familiar.name, familiar.id);
+			get_familiar_data(familiar.id, familiar.name);
+		});
+	}
+
+	else{
+		$.ajax(settings).done(function (response) {
+			console.log("se hace la consulta del perfil");
 			var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
 			foto_de_perfil = foto_de_perfil.replace("/original/","/medium/")
 			$("#profilePicture").attr("src", foto_de_perfil);
@@ -70,9 +72,9 @@ function get_my_data(){
 			  foto_de_perfil_base64 = base64Img;
 		    localStorage.setItem('usuario', JSON.stringify({'username': response.user.username, 'intolerancias': intolerancias_familia, 'grupo_familiar': response.family, 'foto_de_perfil': foto_de_perfil_base64 }))
 			});
-		}
+		});
+	}
 
-	});
 }
 
 
@@ -187,8 +189,13 @@ function get_familiar_data(family_id, family_name){
 			"postman-token": "bc75788d-2cae-eda1-4aa1-024dbb0af657"
 		},
 		error: function(resp, status){
-			console.log(resp);
-			alert("Error, por favor comprueba tu conexión");
+			// console.log(resp);
+      if (resp.status==0){
+        alert("Error, por favor comprueba tu conexión")
+      }
+      else{
+				localStorage.removeItem('usuario'); //para cuando se cambia de ip desde un mismo dispositivo
+      }
 			location.reload();
 		}
 	}
@@ -332,7 +339,8 @@ function new_intolerances(familiar, intolerancias){ //(int, array)
 	}
 
 	$.ajax(settings).done(function (response) {
-		console.log(response);
+		localStorage.removeItem('usuario');
+		// console.log(response);
 		location.reload();
 	});
 }

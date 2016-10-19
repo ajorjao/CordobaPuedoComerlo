@@ -31,8 +31,8 @@ function ping(url){
       // "no se soporta un modo sin conexion, ej en login & register"
     }
 
-    $('.alert.alert-danger button').remove()
-    $('.alert.alert-danger').append('\
+    $('#alert .alert.alert-danger button').remove()
+    $('#alert .alert.alert-danger').append('\
       <button type="button" class="close" onclick="location.reload();">\
         <span class="fa fa-refresh" aria-hidden="true"></span>\
       </button>')
@@ -74,6 +74,9 @@ function ping(url){
           if (new_url == undefined && url_server==""){
             // if ($('#alert').text() == ""){ //se recarga la pagina si no hay conexion a internet y no se ha enviado la alerta
               send_alert('<b>Modo sin conexion activado</b>', "danger");
+              if (window.location.pathname.split("/").pop()=="configuraciones.html"){
+                send_alert('Para poder utilizar este menú es necesario estar conectado',"danger");
+              }
               location.reload();
             // }
             // else{ //si el modo sin conexion esta activado (y el mensaje se esta mostrando)
@@ -154,11 +157,8 @@ function send_alert(message, status){
 
 // para que se pueda agregar algo a una alerta ya existente
 function append_on_alert(message){
-  
   alert = JSON.parse(localStorage.getItem('alert_data'));
-
-  localStorage.setItem('alert_data', JSON.stringify({ 'alert_message': alert.alert_message+'<br>'+message, 'alert_status': status }));
-
+  localStorage.setItem('alert_data', JSON.stringify({ 'alert_message': alert.alert_message+'<br>'+message, 'alert_status': alert.alert_status }));
 }
 
 function read_alerts(){
@@ -171,7 +171,7 @@ function read_alerts(){
     message = alert_data.alert_message
     status = alert_data.alert_status
 
-    console.log("Existe una alerta: "+message)
+    console.log("Existe una alerta ("+status+"): "+message)
     localStorage.removeItem('alert_data');
 
     $("#alert").html('\

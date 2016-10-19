@@ -41,6 +41,7 @@ function login(){
 
   $.ajax(settings).done(function (response) {
     // console.log(response);
+    localStorage.removeItem("usuario");
     window.location = "perfil.html"
   });
 }
@@ -141,6 +142,7 @@ function get_my_data(){ //para verificar que no este ya conectado
 
   $.ajax(settings).done(function (response) {
     console.log("Conectado como", response)
+    localStorage.removeItem("usuario");
     window.location = "perfil.html";
   });
 }
