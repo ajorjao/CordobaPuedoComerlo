@@ -112,7 +112,7 @@ function ver_detalle(id){
   	products = JSON.parse(localStorage.getItem('products'));
 		$.each(products,function(pos,product){
 			if (product.id == id){
-				var testObject = { 'pid': id, 'pname': product.name, 'matchs': {}, 'ingredients': product.ingredients, 'image_route': "img/product_default.png"};
+				var testObject = { 'pid': id, 'pname': product.name, 'matchs': product.intolerances, 'ingredients': product.ingredients, 'image_route': "img/product_default.png"};
 				localStorage.setItem('pdata', JSON.stringify(testObject));
 				return false;
 			}

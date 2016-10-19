@@ -31,8 +31,8 @@ function ping(url){
       // "no se soporta un modo sin conexion, ej en login & register"
     }
 
-    $('.alert.alert-danger button').remove()
-    $('.alert.alert-danger').append('\
+    $('#alert .alert.alert-danger button').remove()
+    $('#alert .alert.alert-danger').append('\
       <button type="button" class="close" onclick="location.reload();">\
         <span class="fa fa-refresh" aria-hidden="true"></span>\
       </button>')
