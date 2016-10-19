@@ -7,6 +7,8 @@ function modo_sin_conexion(){
       $("#profilePicture").attr("src", userdata.foto_de_perfil);
     },0)
   }
+  // aqui se debe desabilitar la opcion de descargar modo sin conexion
+  $('.btn').attr('disabled','true')
 }
 
 function get_my_data(){
@@ -38,6 +40,10 @@ function get_my_data(){
       $("#profilePicture").attr("src", foto_de_perfil.replace("/original/","/thumb/"));
     }
   });
+
+  if (localStorage.getItem('products')){
+    $('#modo-sin-conexion').html('<span class="fa fa-download" aria-hidden="true"></span> Actualizar modo sin conexión');
+  }
 }
 
 function preguntar_modo_sin_conexion(){
@@ -73,8 +79,8 @@ function preguntar_modo_sin_conexion(){
   }
 
   $.ajax(settings).done(function (response) {
-    // console.log(response);
-    var ask_database = confirm("Deseas descargar "+JSON.parse(response).n_products+"*[peso de cada producto]MB con nuestros productos?");
+    // var ask_database = confirm("se descargaran "+(JSON.parse(response).size_products)+" caracteres entre los productos");
+    var ask_database = confirm("Deseas descargar "+(JSON.parse(response).size_products*2/1024).toFixed(2)+" KB con nuestros productos?");
     if (ask_database == true) {
       descargar_modo_sin_conexion(userdata.intolerancias.toString());
     }
@@ -113,7 +119,12 @@ function descargar_modo_sin_conexion(user_intolerances){
   }
 
   $.ajax(settings).done(function (response) {
-    console.log(response);
+    localStorage.removeItem('products');
+    localStorage.setItem('products', response);
+    // console.log("descargado "+ (productsss)+" KB");
+    // console.log("descargado "+ (response.length*2/1024).toFixed(2)+" KB");
+    send_alert("<b>Bien echo!</b> Has descargado nuestros productos satisfactoriamente", "success");
+    location.reload();
   });
 }
 
@@ -147,7 +158,7 @@ function logout(){
   var logout = confirm("¿Estás seguro que deseas cerrar sesion?");
   if (logout == true) {
     $.ajax(settings).done(function (response) {
-      localStorage.removeItem('intolerancias-familia');
+      localStorage.removeItem('usuario');
       window.location = "login.html";
     });
   }

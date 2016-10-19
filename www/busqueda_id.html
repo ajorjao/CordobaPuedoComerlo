@@ -14,7 +14,7 @@
   <!-- Scrypts -->
 	<script src="js/config.js"></script>
 	<script src="js/match_user_product.js"></script>
-	<script src="js/vistas/busqueda_id.js"></script>
+	<script src="js/vistas/busquedas.js"></script>
 
   <!-- Modals -->
   <script src="html-injections/main-navbar.js"></script>
@@ -31,9 +31,9 @@
 		<form class="form-inline" id="busqueda">
 		  <div class="form-group">
 		    <div class="input-group">
-		      <input type="number" class="form-control" id="search_id" placeholder="Código de barra del producto">
+		      <input type="number" class="form-control" id="search_type" placeholder="Código de barra del producto" autofocus>
 		      <div class="input-group-addon">
-			      <button onClick="search()" type="submit" class="btn btn-primary search-btn"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+			      <button onclick="search('id')" type="submit" class="btn btn-primary search-btn"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 			      </button>
 		      </div>
 		    </div>
