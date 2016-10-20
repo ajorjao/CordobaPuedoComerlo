@@ -54,8 +54,8 @@ function escanear(){
             if ($("#modal-popup").hasClass("in")){
               $("#modal-popup").modal('toggle');
             }
-            send_alert('<b>Modo sin conexion activado</b>', "danger");
-            send_alert('El producto escaneado no se encuentra en su base de datos local, por lo que lo mas seguro es que <b>Puedes Comerlo</b><span class="fa fa-thumbs-o-up" aria-hidden="true"></span>','success');
+            send_alert('<b>Modo sin conexion activado</b>', "success");
+            send_alert('El producto escaneado no se encuentra en su base de datos local, por lo que lo mas seguro es que <b>SI Puedes Comerlo</b> <span class="fa fa-thumbs-o-up" aria-hidden="true"></span>','success');
             location.reload();
           }
         }
@@ -81,10 +81,10 @@ function escanear(){
           localStorage.setItem('pdata', JSON.stringify(testObject));
           window.location = "vista_producto.html";
         }
-        else{
-          send_alert('El producto escaneado no se encuentra en nuestra base de datos','danger');
-          location.reload();
-        }
+        // else{
+        //   send_alert('El producto escaneado no se encuentra en nuestra base de datos','danger');
+        //   location.reload();
+        // }
 
       }
 
