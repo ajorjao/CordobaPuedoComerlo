@@ -468,6 +468,40 @@ function denunciar(){
   }
 }
 
+function recomendar(){
+
+  var form = new FormData();
+  form.append("product_id", pdata.pid);
+  var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:3000/recommend_product/7802230086952",
+    "method": "PUT",
+    xhrFields: {
+      withCredentials: true
+    },
+    "headers": {
+      "cache-control": "no-cache",
+      "postman-token": "ab688606-d3c6-8ff2-049d-ef96ea10efc3"
+    },
+    error: function(resp, status){
+      if (resp.status==0){
+        alert("Error, por favor comprueba tu conexión");
+      }
+      else{
+        send_alert(JSON.parse(resp.responseText).error, "danger");
+      }
+      location.reload();
+    }
+  }
+
+  $.ajax(settings).done(function (response) {
+    console.log(response);
+    send_alert("<strong>Has recomendado este producto</strong> :D", "success");
+    location.reload();
+  });
+}
+
 function go_back(){
   var back = JSON.parse(localStorage.getItem('back'));
   window.location = back.location;

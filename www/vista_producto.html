@@ -40,13 +40,10 @@
 
   <div id="menu1" class="menu-wrapper">
     <div class="well" style="overflow: auto;">
-		  <a class="btn btn-xs btn-warning right-align" onClick="denunciar()" title="Denunciar producto">
-		    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Reportar un Error
-		  </a>
       <div class="col-xs-6" style="text-align: center;">
         <img id="product-image" style="max-height: 120px; max-width: 120px; margin-top: 15px;">
       </div>
-      <div class="col-xs-6" style="text-align: center; font-size: 16px; top: -10px;">
+      <div class="col-xs-6" style="text-align: center; font-size: 16px; top: 16px;">
         <div class="row" style="margin: 10px 0;" id="product-name"> </div>
         <div class="row" style="margin: 10px 0;" id="product-id"> </div>
       </div>
@@ -64,6 +61,13 @@
   <div id="menu2" class="menu-wrapper">
     <div id="productMatch"></div>
   </div>
+
+ <div class="menu-wrapper">
+      <button class="btn btn-success btn-md col-md-6" onClick="recomendar()" style="width: 48%;height: 50px;">Recomendar este Producto
+        </button>
+      <button class="btn btn-warning btn-md col-md-6" onClick="denunciar()" style="width: 48%;height: 50px; margin-left: 11px;">
+      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Reportar un Error en este Producto</button>
+  </div>    
 
   <div id="menu3" class="menu-wrapper">
 

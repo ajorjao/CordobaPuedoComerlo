@@ -52,7 +52,7 @@ function search(){
 	  	intolerancias = productandintolerances.intolerancias
 	  	state = "success"
 
-			intolerancias_familia = JSON.parse(localStorage.getItem('intolerancias-familia')).intolerancias;
+			intolerancias_familia = JSON.parse(localStorage.getItem('usuario')).intolerancias;
 
 	  	$.each(intolerancias, function(pos, intolerancia){
 	  		if (intolerancias_familia.indexOf(intolerancia.id) != -1){
