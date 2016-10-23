@@ -41,13 +41,73 @@ function login(){
 
   $.ajax(settings).done(function (response) {
     // console.log(response);
+    localStorage.removeItem("usuario");
     window.location = "perfil.html"
   });
 }
 
 
+function register_provider(access_token, provider){
+  access_token = access_token.split("&")[0];
+  //var dis = this;
+  // $.ajax({
+  //   type: "POST",
+  //   url: "http://"+url_server+"/social",
+  //   data: {"access_token": access_token, "provider": provider},
+  //   success: function(data){
+  //     console.log("User Login");
+  //     console.log(JSON.stringify(data));
+  //     //dis.props.on_user_login(data.login);
+  //   },
+  //   error: function(data){
+  //     console.log("Error login");
+  //     console.log(JSON.stringify(data));
+  //     alert("Error");
+  //     // $("#errors-text").html(JSON.parse(data.responseText).error);
+  //   }, 
+  //     dataType: "json"
+  // });
+  var form = new FormData();
+  form.append("provider", provider);
+  form.append("token", access_token);
+
+  var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://"+url_server+"/social",
+    "method": "POST",
+    xhrFields: {
+      withCredentials: true
+    },
+    "headers": {
+      "cache-control": "no-cache",
+      "postman-token": "88778089-88a8-77f6-126f-a88e2d7297a5"
+    },
+    "processData": false,
+    "contentType": false,
+    "mimeType": "multipart/form-data",
+    "data": form,
+    error: function(resp, status){
+      if (resp.status==0){
+        alert("Error, por favor comprueba tu conexión")
+      }
+      else{
+        send_alert(JSON.parse(resp.responseText).error, "danger");
+      }
+      location.reload();
+    }
+  }
+
+  $.ajax(settings).done(function (response) {
+    // response: {logged_as: "[usuario]"}
+    // console.log(response);
+    send_alert("Te has registrado satisfactoriamente con tu cuenta de "+provider, "success")
+    window.location = "perfil.html";
+  });
+
+}
+
 function login_facebook(){
-  var dis = this;
   $.oauth2({
     auth_url: 'https://www.facebook.com/dialog/oauth',
     response_type: 'token',
@@ -56,38 +116,13 @@ function login_facebook(){
     redirect_uri: "http://"+url_server.split(":")[0]+".xip.io:3000/callback",
     // redirect_uri: "http://"+url_server.split(":")[0]+".xip.io:3000/auth/facebook/callback",
     // redirect_uri: "http://"+url_server+"/sign_up",
-    other_params: {scope: ['public_profile','email'], display: 'popup'},
-    hidden: true
+    other_params: {scope: 'basic_info', display: 'popup'}
   }, function(token, response){
-    console.log('token: '+token);
-    console.log(JSON.stringify(response, null, 4));
-    dis.register_provider(token,"facebook");
+    // alert("token:"+token);
+    register_provider(token,"facebook");
   }, function(error, response){
-    console.log("error", response);
     alert("Error");
-    navigator.notification.alert("Ocurrió un error iniciando sesión con Facebook, intenta nuevamente.", function(){}, "VivaBien", "Aceptar");
-  });
-}
-
-function register_provider(access_token, provider){
-  access_token = access_token.split("&")[0];
-  //var dis = this;
-  $.ajax({
-      type: "POST",
-      url: "http://"+url_server+"/social",
-      data: {"access_token": access_token, "provider": provider},
-      success: function(data){
-      console.log("User Login");
-      console.log(JSON.stringify(data));
-      //dis.props.on_user_login(data.login);
-    },
-    error: function(data){
-      console.log("Error login");
-      console.log(JSON.stringify(data));
-      alert("Error");
-      // $("#errors-text").html(JSON.parse(data.responseText).error);
-    }, 
-      dataType: "json"
+    location.reload();
   });
 }
 
@@ -101,10 +136,11 @@ function login_google(){
       // redirect_uri: "http://"+url_server.split(":")[0]+".xip.io:3000/auth/google_oauth2/callback",
       other_params: {scope: 'profile email'}
     }, function(token, response){
-      console.log("Google Login", token, response);
-        dis.register_provider(token,"google");
+      // alert("token: "+token);
+      register_provider(token,"google");
     }, function(error, response){
-        navigator.notification.alert("Ocurrió un error iniciando sesión con Google, intenta nuevamente.", function(){}, "VivaBien", "Aceptar");
+      alert("Error");
+      location.reload();
     });
 }
 
@@ -122,6 +158,12 @@ function showhidepass(){
 }
 
 function get_my_data(){ //para verificar que no este ya conectado
+
+  document.addEventListener("deviceready", onDeviceReady, false);
+  function onDeviceReady() {
+      window.open = cordova.InAppBrowser.open;
+  }
+
   var settings = {
     "async": true,
     "crossDomain": true,
@@ -141,6 +183,7 @@ function get_my_data(){ //para verificar que no este ya conectado
 
   $.ajax(settings).done(function (response) {
     console.log("Conectado como", response)
+    localStorage.removeItem("usuario");
     window.location = "perfil.html";
   });
 }

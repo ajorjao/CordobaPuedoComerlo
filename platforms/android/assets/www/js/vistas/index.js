@@ -29,16 +29,66 @@ function escanear(){
       }, 3000);
 
       // get_product(result.text);
-      match_product(result.text);
-      
-      consulta_exitosa = true;
-      if ($("#modal-popup").hasClass("in")){
-        $("#modal-popup").modal('toggle');
+
+
+      if ($('#alert').text().includes("Modo sin conexion")){
+        products = JSON.parse(localStorage.getItem('products'));
+        if (products){
+          var product_found = false;
+          $.each(products,function(pos,product){
+            if (product.id == result.text){
+              var testObject = { 'pid': result.text, 'pname': product.name, 'matchs': product.intolerances, 'ingredients': product.ingredients, 'image_route': "img/product_default.png"};
+              localStorage.setItem('pdata', JSON.stringify(testObject));
+              product_found = true;
+              consulta_exitosa = true;
+              if ($("#modal-popup").hasClass("in")){
+                $("#modal-popup").modal('toggle');
+              }
+              send_alert('<b>Modo sin conexion activado</b>', "danger");
+              window.location = "vista_producto.html";
+              // return false;
+            }
+          });
+          if (!product_found){ //si el producto no se encontraba en la base de datos local
+            consulta_exitosa = true;
+            if ($("#modal-popup").hasClass("in")){
+              $("#modal-popup").modal('toggle');
+            }
+            send_alert('<b>Modo sin conexion activado</b>', "success");
+            send_alert('El producto escaneado no se encuentra en su base de datos local, por lo que lo mas seguro es que <b>SI Puedes Comerlo</b> <span class="fa fa-thumbs-o-up" aria-hidden="true"></span>','success');
+            location.reload();
+          }
+        }
+        else{
+          consulta_exitosa = true;
+          if ($("#modal-popup").hasClass("in")){
+            $("#modal-popup").modal('toggle');
+          }
+          send_alert('<b>Modo sin conexion activado</b>', "danger");
+          send_alert('<b>Error</b> debes descargar el modo sin conexión para poder realizar busquedas sin acceso a internet', 'danger');
+          location.reload();
+        }
+      }
+      else{
+        match_product(result.text);
+
+        if (pname){
+          consulta_exitosa = true;
+          if ($("#modal-popup").hasClass("in")){
+            $("#modal-popup").modal('toggle');
+          }
+          var testObject = { 'pid': result.text, 'pname': pname, 'matchs': matchs, 'ingredients': ingredients, 'image_route': image_route};
+          localStorage.setItem('pdata', JSON.stringify(testObject));
+          window.location = "vista_producto.html";
+        }
+        // else{
+        //   send_alert('El producto escaneado no se encuentra en nuestra base de datos','danger');
+        //   location.reload();
+        // }
+
       }
 
-      var testObject = { 'pid': result.text, 'pname': pname, 'matchs': matchs, 'ingredients': ingredients, 'image_route': image_route};
-      localStorage.setItem('pdata', JSON.stringify(testObject));
-      window.location = "vista_producto.html";
+
     },
     function (error) {
         // alert("Scanning failed: " + error);
@@ -113,6 +163,7 @@ function get_my_data(){
       "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
     },
     error: function(resp, status){
+      localStorage.removeItem("usuario");
       window.location = "login.html";
     }
   }

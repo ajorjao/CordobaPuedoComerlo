@@ -12,6 +12,12 @@
         },
         "phonegap-plugin-barcodescanner": {
             "PACKAGE_NAME": "com.example.kek"
+        },
+        "com.oauthio.plugins.oauthio": {
+            "PACKAGE_NAME": "com.example.kek"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.example.kek"
         }
     },
     "dependent_plugins": {
