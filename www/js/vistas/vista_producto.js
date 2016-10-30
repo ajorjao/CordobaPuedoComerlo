@@ -248,9 +248,10 @@ function get_recomendaciones(){
 }
 
 function add_carrusel_item(name, img_src, i, active){
+  url_image_product = "http://"+url_server+img_src.replace("/original/","/thumb/")
   lista_item = '<li>\
                   <center>\
-                    <img id="product-image" style="max-height: 130px; max-width: 130px;" src="http://localhost:3000/system/products/images/780/161/000/193/original/'+img_src+'">\
+                    <img id="product-image" style="max-height: 130px; max-width: 130px;" src="'+url_image_product+'">\
                     <b>'+name+'</b>\
                   </center>\
                 </li>';
