@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Producto no encontrado</title>
+	<link href="css/bootstrap.min.css"  rel="stylesheet">
+  <link rel="stylesheet" href="font-awesome-4.6.3/css/font-awesome.min.css">
+	<link href="css/style.css"  rel="stylesheet">
+
+  <!-- Basics Scrypts -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+
+  <!-- Scrypts -->
+	<script src="js/config.js"></script>
+	<script src="js/match_user_product.js"></script>
+	<script src="js/vistas/producto_no_encontrado.js"></script>
+
+  <!-- Modals -->
+  <script src="html-injections/main-navbar.js"></script>
+</head>
+
+<body>
+
+  <div id="main-navbar"></div>
+
+  <div id="alert"></div>
+
+	    <font color="#FFFFFF"><b>Código de Barra</b></font> <input type="text" name="codigo" id="c_barra"><br>
+	    <font color="#FFFFFF"><b>Nombre del Producto</b></font> <input type="text" name="nombre" id="n_producto"><br>
+
+	    <input type="reset"
+		value="Enviar" onclick="sugerir_producto()"/>
+		</form>
+
+		<br>
+		
+		<div class="list-group">
+		  <a href="#" class="list-group-item list-group-item">Por favor envianos el producto para agregarlo a la base de datos</a>
+		</div>
+  </div>
+</body>
+</html>
