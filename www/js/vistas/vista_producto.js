@@ -96,6 +96,8 @@ function get_my_data(){
                 <div id="recomendedMatchs">\
                 </div>-->\
               </div>';
+  add_recomendaciones();
+  get_recomendaciones();
   }
   else{
     $("#intolerancesMatchs").append('Todos en tu familia pueden comer este producto');
@@ -187,6 +189,31 @@ function crear_mensaje_problema_con_familiar(nombre_familiar, problemas_intolera
   $("#cant-eat").append('- '+nombre_familiar.split("_-_")[0]+'<br>');
 }
 
+function add_recomendaciones(){
+  recom = '<div class="panel panel-primary">\
+            <div class="panel-heading">\
+              <h3 class="panel-title">Recomendaciones:</h3>\
+            </div>\
+            <div class="panel" id="product-recomend" style="font-size: 13px;">\
+              <div style="text-align: center;">\
+                <div class="jcarousel-wrapper">\
+                    <div class="jcarousel" data-jcarousel="true">\
+                      <ul style="left: 0px; top: 0px;" id="productos_carrusel">\
+                        <!-- aca van las weaes -->\
+                      </ul>\
+                    </div>\
+                  <a href="#" class="jcarousel-control-prev" data-jcarouselcontrol="true">‹</a>\
+                  <a href="#" class="jcarousel-control-next" data-jcarouselcontrol="true">›</a>\
+                  <p class="jcarousel-pagination" data-jcarouselpagination="true" id="pag_carrusel">\
+                    <!-- circulitos -->\
+                  </p>\
+                </div>\
+              </div>\
+            </div>\
+          </div>';
+          $("#menuR").append(recom);
+}
+
 function get_recomendaciones(){
   var form = new FormData();
   var intol = JSON.parse(localStorage.getItem('usuario')).intolerancias;
@@ -213,16 +240,17 @@ function get_recomendaciones(){
   $.ajax(settings).done(function (response) {
     resp = JSON.parse(response);
     for (i = 0, len = resp.length; i < len; i++) {
-      if (i==0) add_carrusel_item(resp[i].image_file_name, i, true);
-      else add_carrusel_item(resp[i].image_file_name, i, false);
+      if (i==0) add_carrusel_item(resp[i].name, resp[i].image_file_name, i, true);
+      else add_carrusel_item(resp[i].name, resp[i].image_file_name, i, false);
     }
   });
 }
 
-function add_carrusel_item(img_src, i, active){
+function add_carrusel_item(name, img_src, i, active){
   lista_item = '<li>\
                   <center>\
-                    <img id="product-image" style="max-height: 130px; max-width: 130px;" src="'+img_src+'">\
+                    <img id="product-image" style="max-height: 130px; max-width: 130px;" src="http://localhost:3000/system/products/images/780/161/000/193/original/'+img_src+'">\
+                    <b>'+name+'</b>\
                   </center>\
                 </li>';
   pag_item = '<a href="#'+i+'"';
