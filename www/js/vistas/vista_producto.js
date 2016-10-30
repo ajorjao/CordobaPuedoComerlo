@@ -96,8 +96,8 @@ function get_my_data(){
                 <div id="recomendedMatchs">\
                 </div>-->\
               </div>';
-  add_recomendaciones();
-  get_recomendaciones();
+  // add_recomendaciones();
+  // get_recomendaciones();
   }
   else{
     $("#intolerancesMatchs").append('Todos en tu familia pueden comer este producto');
@@ -161,6 +161,7 @@ function get_my_data(){
       $("#product-image").css('margin-top',60-imgheight/2+'px');
     }
   }, 100);
+  get_recomendaciones();
 }
 
 
