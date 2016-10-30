@@ -193,7 +193,7 @@ function crear_mensaje_problema_con_familiar(nombre_familiar, problemas_intolera
 function add_recomendaciones(){
   recom = '<div class="panel panel-primary">\
             <div class="panel-heading">\
-              <h3 class="panel-title">Recomendaciones:</h3>\
+              <h3 class="panel-title">Productos recomendados para ti:</h3>\
             </div>\
             <div class="panel" id="product-recomend" style="font-size: 13px;">\
               <div style="text-align: center;">\
