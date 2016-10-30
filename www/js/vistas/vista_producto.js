@@ -61,7 +61,7 @@ function get_my_data(){
   pdata = JSON.parse(retrievedObject);
 
   // console.log(pdata.matchs);
-  if (!$.isEmptyObject(pdata.matchs)){
+  if (!$.isEmptyObject(pdata.matchs)){ //si no puede comerlo
     class1 = "alert alert-danger";
     srcimg = "img/nono.png";
     detalle = '<div class="'+class1+'" style="overflow: auto; margin-bottom: 10px;" role="alert">\
@@ -91,11 +91,8 @@ function get_my_data(){
                   <div id="intolerancesMatchs">\
                   </div>\
                 </div>\
-              </div>\
-              <!--<div class="well" style="overflow: auto;">\
-                <div id="recomendedMatchs">\
-                </div>-->\
               </div>';
+    $('#menuR').show()
   // add_recomendaciones();
   // get_recomendaciones();
   }
@@ -224,21 +221,30 @@ function get_recomendaciones(){
   form.append("user_intolerances", intol);
 
   var settings = {
-  "async": true,
-  "crossDomain": true,
-  "url": "http://"+url_server+"/recomended_products/",
-  "method": "PUT",
-    xhrFields: {
-      withCredentials: true
+    "async": true,
+    "crossDomain": true,
+    "url": "http://"+url_server+"/recomended_products/",
+    "method": "PUT",
+      xhrFields: {
+        withCredentials: true
+      },
+    "headers": {
+      "cache-control": "no-cache",
+      "postman-token": "aed9733b-b535-b5c4-4504-e0723d3efc88"
     },
-  "headers": {
-    "cache-control": "no-cache",
-    "postman-token": "aed9733b-b535-b5c4-4504-e0723d3efc88"
-  },
-  "processData": false,
-  "contentType": false,
-  "mimeType": "multipart/form-data",
-  "data": form
+    "processData": false,
+    "contentType": false,
+    "mimeType": "multipart/form-data",
+    "data": form,
+    error: function(resp, status){
+      if (resp.status==0){
+        alert("Error al leer los comentarios")
+      }
+      else{
+        send_alert(JSON.parse(resp.responseText).error, "danger");
+      }
+      location.reload();
+    }
   }
 
   $.ajax(settings).done(function (response) {

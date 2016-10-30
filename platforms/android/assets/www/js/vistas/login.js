@@ -100,7 +100,6 @@ function register_provider(access_token, provider){
 
   $.ajax(settings).done(function (response) {
     // response: {logged_as: "[usuario]"}
-    // console.log(response);
     send_alert("Te has registrado satisfactoriamente con tu cuenta de "+provider, "success")
     window.location = "perfil.html";
   });
@@ -112,10 +111,8 @@ function login_facebook(){
     auth_url: 'https://www.facebook.com/dialog/oauth',
     response_type: 'token',
     client_id: '1041073662677910', //ok
-    // redirect_uri: 'http://'+url_server+'/callback',
     redirect_uri: "http://"+url_server.split(":")[0]+".xip.io:3000/callback",
     // redirect_uri: "http://"+url_server.split(":")[0]+".xip.io:3000/auth/facebook/callback",
-    // redirect_uri: "http://"+url_server+"/sign_up",
     other_params: {scope: 'basic_info', display: 'popup'}
   }, function(token, response){
     // alert("token:"+token);
