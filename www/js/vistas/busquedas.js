@@ -43,7 +43,8 @@ function search(type){
       }
       else{
       	clear_listgroup();
-	  		add_error(JSON.parse(resp.responseText).error+": "+$("#search_type").val());
+	  		add_error(JSON.parse(resp.responseText).error+": "+$("#search_type").val()+", puedes solicitar el producto haciendo click en Solicitar Producto");
+      		
       }
 	  }
 	}
@@ -72,7 +73,7 @@ function search(type){
   		}
   		// si no se encuentra nada
   		if (!products_found){
-				add_error("No hay productos coincidentes con la busqueda: "+$("#search_type").val());
+				add_error("No hay prkyukuoductos coincidentes con la busqueda: "+$("#search_type").val());
   		}
   	}
   	else {
@@ -211,4 +212,8 @@ function modo_sin_conexion(){
       $("#profilePicture").attr("src", userdata.foto_de_perfil);
     },0)
   }
+}
+
+function solicitar_producto(){
+	window.location = "producto_no_encontrado.html"
 }
