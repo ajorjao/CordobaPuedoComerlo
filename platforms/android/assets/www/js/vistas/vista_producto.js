@@ -96,6 +96,8 @@ function get_my_data(){
                 <div id="recomendedMatchs">\
                 </div>-->\
               </div>';
+  // add_recomendaciones();
+  // get_recomendaciones();
   }
   else{
     $("#intolerancesMatchs").append('Todos en tu familia pueden comer este producto');
@@ -159,6 +161,7 @@ function get_my_data(){
       $("#product-image").css('margin-top',60-imgheight/2+'px');
     }
   }, 100);
+  get_recomendaciones();
 }
 
 
@@ -187,6 +190,144 @@ function crear_mensaje_problema_con_familiar(nombre_familiar, problemas_intolera
   $("#cant-eat").append('- '+nombre_familiar.split("_-_")[0]+'<br>');
 }
 
+// function add_recomendaciones(){
+//   recom = '<div class="panel panel-primary">\
+//             <div class="panel-heading">\
+//               <h3 class="panel-title">Productos recomendados para ti:</h3>\
+//             </div>\
+//             <div class="panel" id="product-recomend" style="font-size: 13px;">\
+//               <div style="text-align: center;">\
+//                 <div class="jcarousel-wrapper">\
+//                     <div class="jcarousel" data-jcarousel="true">\
+//                       <ul style="left: 0px; top: 0px;" id="productos_carrusel">\
+//                         <!-- aca van las weaes -->\
+//                       </ul>\
+//                     </div>\
+//                   <a href="#" class="jcarousel-control-prev" data-jcarouselcontrol="true">‹</a>\
+//                   <a href="#" class="jcarousel-control-next" data-jcarouselcontrol="true">›</a>\
+//                   <p class="jcarousel-pagination" data-jcarouselpagination="true" id="pag_carrusel">\
+//                     <!-- circulitos -->\
+//                   </p>\
+//                 </div>\
+//               </div>\
+//             </div>\
+//           </div>';
+//           $("#menuR").append(recom);
+// }
+
+function get_recomendaciones(){
+  var form = new FormData();
+  var intol = JSON.parse(localStorage.getItem('usuario')).intolerancias;
+  form.append("user_intolerances", intol);
+
+  var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "http://"+url_server+"/recomended_products/",
+  "method": "PUT",
+    xhrFields: {
+      withCredentials: true
+    },
+  "headers": {
+    "cache-control": "no-cache",
+    "postman-token": "aed9733b-b535-b5c4-4504-e0723d3efc88"
+  },
+  "processData": false,
+  "contentType": false,
+  "mimeType": "multipart/form-data",
+  "data": form
+  }
+
+  $.ajax(settings).done(function (response) {
+    resp = JSON.parse(response);
+
+    for (i = 0, len = resp.length; i < len; i++) {
+      if (i==0) add_carrusel_item(resp[i].id, resp[i].name, resp[i].image_file_name, i, true);
+      else add_carrusel_item(resp[i].id, resp[i].name, resp[i].image_file_name, i, false);
+    }
+  });
+}
+
+function add_carrusel_item(id, name, img_src, i, active){
+  url_image_product = "http://"+url_server+img_src.replace("/original/","/thumb/")
+  lista_item = '<li onclick="ver_detalle('+id+')">\
+                  <center>\
+                    <img id="product-image" style="max-height: 130px; max-width: 130px;" src="'+url_image_product+'">\
+                    <b>'+name+'</b>\
+                  </center>\
+                </li>';
+  pag_item = '<a href="#'+i+'"';
+  if (active){
+    pag_item += ' class="active"';
+  }
+  pag_item += '>'+i+'</a>'
+            
+  $("#productos_carrusel").append(lista_item);
+  $("#pag_carrusel").append(pag_item);
+}
+
+function match_product(id){
+  var settings = {
+    "async": false,
+    "crossDomain": true,
+    "url": "http://"+url_server+"/products/"+id,
+    "headers": {
+      "cache-control": "no-cache",
+      "postman-token": "81b17c9b-b428-8799-911e-b183185f6434"
+    },
+    xhrFields: {
+      withCredentials: true
+    },
+    "method": "GET",
+    error: function(resp, status){
+      if (resp.status==0){
+        // $("#modal-popup").modal('show');
+        // setTimeout(function(){
+        //   match_product(id);
+        // }, 1000);
+        alert("Problema de conexión");
+        location.reload();
+      }
+      else{
+        consulta_exitosa = true;
+        // alert(JSON.parse(resp.responseText).error);
+        send_alert(JSON.parse(resp.responseText).error, "danger");
+        // location.reload();
+        window.location="index.html";
+      }
+    }
+  }
+
+  $.ajax(settings).done(function (response) {
+    consulta_exitosa = true;
+    if ($("#modal-popup").hasClass("in")){
+      $("#modal-popup").modal('toggle');
+    }
+
+    // console.log(response)
+    pname = response.product.name
+    ingredients = response.product.ingredients
+    image_route = "http://"+url_server+response.product.image_file_name
+    var intolerancias_producto = [];
+    var sintomas_producto = [];
+    for (i = 0, len = response.intolerances.length; i < len; i++) {
+      intolerancias_producto.push(response.intolerances[i].id);
+      sintomas_producto.push(response.intolerances[i].medium_symptom);
+    }
+    get_family_data(intolerancias_producto, sintomas_producto);
+  });
+}
+
+function ver_detalle(id){
+  match_product(id);
+  // console.log("product name:", pname)
+  // console.log("matchs:", matchs)
+
+  var testObject = { 'pid': id, 'pname': pname, 'matchs': matchs, 'ingredients': ingredients, 'image_route': image_route};
+  // Put the object into storage
+  localStorage.setItem('pdata', JSON.stringify(testObject));
+  window.location = "vista_producto.html";
+}
 
 function get_comments( user_id ){
   var settings = {
@@ -238,7 +379,6 @@ function get_comments( user_id ){
     }
   });
 }
-
 
 function add_comment(hash_comentario, ask_my_comment){
   comment = '\
@@ -508,6 +648,40 @@ function denunciar(){
       location.reload();
     });
   }
+}
+
+function recomendar(){
+
+  var form = new FormData();
+  form.append("product_id", pdata.pid);
+  var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:3000/recommend_product/7802230086952",
+    "method": "PUT",
+    xhrFields: {
+      withCredentials: true
+    },
+    "headers": {
+      "cache-control": "no-cache",
+      "postman-token": "ab688606-d3c6-8ff2-049d-ef96ea10efc3"
+    },
+    error: function(resp, status){
+      if (resp.status==0){
+        alert("Error, por favor comprueba tu conexión");
+      }
+      else{
+        send_alert(JSON.parse(resp.responseText).error, "danger");
+      }
+      location.reload();
+    }
+  }
+
+  $.ajax(settings).done(function (response) {
+    console.log(response);
+    send_alert("<strong>Has recomendado este producto</strong> :D", "success");
+    location.reload();
+  });
 }
 
 function go_back(){
