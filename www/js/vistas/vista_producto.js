@@ -163,8 +163,8 @@ function get_my_data(){
   }, 100);
 
   get_recomendaciones();
-  $('.jcarousel').bcSwipe({ threshold: 50 });
-  $('#productos_carrusel').bcSwipe({ threshold: 50 });
+  // $('.jcarousel').bcSwipe({ threshold: 50 });
+  // $('#productos_carrusel').bcSwipe({ threshold: 50 });
 }
 
 
@@ -259,14 +259,7 @@ function add_carrusel_item(id, name, img_src, i, active){
                     <b>'+name+'</b>\
                   </center>\
                 </li>';
-  pag_item = '<a href="#'+i+'"';
-  if (active){
-    pag_item += ' class="active"';
-  }
-  pag_item += '>'+i+'</a>'
-            
-  $("#productos_carrusel").append(lista_item);
-  $("#pag_carrusel").append(pag_item);
+  $("#recomend-list").append(lista_item);
 }
 
 function ver_detalle(id){
