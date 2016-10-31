@@ -165,7 +165,6 @@ function get_my_data(){
       $("#product-image").css('margin-top',60-imgheight/2+'px');
     }
   }, 100);
-
 }
 
 
@@ -332,7 +331,7 @@ function add_carrusel_item(id, name, img_src, i, active){
                     <b>'+name+'</b>\
                   </center>\
                 </li>';
-            
+
   $("#productos_carrusel").append(lista_item);
 }
 
