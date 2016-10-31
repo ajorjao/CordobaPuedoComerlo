@@ -61,7 +61,7 @@ function get_my_data(){
   pdata = JSON.parse(retrievedObject);
 
   // console.log(pdata.matchs);
-  if (!$.isEmptyObject(pdata.matchs)){
+  if (!$.isEmptyObject(pdata.matchs)){ //si no puede comerlo
     class1 = "alert alert-danger";
     srcimg = "img/nono.png";
     detalle = '<div class="'+class1+'" style="overflow: auto; margin-bottom: 10px;" role="alert">\
@@ -91,11 +91,8 @@ function get_my_data(){
                   <div id="intolerancesMatchs">\
                   </div>\
                 </div>\
-              </div>\
-              <!--<div class="well" style="overflow: auto;">\
-                <div id="recomendedMatchs">\
-                </div>-->\
               </div>';
+    $('#menuR').show()
   // add_recomendaciones();
   // get_recomendaciones();
   }
@@ -161,7 +158,10 @@ function get_my_data(){
       $("#product-image").css('margin-top',60-imgheight/2+'px');
     }
   }, 100);
+
   get_recomendaciones();
+  $('.jcarousel').bcSwipe({ threshold: 50 });
+  $('#productos_carrusel').bcSwipe({ threshold: 50 });
 }
 
 
@@ -221,21 +221,30 @@ function get_recomendaciones(){
   form.append("user_intolerances", intol);
 
   var settings = {
-  "async": true,
-  "crossDomain": true,
-  "url": "http://"+url_server+"/recomended_products/",
-  "method": "PUT",
-    xhrFields: {
-      withCredentials: true
+    "async": true,
+    "crossDomain": true,
+    "url": "http://"+url_server+"/recomended_products/",
+    "method": "PUT",
+      xhrFields: {
+        withCredentials: true
+      },
+    "headers": {
+      "cache-control": "no-cache",
+      "postman-token": "aed9733b-b535-b5c4-4504-e0723d3efc88"
     },
-  "headers": {
-    "cache-control": "no-cache",
-    "postman-token": "aed9733b-b535-b5c4-4504-e0723d3efc88"
-  },
-  "processData": false,
-  "contentType": false,
-  "mimeType": "multipart/form-data",
-  "data": form
+    "processData": false,
+    "contentType": false,
+    "mimeType": "multipart/form-data",
+    "data": form,
+    error: function(resp, status){
+      if (resp.status==0){
+        alert("Error al leer los comentarios")
+      }
+      else{
+        send_alert(JSON.parse(resp.responseText).error, "danger");
+      }
+      location.reload();
+    }
   }
 
   $.ajax(settings).done(function (response) {
@@ -264,58 +273,6 @@ function add_carrusel_item(id, name, img_src, i, active){
             
   $("#productos_carrusel").append(lista_item);
   $("#pag_carrusel").append(pag_item);
-}
-
-function match_product(id){
-  var settings = {
-    "async": false,
-    "crossDomain": true,
-    "url": "http://"+url_server+"/products/"+id,
-    "headers": {
-      "cache-control": "no-cache",
-      "postman-token": "81b17c9b-b428-8799-911e-b183185f6434"
-    },
-    xhrFields: {
-      withCredentials: true
-    },
-    "method": "GET",
-    error: function(resp, status){
-      if (resp.status==0){
-        // $("#modal-popup").modal('show');
-        // setTimeout(function(){
-        //   match_product(id);
-        // }, 1000);
-        alert("Problema de conexión");
-        location.reload();
-      }
-      else{
-        consulta_exitosa = true;
-        // alert(JSON.parse(resp.responseText).error);
-        send_alert(JSON.parse(resp.responseText).error, "danger");
-        // location.reload();
-        window.location="index.html";
-      }
-    }
-  }
-
-  $.ajax(settings).done(function (response) {
-    consulta_exitosa = true;
-    if ($("#modal-popup").hasClass("in")){
-      $("#modal-popup").modal('toggle');
-    }
-
-    // console.log(response)
-    pname = response.product.name
-    ingredients = response.product.ingredients
-    image_route = "http://"+url_server+response.product.image_file_name
-    var intolerancias_producto = [];
-    var sintomas_producto = [];
-    for (i = 0, len = response.intolerances.length; i < len; i++) {
-      intolerancias_producto.push(response.intolerances[i].id);
-      sintomas_producto.push(response.intolerances[i].medium_symptom);
-    }
-    get_family_data(intolerancias_producto, sintomas_producto);
-  });
 }
 
 function ver_detalle(id){

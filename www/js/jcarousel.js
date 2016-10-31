@@ -1,6 +1,9 @@
-(function($) {
+// (function($) {
+function initJCarousel(){
     $(function() {
         var jcarousel = $('.jcarousel');
+
+        console.log("se inicializara el carousel");
 
         jcarousel
             .on('jcarousel:reload jcarousel:create', function () {
@@ -17,6 +20,9 @@
             })
             .jcarousel({
                 wrap: 'circular'
+            })
+            .jcarouselSwipe({
+                perSwipe: 2
             });
 
         $('.jcarousel-control-prev')
@@ -46,4 +52,5 @@
                 }
             });
     });
-})(jQuery);
+}
+// })(jQuery);
