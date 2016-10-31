@@ -13,7 +13,7 @@ function modo_sin_conexion(){
   detalle = '<div class="alert alert-danger" style="overflow: auto;" role="alert">\
                 <div class="row">\
                   <div class="col-xs-3">\
-                    <img  src="'+srcimg+'" alt="..." style="width: 65px;margin-left: 6px;position: absolute;"> \
+                    <img src="'+srcimg+'" alt="..." style="width: 65px;margin-left: 6px;position: absolute;"> \
                   </div>\
                   <div class="col-xs-9" style="top: 4px;margin-bottom: 8px;font-size: 18px;">\
                     Alguien de tu familia no puede comerlo debido a que posee problemas con  \
@@ -93,8 +93,8 @@ function get_my_data(){
                 </div>\
               </div>';
     $('#menuR').show()
-  // add_recomendaciones();
-  // get_recomendaciones();
+    $('#menuR2').show()
+    get_recomendaciones();
   }
   else{
     $("#intolerancesMatchs").append('Todos en tu familia pueden comer este producto');
@@ -142,7 +142,14 @@ function get_my_data(){
       "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
     },
     error: function(resp, status){
-      window.location = "login.html";
+      // window.location = "login.html";
+      if (resp.status==0){
+        alert("Error de conexión")
+      }
+      else{
+        send_alert(JSON.parse(resp.responseText).error, "danger");
+      }
+      location.reload();
     }
   }
 
@@ -158,10 +165,6 @@ function get_my_data(){
       $("#product-image").css('margin-top',60-imgheight/2+'px');
     }
   }, 100);
-
-  get_recomendaciones();
-  $('.jcarousel').bcSwipe({ threshold: 50 });
-  $('#productos_carrusel').bcSwipe({ threshold: 50 });
 }
 
 
@@ -190,35 +193,12 @@ function crear_mensaje_problema_con_familiar(nombre_familiar, problemas_intolera
   $("#cant-eat").append('- '+nombre_familiar.split("_-_")[0]+'<br>');
 }
 
-// function add_recomendaciones(){
-//   recom = '<div class="panel panel-primary">\
-//             <div class="panel-heading">\
-//               <h3 class="panel-title">Productos recomendados para ti:</h3>\
-//             </div>\
-//             <div class="panel" id="product-recomend" style="font-size: 13px;">\
-//               <div style="text-align: center;">\
-//                 <div class="jcarousel-wrapper">\
-//                     <div class="jcarousel" data-jcarousel="true">\
-//                       <ul style="left: 0px; top: 0px;" id="productos_carrusel">\
-//                         <!-- aca van las weaes -->\
-//                       </ul>\
-//                     </div>\
-//                   <a href="#" class="jcarousel-control-prev" data-jcarouselcontrol="true">‹</a>\
-//                   <a href="#" class="jcarousel-control-next" data-jcarouselcontrol="true">›</a>\
-//                   <p class="jcarousel-pagination" data-jcarouselpagination="true" id="pag_carrusel">\
-//                     <!-- circulitos -->\
-//                   </p>\
-//                 </div>\
-//               </div>\
-//             </div>\
-//           </div>';
-//           $("#menuR").append(recom);
-// }
-
 function get_recomendaciones(){
+  // productos que puedes comer
   var form = new FormData();
   var intol = JSON.parse(localStorage.getItem('usuario')).intolerancias;
   form.append("user_intolerances", intol);
+  form.append("page", 1);
 
   var settings = {
     "async": true,
@@ -239,13 +219,29 @@ function get_recomendaciones(){
     error: function(resp, status){
       if (resp.status==0){
         alert("Error al leer los comentarios")
+        location.reload();
       }
       else{
-        send_alert(JSON.parse(resp.responseText).error, "danger");
+        $("#productos_carrusel").append('\
+          <li style="max-width: 130px">\
+            <center>\
+              '+JSON.parse(resp.responseText).error+'\
+            <center>\
+          </li>');
+        if (recomended_1) {
+          setTimeout(function(){
+            initJCarousel();
+          }, 500)  
+        }
+        else{
+          recomended_2 = true
+        }
       }
-      location.reload();
     }
   }
+
+  var recomended_1 = false
+  var recomended_2 = false
 
   $.ajax(settings).done(function (response) {
     resp = JSON.parse(response);
@@ -254,7 +250,77 @@ function get_recomendaciones(){
       if (i==0) add_carrusel_item(resp[i].id, resp[i].name, resp[i].image_file_name, i, true);
       else add_carrusel_item(resp[i].id, resp[i].name, resp[i].image_file_name, i, false);
     }
+
+    // esto funciona ya que las busquedas de productos recomendados son asincronas
+    if (recomended_2) {
+      setTimeout(function(){
+        initJCarousel();
+      }, 500)  
+    }
+    else{
+      recomended_1 = true
+    }
   });
+
+
+  // productos que recomiendan personas con tus intolerancias
+  var settings2 = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://"+url_server+"/get_recommended",
+    "method": "GET",
+      xhrFields: {
+        withCredentials: true
+      },
+    "headers": {
+      "cache-control": "no-cache",
+      "postman-token": "aed9733b-b535-b5c4-4504-e0723d3efc88"
+    },
+    error: function(resp, status){
+      if (resp.status==0){
+        alert("Error al leer los comentarios")
+        location.reload();
+      }
+      else{
+        $("#productos_carrusel_2").append('\
+          <li style="max-width: 130px">\
+            <center>\
+              '+JSON.parse(resp.responseText).error+'\
+            <center>\
+          </li>');
+        if (recomended_1) {
+          setTimeout(function(){
+            initJCarousel();
+          }, 500)  
+        }
+        else{
+          recomended_2 = true
+        }
+      }
+    }
+  }
+
+  $.ajax(settings2).done(function (response) {
+    // console.log(response);
+    resp = response.product;
+
+    for (i = 0, len = resp.length; i < len; i++) {
+      if (i==0) add_carrusel_item2(resp[i].id, resp[i].name, resp[i].image_file_name, i, true);
+      else add_carrusel_item2(resp[i].id, resp[i].name, resp[i].image_file_name, i, false);
+    }
+
+    // // esto funciona ya que las busquedas de productos recomendados son asincronas
+    if (recomended_1) {
+      setTimeout(function(){
+        initJCarousel();
+      }, 500)  
+    }
+    else{
+      recomended_2 = true
+    }
+  });
+
+
 }
 
 function add_carrusel_item(id, name, img_src, i, active){
@@ -265,14 +331,20 @@ function add_carrusel_item(id, name, img_src, i, active){
                     <b>'+name+'</b>\
                   </center>\
                 </li>';
-  pag_item = '<a href="#'+i+'"';
-  if (active){
-    pag_item += ' class="active"';
-  }
-  pag_item += '>'+i+'</a>'
-            
+
   $("#productos_carrusel").append(lista_item);
-  $("#pag_carrusel").append(pag_item);
+}
+
+function add_carrusel_item2(id, name, img_src, i, active){
+  url_image_product = "http://"+url_server+img_src.replace("/original/","/thumb/")
+  lista_item = '<li onclick="ver_detalle('+id+')">\
+                  <center>\
+                    <img id="product-image" style="max-height: 130px; max-width: 130px;" src="'+url_image_product+'">\
+                    <b>'+name+'</b>\
+                  </center>\
+                </li>';
+            
+  $("#productos_carrusel_2").append(lista_item);
 }
 
 function ver_detalle(id){
