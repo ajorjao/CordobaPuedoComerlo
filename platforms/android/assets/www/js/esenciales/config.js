@@ -194,7 +194,7 @@ $(document).ready(function( $ ) {
       localStorage.setItem('back', JSON.stringify({'location': back.location}));
       localStorage.setItem('now', JSON.stringify({'location': filename}));
     }
-    if (back.location=="login.html" || back.location=="crear_perfil.html"){
+    if (back.location=="login.html" || back.location=="crear_perfil.html" || back.location=="producto_no_encontrado.html"){
       localStorage.setItem('back', JSON.stringify({'location': "index.html"}));    
     }
   }

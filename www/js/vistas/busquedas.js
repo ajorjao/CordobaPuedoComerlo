@@ -213,7 +213,3 @@ function modo_sin_conexion(){
     },0)
   }
 }
-
-function solicitar_producto(){
-	window.location = "producto_no_encontrado.html"
-}

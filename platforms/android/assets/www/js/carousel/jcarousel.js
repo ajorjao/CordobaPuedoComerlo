@@ -12,7 +12,7 @@ function initJCarousel(){
 
                 if (width >= 600) {
                     width = width / 3;
-                } else if (width >= 350) {
+                } else if (width >= 300) {
                     width = width / 2;
                 }
 

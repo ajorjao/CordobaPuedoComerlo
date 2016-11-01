@@ -81,13 +81,14 @@ function escanear(){
           localStorage.setItem('pdata', JSON.stringify(testObject));
           window.location = "vista_producto.html";
         }
-        // else{
-        //   send_alert('El producto escaneado no se encuentra en nuestra base de datos','danger');
-        //   location.reload();
-        // }
+        else{
+          localStorage.removeItem('alert_data'); //ya que el match_product envia ese alert
+          var testObject = { 'pid': result.text };
+          localStorage.setItem('pdata', JSON.stringify(testObject));
+          window.location = "producto_no_encontrado.html";
+        }
 
       }
-
 
     },
     function (error) {
@@ -99,7 +100,7 @@ function escanear(){
     {
         "preferFrontCamera" : false, // iOS and Android
         "showFlipCameraButton" : true, // iOS and Android
-        "prompt" : "Evite acercar demasiado la camara al codigo de barras", // supported on Android only
+        "prompt" : "Evite acercar demasiado la camara al codigo de barras y tenga en cuenta que no se refleje el brillo de la luz en el codigo", // supported on Android only
         // "prompt" : "Coloque el codigo de barra frente a la camara", // supported on Android only
         // default: all but PDF_417 and RSS_EXPANDED
         //"orientation" : "landscape" // Android only (portrait|landscape), default unset so it rotates with the device

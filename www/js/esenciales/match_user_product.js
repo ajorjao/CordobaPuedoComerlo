@@ -27,15 +27,13 @@ function match_product(id){
         // setTimeout(function(){
         //   match_product(id);
         // }, 1000);
-        alert("Problema de conexión");
+        alert("Problema de conexión con el servidor");
         location.reload();
       }
       else{
         consulta_exitosa = true;
-        // alert(JSON.parse(resp.responseText).error);
-        send_alert(JSON.parse(resp.responseText).error, "danger");
-        // location.reload();
-        window.location="index.html";
+        // send_alert(JSON.parse(resp.responseText).error, "danger");
+        // window.location="index.html";
       }
     }
   }
