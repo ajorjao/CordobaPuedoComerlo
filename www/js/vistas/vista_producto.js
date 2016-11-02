@@ -165,7 +165,19 @@ function get_my_data(){
     if (imgheight < 120){
       $("#product-image").css('margin-top',60-imgheight/2+'px');
     }
-  }, 100);
+  }, 300);
+
+  current_product_denounces = JSON.parse(localStorage.getItem('product_denounces'));
+  if (current_product_denounces){
+    if (current_product_denounces[pdata.pid]=="denounced"){
+      $('#MenuRecomendar').html('<div class="alert alert-warning">Este producto ya fue denunciado anteriormente</div>')
+      // console.log("el producto ya fue denunciado antes");
+    }
+    else if (current_product_denounces[pdata.pid]=="recommended"){
+      $('#MenuRecomendar').html('<div class="alert alert-success">Este producto ya fue recomendado anteriormente</div>')
+      // console.log("el producto ya fue recomendado antes");
+    }
+  }
 }
 
 
@@ -707,6 +719,16 @@ function denunciar(){
   var denuncia = confirm("¿Estás seguro que deseas denunciar "+pdata.pname+"?");
   if (denuncia == true) {
     $.ajax(settings).done(function (response) {
+      current_product_denounces = JSON.parse(localStorage.getItem('product_denounces'));
+      if (current_product_denounces){
+        current_product_denounces[pdata.pid]="recommended";
+        localStorage.setItem('product_denounces', JSON.stringify(current_product_denounces));
+      }
+      else{ //inicializar los productos denunciados/recomendados
+        a = {}
+        a[pdata.pid] = "recommended";
+        localStorage.setItem('product_denounces', JSON.stringify(a));
+      }
       console.log(response);
       send_alert("<strong>Producto Denunciado Correctamente.</strong> Gracias por avisarnos.", "success");
       location.reload();
@@ -715,13 +737,12 @@ function denunciar(){
 }
 
 function recomendar(){
-
   var form = new FormData();
   form.append("product_id", pdata.pid);
   var settings = {
     "async": true,
     "crossDomain": true,
-    "url": "http://localhost:3000/recommend_product/7802230086952",
+    "url": "http://"+url_server+"/recommend_product/"+pdata.pid,
     "method": "PUT",
     xhrFields: {
       withCredentials: true
@@ -741,11 +762,24 @@ function recomendar(){
     }
   }
 
-  $.ajax(settings).done(function (response) {
-    console.log(response);
-    send_alert("<strong>Has recomendado este producto</strong> :D", "success");
-    location.reload();
-  });
+  var recomienda = confirm("¿Deseas recomendar "+pdata.pname+"?");
+  if (recomienda == true) {
+    $.ajax(settings).done(function (response) {
+      current_product_denounces = JSON.parse(localStorage.getItem('product_denounces'));
+      if (current_product_denounces){
+        current_product_denounces[pdata.pid]="recommended";
+        localStorage.setItem('product_denounces', JSON.stringify(current_product_denounces));
+      }
+      else{ //inicializar los productos denunciados/recomendados
+        a = {}
+        a[pdata.pid] = "recommended";
+        localStorage.setItem('product_denounces', JSON.stringify(a));
+      }
+      console.log(response);
+      send_alert("<strong>Has recomendado este producto</strong> :D", "success");
+      location.reload();
+    });
+  }
 }
 
 function go_back(){
