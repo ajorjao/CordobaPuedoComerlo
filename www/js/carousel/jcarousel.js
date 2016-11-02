@@ -3,7 +3,7 @@ function initJCarousel(){
     $(function() {
         var jcarousel = $('.jcarousel');
 
-        console.log("se inicializara el carousel");
+        // console.log("se inicializara el carousel");
 
         jcarousel
             .on('jcarousel:reload jcarousel:create', function () {
@@ -12,7 +12,8 @@ function initJCarousel(){
 
                 if (width >= 600) {
                     width = width / 3;
-                } else if (width >= 300) {
+                // } else if (width >= 300) {
+                } else {
                     width = width / 2;
                 }
 
