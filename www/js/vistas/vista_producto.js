@@ -168,6 +168,7 @@ function get_my_data(){
     }
   }, 300);
 
+  //si el producto ya fue recomendado o denunciado
   current_product_denounces = JSON.parse(localStorage.getItem('product_denounces'));
   if (current_product_denounces){
     if (current_product_denounces[pdata.pid]=="denounced"){
@@ -206,6 +207,7 @@ function crear_mensaje_problema_con_familiar(nombre_familiar, problemas_intolera
   // console.log('$("#cant-eat").append(\'- \''+nombre_familiar.split("_-_")[0]+'\'<br>\')')
   $("#cant-eat").append('- '+nombre_familiar.split("_-_")[0]+'<br>');
 }
+
 
 function get_recomendaciones(){
   // productos que puedes comer
@@ -260,16 +262,18 @@ function get_recomendaciones(){
   $.ajax(settings).done(function (response) {
     resp = JSON.parse(response);
 
+    // console.log("items carousel1: ");
+    // console.log(resp.map(function(elem,i){return elem.name}));
+
     for (i = 0, len = resp.length; i < len; i++) {
-      if (i==0) add_carrusel_item(resp[i].id, resp[i].name, resp[i].image_file_name, i, true);
-      else add_carrusel_item(resp[i].id, resp[i].name, resp[i].image_file_name, i, false);
+      add_carrusel_item(resp[i].id, resp[i].name, resp[i].image_file_name, i);
     }
 
     // esto funciona ya que las busquedas de productos recomendados son asincronas
     if (recomended_2) {
       setTimeout(function(){
         initJCarousel();
-      }, 500)  
+      }, 500)
     }
     else{
       recomended_1 = true
@@ -314,13 +318,13 @@ function get_recomendaciones(){
     }
   }
 
-  $.ajax(settings2).done(function (response) {
-    // console.log(response);
-    resp = response.product;
+  $.ajax(settings2).done(function (response2) {
+    resp2 = response2.product;
+    // console.log("items carousel2: ");
+    // console.log(resp2.map(function(elem,i){return elem.name}));
 
-    for (i = 0, len = resp.length; i < len; i++) {
-      if (i==0) add_carrusel_item2(resp[i].id, resp[i].name, resp[i].image_file_name, i, true);
-      else add_carrusel_item2(resp[i].id, resp[i].name, resp[i].image_file_name, i, false);
+    for (j = 0, len = resp2.length; j < len; j++) {
+      add_carrusel_item2(resp2[j].id, resp2[j].name, resp2[j].image_file_name, j);
     }
 
     // // esto funciona ya que las busquedas de productos recomendados son asincronas
@@ -335,7 +339,8 @@ function get_recomendaciones(){
   });
 }
 
-function add_carrusel_item(id, name, img_src, i, active){
+function add_carrusel_item(id, name, img_src, i){
+  console.log()
   url_image_product = "http://"+url_server+img_src.replace("/original/","/thumb/")
   lista_item = '<li onclick="ver_detalle('+id+')">\
                   <center>\
@@ -347,7 +352,7 @@ function add_carrusel_item(id, name, img_src, i, active){
   $("#productos_carrusel").append(lista_item);
 }
 
-function add_carrusel_item2(id, name, img_src, i, active){
+function add_carrusel_item2(id, name, img_src, i){
   url_image_product = "http://"+url_server+img_src.replace("/original/","/thumb/")
   lista_item = '<li onclick="ver_detalle('+id+')">\
                   <center>\
@@ -370,6 +375,7 @@ function ver_detalle(id){
   window.location = "vista_producto.html";
 }
 
+//se inicializa en el get_my_data
 function get_comments( user_id ){
   var settings = {
     "async": true,
@@ -386,7 +392,7 @@ function get_comments( user_id ){
     },
     error: function(resp, status){
       if (resp.status==0){
-        alert("Error al leer los comentarios")
+        alert("Error de conexion con el servidor al leer los comentarios")
       }
       else{
         send_alert(JSON.parse(resp.responseText).error, "danger");
@@ -421,6 +427,20 @@ function get_comments( user_id ){
             </div>\
           </div>');
       }
+    }
+
+    if (response.comments.length == 0){
+      // add_comment("Aun no hay comentarios de este producto", false, undefined);
+      comment = '\
+      <div class="panel-body" style="border: 1px solid rgba(0,0,0,0.17)">\
+        <div style="text-align: center">\
+          <div class="row">\
+            <i>Aun no hay comentarios para este producto</i>\
+          </div>\
+        </div>\
+      </div>'
+      $("#product-comments").append(comment);
+
     }
   });
 }
