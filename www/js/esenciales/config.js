@@ -152,7 +152,7 @@ function loading(accion, mensaje, delay){
             </div>\
             <div class="modal-body">\
               <h4>'+mensaje+'</h4>\
-              <img src="img/loaderNO.gif" alt="HTML5 Icon" style="display: block;margin-left:auto;margin-right:auto;width:100px;height:100px;">\
+              <img src="img/loader2.gif" alt="HTML5 Icon" style="display: block;margin-left:auto;margin-right:auto;width:100px;height:100px;">\
             </div>\
           </div>\
         </div>\
