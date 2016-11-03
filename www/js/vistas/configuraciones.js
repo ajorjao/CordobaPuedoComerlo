@@ -25,7 +25,13 @@ function get_my_data(){
       "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
     },
     error: function(resp, status){
-      window.location = "login.html";
+      if (resp.status==0){
+        alert("Error de conexión con el servidor, por favor intentelo mas tarde");
+        location.reload();
+      }
+      else{
+        not_loged();
+      }
     }
   }
 
@@ -158,8 +164,7 @@ function logout(){
   var logout = confirm("¿Estás seguro que deseas cerrar sesion?");
   if (logout == true) {
     $.ajax(settings).done(function (response) {
-      localStorage.removeItem('usuario');
-      window.location = "login.html";
+      not_loged();
     });
   }
 }

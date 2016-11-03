@@ -29,12 +29,12 @@ function get_my_data(){
 		},
 		error: function(resp, status){
       if (resp.status==0){
-        alert("Error, por favor comprueba tu conexión")
+        alert("Error de conexión con el servidor, por favor intentelo mas tarde");
+        location.reload();
       }
       else{
-        send_alert(JSON.parse(resp.responseText).error, "danger");
+        not_loged();
       }
-      location.reload();
 		}
 	}
 

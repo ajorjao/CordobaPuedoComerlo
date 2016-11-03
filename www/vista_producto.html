@@ -71,80 +71,79 @@
   </div>
 
   <div id="MenuRecomendar" class="menu-wrapper">
-    <button class="btn btn-success btn-md col-xs-6" onClick="recomendar()" style="width: 48%;height: 50px;">
+    <button id="recomendar" class="btn btn-success btn-md col-xs-6" onClick="recomendar()" style="width: 48%;font-size: 13px;">
       Recomendar este Producto
     </button>
-    <button class="btn btn-warning btn-md col-sm-6" onClick="denunciar()" style="width: 48%;height: 50px; margin-left: 11px;">
-      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Reportar un Error en este Product
+    <button id="denunciar" class="btn btn-warning btn-md col-sm-6" onClick="denunciar()" style="width: 48%;font-size: 13px; margin-left: 11px;">
+      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Reportar un Error en este Producto
     </button>
   </div>
 
-  <!-- carrousel -->
-  <div id="menuR" class="menu-wrapper" style="display: none;">
-    <div class="panel panel-primary">
-      <div class="panel-heading">
-        <h3 class="panel-title">Productos recomendados para ti:</h3>
-      </div>
+  <!-- carrouseles -->
+    <div id="menuR" class="menu-wrapper" style="display: none;">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Productos recomendados para ti:</h3>
+        </div>
 
-      <div class="panel" id="product-recomend" style="font-size: 13px;">
-        <div style="text-align: center;">
+        <div class="panel" id="product-recomend" style="font-size: 13px;">
+          <div style="text-align: center;">
 
-          <div class="jcarousel-wrapper">
-              <div class="jcarousel" data-jcarousel="true">
-                <!-- <ul style="left: 0px; top: 0px;" id="productos_carrusel"> -->
-                <ul id="productos_carrusel">
-                  <!-- aca van las weaes -->
-                  <!-- <li><a href="#"><img src="img/logo2.png" alt="Image 1"></a></li>
-                  <li><a href="#"><img src="img/loader.gif" alt="Image 2"></a></li>
-                  <li><a href="#"><img src="img/logo2.png" alt="Image 3"></a></li>
-                  <li><a href="#"><img src="img/loader.gif" alt="Image 4"></a></li> -->
-                  <!-- aca van las weaes -->
-                </ul>
-              </div>
-            <!-- <a href="#" class="jcarousel-control-prev" data-jcarouselcontrol="true">‹</a> -->
-            <!-- <a href="#" class="jcarousel-control-next" data-jcarouselcontrol="true">›</a> -->
+            <div class="jcarousel-wrapper">
+                <div class="jcarousel" data-jcarousel="true">
+                  <!-- <ul style="left: 0px; top: 0px;" id="productos_carrusel"> -->
+                  <ul id="productos_carrusel">
+                    <!-- aca van las weaes -->
+                    <!-- <li><a href="#"><img src="img/logo2.png" alt="Image 1"></a></li>
+                    <li><a href="#"><img src="img/loader.gif" alt="Image 2"></a></li>
+                    <li><a href="#"><img src="img/logo2.png" alt="Image 3"></a></li>
+                    <li><a href="#"><img src="img/loader.gif" alt="Image 4"></a></li> -->
+                    <!-- aca van las weaes -->
+                  </ul>
+                </div>
+              <!-- <a href="#" class="jcarousel-control-prev" data-jcarouselcontrol="true">‹</a> -->
+              <!-- <a href="#" class="jcarousel-control-next" data-jcarouselcontrol="true">›</a> -->
 
-            <p class="jcarousel-pagination" data-jcarouselpagination="true" style="width: 200px;">
-              <!-- circulitos -->
-            </p>
+              <p class="jcarousel-pagination" data-jcarouselpagination="true" style="width: 200px;">
+                <!-- circulitos -->
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
+    <div id="menuR2" class="menu-wrapper" style="display: none;">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Productos que recomiendan personas con tus intolerancias:</h3>
+        </div>
+        <div class="panel" id="product-recomend-2" style="font-size: 13px;">
+          <div style="text-align: center;">
 
-  <div id="menuR2" class="menu-wrapper" style="display: none;">
-    <div class="panel panel-primary">
-      <div class="panel-heading">
-        <h3 class="panel-title">Productos que recomiendan personas con tus intolerancias:</h3>
-      </div>
-      <div class="panel" id="product-recomend-2" style="font-size: 13px;">
-        <div style="text-align: center;">
+            <div class="jcarousel-wrapper">
+                <div class="jcarousel" data-jcarousel="true">
+                  <!-- <ul style="left: 0px; top: 0px;" id="productos_carrusel"> -->
+                  <ul id="productos_carrusel_2">
+                    <!-- aca van las weaes -->
+                    <!-- <li><a href="#"><img src="img/logo2.png" alt="Image 1"></a></li>
+                    <li><a href="#"><img src="img/loader.gif" alt="Image 2"></a></li>
+                    <li><a href="#"><img src="img/logo2.png" alt="Image 3"></a></li>
+                    <li><a href="#"><img src="img/loader.gif" alt="Image 4"></a></li> -->
+                    <!-- aca van las weaes -->
+                  </ul>
+                </div>
+              <!-- <a href="#" class="jcarousel-control-prev" data-jcarouselcontrol="true">‹</a> -->
+              <!-- <a href="#" class="jcarousel-control-next" data-jcarouselcontrol="true">›</a> -->
 
-          <div class="jcarousel-wrapper">
-              <div class="jcarousel" data-jcarousel="true">
-                <!-- <ul style="left: 0px; top: 0px;" id="productos_carrusel"> -->
-                <ul id="productos_carrusel_2">
-                  <!-- aca van las weaes -->
-                  <!-- <li><a href="#"><img src="img/logo2.png" alt="Image 1"></a></li>
-                  <li><a href="#"><img src="img/loader.gif" alt="Image 2"></a></li>
-                  <li><a href="#"><img src="img/logo2.png" alt="Image 3"></a></li>
-                  <li><a href="#"><img src="img/loader.gif" alt="Image 4"></a></li> -->
-                  <!-- aca van las weaes -->
-                </ul>
-              </div>
-            <!-- <a href="#" class="jcarousel-control-prev" data-jcarouselcontrol="true">‹</a> -->
-            <!-- <a href="#" class="jcarousel-control-next" data-jcarouselcontrol="true">›</a> -->
-
-            <p class="jcarousel-pagination" data-jcarouselpagination="true" style="width: 200px;">
-              <!-- circulitos -->
-            </p>
+              <p class="jcarousel-pagination" data-jcarouselpagination="true" style="width: 200px;">
+                <!-- circulitos -->
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
   <!-- comentarios -->
   <div id="menu3" class="menu-wrapper">

@@ -137,13 +137,11 @@ function add_product(name, id, img_src, state, type){
 	if (type=="name"){ //si se realiza una busqueda por nombre
 		var producto = '\
 			<a onClick="ver_detalle('+id+')" class="list-group-item list-group-item-'+state+'" style="overflow: auto;">\
-	  		<div class="col-xs-3" style="text-align: center;">\
+	  		<div style="width: 70; float: left;">\
 					<img src="'+img_src+'" style="height: 70px; width: 70px;">\
 	  		</div>\
-	  		<div class="col-xs-9" style="text-align: center; font-size: 14px; top: 12px;">\
-	  			<div class="row">\
-						'+name+'\
-	  			</div>\
+	  		<div style="text-align: center; top: 8px; position: relative; float: right; width: calc(100% - 75px);">\
+					'+name+'\
 	  			<div class="row">\
 						'+id+'\
 	  			</div>\
@@ -153,16 +151,14 @@ function add_product(name, id, img_src, state, type){
 	else {
 		var producto = '\
 			<a onClick="ver_detalle('+id+')" class="list-group-item list-group-item-'+state+'" style="overflow: auto;">\
-	  		<div class="col-xs-3" style="text-align: center;">\
+	  		<div style="width: 70; float: left;">\
 					<img src="'+img_src+'" style="height: 70px; width: 70px;">\
 	  		</div>\
-	  		<div class="col-xs-9" style="text-align: center; font-size: 14px; top: 12px;">\
+	  		<div style="text-align: center; top: 8px; position: relative; float: right; width: calc(100% - 75px);">\
 	  			<div class="row">\
 						'+id+'\
 	  			</div>\
-	  			<div class="row">\
-						'+name+'\
-	  			</div>\
+					'+name+'\
 	  		</div>\
 			</a>'
 	}
@@ -189,7 +185,13 @@ function get_my_data(){
       "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
     },
     error: function(resp, status){
-      window.location = "login.html";
+      if (resp.status==0){
+        alert("Error de conexión con el servidor, por favor intentelo mas tarde");
+        location.reload();
+      }
+      else{
+        not_loged();
+      }
     }
   }
 

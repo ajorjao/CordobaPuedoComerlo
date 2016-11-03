@@ -73,10 +73,13 @@ function get_family_data(intolerancias_producto, sintomas_producto){
       "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
     },
     error: function(resp, status){
-      // send_alert("<strong>Error de conexión</strong> por favor intentalo nuevamente", "danger");
-      // window.location = "login.html";
-      alert("Error, por favor comprueba tu conexión")
-      location.reload();
+      if (resp.status==0){
+        alert("Error de conexión con el servidor, por favor intentelo mas tarde");
+        location.reload();
+      }
+      else{
+        not_loged();
+      }
     }
   }
 
