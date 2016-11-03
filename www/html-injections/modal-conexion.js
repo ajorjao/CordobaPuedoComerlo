@@ -1,5 +1,5 @@
 $(function(){
-  $("#modal-conexion").html('\
+  $("body").html('\
   	<!-- Modal Error de Conexion -->\
 		<div id="modal-popup" class="modal fade" role="dialog">\
 		  <div class="modal-dialog">\

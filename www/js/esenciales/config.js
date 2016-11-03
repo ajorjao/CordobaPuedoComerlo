@@ -140,6 +140,36 @@ function toDataUrl(url, callback) {
 //   console.log(base64Img);
 // });
 
+function loading(accion, mensaje, delay){
+  if (!$('#modal-loading').length){ //si no existe el modal, se crea
+    $("body").append('\
+      <div id="modal-loading" class="modal" role="dialog">\
+        <div class="modal-dialog">\
+          <div class="modal-content">\
+            <div class="modal-header">\
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
+              <h4 class="modal-title">'+accion+'</h4>\
+            </div>\
+            <div class="modal-body">\
+              <h4>'+mensaje+'</h4>\
+              <img src="img/loaderNO.gif" alt="HTML5 Icon" style="display: block;margin-left:auto;margin-right:auto;width:100px;height:100px;">\
+            </div>\
+          </div>\
+        </div>\
+      </div>\
+    ');
+  }
+
+  setTimeout(function(){
+    $("#modal-loading").modal('show');
+    $('#modal-loading').css('margin-top',((window.screen.height)/2  - $('#modal-loading .modal-dialog').height()) + 'px')
+  }, delay);
+}
+
+function stop_loading(){
+  $('#modal-loading').modal("hide");
+  $("#modal-loading").remove();
+}
 
 
 

@@ -25,7 +25,13 @@ function get_my_data(){
       "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
     },
     error: function(resp, status){
-      window.location = "login.html";
+      if (resp.status==0){
+        alert("Error de conexión con el servidor, por favor intentelo mas tarde");
+        location.reload();
+      }
+      else{
+        not_loged();
+      }
     }
   }
 
@@ -88,6 +94,8 @@ function preguntar_modo_sin_conexion(){
 }
 
 function descargar_modo_sin_conexion(user_intolerances){
+  loading("Descargando","Por favor espere mientras descargamos el modo sin conexion en su dispositivo", 0);
+
   var form = new FormData();
   form.append("user_intolerances", user_intolerances);
 
@@ -124,6 +132,7 @@ function descargar_modo_sin_conexion(user_intolerances){
     // console.log("descargado "+ (productsss)+" KB");
     // console.log("descargado "+ (response.length*8/1024).toFixed(2)+" KB");
     send_alert("<b>Bien echo!</b> Has descargado nuestros productos satisfactoriamente", "success");
+    stop_loading();
     location.reload();
   });
 }
@@ -158,8 +167,7 @@ function logout(){
   var logout = confirm("¿Estás seguro que deseas cerrar sesion?");
   if (logout == true) {
     $.ajax(settings).done(function (response) {
-      localStorage.removeItem('usuario');
-      window.location = "login.html";
+      not_loged();
     });
   }
 }

@@ -140,11 +140,42 @@ function toDataUrl(url, callback) {
 //   console.log(base64Img);
 // });
 
+function loading(accion, mensaje, delay){
+  if (!$('#modal-loading').length){ //si no existe el modal, se crea
+    $("body").append('\
+      <div id="modal-loading" class="modal" role="dialog">\
+        <div class="modal-dialog">\
+          <div class="modal-content">\
+            <div class="modal-header">\
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
+              <h4 class="modal-title">'+accion+'</h4>\
+            </div>\
+            <div class="modal-body">\
+              <h4>'+mensaje+'</h4>\
+              <img src="img/loaderNO.gif" alt="HTML5 Icon" style="display: block;margin-left:auto;margin-right:auto;width:100px;height:100px;">\
+            </div>\
+          </div>\
+        </div>\
+      </div>\
+    ');
+  }
+
+  setTimeout(function(){
+    $("#modal-loading").modal('show');
+    $('#modal-loading').css('margin-top',((window.screen.height)/2  - $('#modal-loading .modal-dialog').height()) + 'px')
+  }, delay);
+}
+
+function stop_loading(){
+  $('#modal-loading').modal("hide");
+  $("#modal-loading").remove();
+}
 
 
 
 // el mensaje debe venir con el formato que se quiere mostrar... status debe ser: success, info, warning o danger
 function send_alert(message, status){
+  $('#alert').goTo();
   var exist_alert = localStorage.getItem('alert_data')
   if (exist_alert){
     append_on_alert(message);
@@ -161,6 +192,7 @@ function append_on_alert(message){
   localStorage.setItem('alert_data', JSON.stringify({ 'alert_message': alert.alert_message+'<br>'+message, 'alert_status': alert.alert_status }));
 }
 
+//se usa en el ping
 function read_alerts(){
   // Ver mensaje
   var exist_alert = localStorage.getItem('alert_data')
@@ -184,6 +216,15 @@ function read_alerts(){
   }
 }
 
+function not_loged(){
+  localStorage.removeItem('usuario'); 
+  localStorage.removeItem('pdata');
+  localStorage.removeItem('comment_likes');
+  localStorage.removeItem('product_denounces');
+  window.location = "login.html";
+}
+
+//se hacen los pings
 $(document).ready(function( $ ) {
   ping(all_servers.splice(0,1)[0]);
 
@@ -202,10 +243,14 @@ $(document).ready(function( $ ) {
     localStorage.setItem('back', JSON.stringify({'location': "index.html"}));    
     localStorage.setItem('now', JSON.stringify({'location': filename}));
   }
-  
 });
 
-document.addEventListener("backbutton", onBackKeyDown, false);
-function onBackKeyDown(e) {
-  e.preventDefault();
-}
+//para poder hacer scrools hasta un elemento (uso: $('#mi_elemento').goTo())
+(function($) {
+    $.fn.goTo = function() {
+        $('html, body').animate({
+            scrollTop: ( $(this).offset().top -25 ) + 'px'
+        }, 'fast');
+        return this; // for chaining...
+    }
+})(jQuery);

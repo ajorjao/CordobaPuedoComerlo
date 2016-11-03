@@ -1,4 +1,3 @@
-
 var consulta_exitosa = false;
 var pdata = {};
 var current_user = 0;
@@ -57,7 +56,6 @@ function get_my_data(){
     autoplayOnHover:'none',
   });
 
-  // Retrieve the object from storage
   var retrievedObject = localStorage.getItem('pdata');
   pdata = JSON.parse(retrievedObject);
 
@@ -144,13 +142,11 @@ function get_my_data(){
     },
     error: function(resp, status){
       if (resp.status==0){
-        alert("Error de conexión")
+        alert("Error de conexión con el servidor, por favor intentelo mas tarde");
         location.reload();
       }
       else{
-        send_alert(JSON.parse(resp.responseText).error, "danger");
-        localStorage.removeItem('usuario');
-        window.location = "login.html";
+        not_loged();
       }
     }
   }
@@ -168,14 +164,26 @@ function get_my_data(){
     }
   }, 300);
 
+  //si el producto ya fue recomendado o denunciado
   current_product_denounces = JSON.parse(localStorage.getItem('product_denounces'));
   if (current_product_denounces){
     if (current_product_denounces[pdata.pid]=="denounced"){
-      $('#MenuRecomendar').html('<div class="alert alert-warning">Este producto ya fue denunciado anteriormente</div>')
+      // $('#MenuRecomendar').html('<div class="alert alert-warning">Este producto ya fue denunciado anteriormente</div>')
+      $('#denunciar').attr('disabled','true')
+      $('#denunciar').text('Este producto ya lo denunciaste')
       // console.log("el producto ya fue denunciado antes");
     }
     else if (current_product_denounces[pdata.pid]=="recommended"){
-      $('#MenuRecomendar').html('<div class="alert alert-success">Este producto ya fue recomendado anteriormente</div>')
+      // $('#MenuRecomendar').html('<div class="alert alert-success">Este producto ya fue recomendado anteriormente</div>')
+      $('#recomendar').attr('disabled','true')
+      $('#recomendar').text('Este producto ya lo recomendaste')
+      // console.log("el producto ya fue recomendado antes");
+    }
+    if (current_product_denounces[pdata.pid]=="denounced_recommended"){
+      $('#denunciar').attr('disabled','true')
+      $('#denunciar').text('Este producto ya lo denunciaste')
+      $('#recomendar').attr('disabled','true')
+      $('#recomendar').text('Este producto ya lo recomendaste')
       // console.log("el producto ya fue recomendado antes");
     }
   }
@@ -207,6 +215,7 @@ function crear_mensaje_problema_con_familiar(nombre_familiar, problemas_intolera
   $("#cant-eat").append('- '+nombre_familiar.split("_-_")[0]+'<br>');
 }
 
+//se inicializa en el get_my_data
 function get_recomendaciones(){
   // productos que puedes comer
   var form = new FormData();
@@ -260,16 +269,24 @@ function get_recomendaciones(){
   $.ajax(settings).done(function (response) {
     resp = JSON.parse(response);
 
+    // console.log("items carousel1: ");
+    // console.log(resp.map(function(elem,i){return elem.name}));
+
     for (i = 0, len = resp.length; i < len; i++) {
-      if (i==0) add_carrusel_item(resp[i].id, resp[i].name, resp[i].image_file_name, i, true);
-      else add_carrusel_item(resp[i].id, resp[i].name, resp[i].image_file_name, i, false);
+      add_carrusel_item(resp[i].id, resp[i].name, resp[i].image_file_name, i);
     }
 
     // esto funciona ya que las busquedas de productos recomendados son asincronas
     if (recomended_2) {
       setTimeout(function(){
         initJCarousel();
-      }, 500)  
+        $('.product-image').map(function(index, elem){ 
+          imgheight = $(elem).height()
+          if (imgheight < 100){
+            $(elem).css('margin-top',50-imgheight/2+'px');
+          }
+        })
+      }, 500)
     }
     else{
       recomended_1 = true
@@ -314,19 +331,25 @@ function get_recomendaciones(){
     }
   }
 
-  $.ajax(settings2).done(function (response) {
-    // console.log(response);
-    resp = response.product;
+  $.ajax(settings2).done(function (response2) {
+    resp2 = response2.product;
+    // console.log("items carousel2: ");
+    // console.log(resp2.map(function(elem,i){return elem.name}));
 
-    for (i = 0, len = resp.length; i < len; i++) {
-      if (i==0) add_carrusel_item2(resp[i].id, resp[i].name, resp[i].image_file_name, i, true);
-      else add_carrusel_item2(resp[i].id, resp[i].name, resp[i].image_file_name, i, false);
+    for (j = 0, len = resp2.length; j < len; j++) {
+      add_carrusel_item2(resp2[j].id, resp2[j].name, resp2[j].image_file_name, j);
     }
 
     // // esto funciona ya que las busquedas de productos recomendados son asincronas
     if (recomended_1) {
       setTimeout(function(){
         initJCarousel();
+        $('.product-image').map(function(index, elem){ 
+          imgheight = $(elem).height()
+          if (imgheight < 100){
+            $(elem).css('margin', 50-imgheight/2+'px auto');
+          }
+        })
       }, 500)
     }
     else{
@@ -335,11 +358,12 @@ function get_recomendaciones(){
   });
 }
 
-function add_carrusel_item(id, name, img_src, i, active){
+function add_carrusel_item(id, name, img_src, i){
+  console.log()
   url_image_product = "http://"+url_server+img_src.replace("/original/","/thumb/")
   lista_item = '<li onclick="ver_detalle('+id+')">\
                   <center>\
-                    <img id="product-image" style="max-height: 130px; max-width: 130px;" src="'+url_image_product+'">\
+                    <img class="product-image" style="max-height: 130px; max-width: 130px;" src="'+url_image_product+'">\
                     <b>'+name+'</b>\
                   </center>\
                 </li>';
@@ -347,11 +371,11 @@ function add_carrusel_item(id, name, img_src, i, active){
   $("#productos_carrusel").append(lista_item);
 }
 
-function add_carrusel_item2(id, name, img_src, i, active){
+function add_carrusel_item2(id, name, img_src, i){
   url_image_product = "http://"+url_server+img_src.replace("/original/","/thumb/")
   lista_item = '<li onclick="ver_detalle('+id+')">\
                   <center>\
-                    <img id="product-image" style="max-height: 130px; max-width: 130px;" src="'+url_image_product+'">\
+                    <img class="product-image" style="max-height: 130px; max-width: 130px;" src="'+url_image_product+'">\
                     <b>'+name+'</b>\
                   </center>\
                 </li>';
@@ -360,16 +384,17 @@ function add_carrusel_item2(id, name, img_src, i, active){
 }
 
 function ver_detalle(id){
+  loading("Buscando producto","Estamos verificando si puedes comer este producto", 1000);
   match_product(id);
-  // console.log("product name:", pname)
-  // console.log("matchs:", matchs)
 
   var testObject = { 'pid': id, 'pname': pname, 'matchs': matchs, 'ingredients': ingredients, 'image_route': image_route};
-  // Put the object into storage
   localStorage.setItem('pdata', JSON.stringify(testObject));
+
+  stop_loading();
   window.location = "vista_producto.html";
 }
 
+//se inicializa en el get_my_data
 function get_comments( user_id ){
   var settings = {
     "async": true,
@@ -386,7 +411,7 @@ function get_comments( user_id ){
     },
     error: function(resp, status){
       if (resp.status==0){
-        alert("Error al leer los comentarios")
+        alert("Error de conexion con el servidor al leer los comentarios")
       }
       else{
         send_alert(JSON.parse(resp.responseText).error, "danger");
@@ -422,10 +447,24 @@ function get_comments( user_id ){
           </div>');
       }
     }
+
+    if (response.comments.length == 0){
+      // add_comment("Aun no hay comentarios de este producto", false, undefined);
+      comment = '\
+      <div class="panel-body" style="border: 1px solid rgba(0,0,0,0.17)">\
+        <div style="text-align: center">\
+          <div class="row">\
+            <i>Aun no hay comentarios para este producto</i>\
+          </div>\
+        </div>\
+      </div>'
+      $("#product-comments").append(comment);
+
+    }
   });
 }
 
-//(comentario{id,comentario,etc}), (si es un comentario propio (editable)), ("like": le di like - "dislike": le di dislike - null: no se ha dado nada)
+//datos que recibe: (comentario{id,comentario,etc}), (si es un comentario propio (editable)), ("like": le di like - "dislike": le di dislike - null: no se ha dado nada)
 function add_comment(hash_comentario, ask_my_comment, like_dislike){
   comment = '\
   <div class="panel-body" style="border: 1px solid rgba(0,0,0,0.17)">\
@@ -722,12 +761,18 @@ function denunciar(){
     $.ajax(settings).done(function (response) {
       current_product_denounces = JSON.parse(localStorage.getItem('product_denounces'));
       if (current_product_denounces){
-        current_product_denounces[pdata.pid]="recommended";
-        localStorage.setItem('product_denounces', JSON.stringify(current_product_denounces));
+        if (current_product_denounces[pdata.pid]=="recommended"){
+          current_product_denounces[pdata.pid]="denounced_recommended";
+          localStorage.setItem('product_denounces', JSON.stringify(current_product_denounces));
+        }
+        else{
+          current_product_denounces[pdata.pid]="denounced";
+          localStorage.setItem('product_denounces', JSON.stringify(current_product_denounces));
+        }
       }
       else{ //inicializar los productos denunciados/recomendados
         a = {}
-        a[pdata.pid] = "recommended";
+        a[pdata.pid] = "denounced";
         localStorage.setItem('product_denounces', JSON.stringify(a));
       }
       console.log(response);
@@ -768,8 +813,14 @@ function recomendar(){
     $.ajax(settings).done(function (response) {
       current_product_denounces = JSON.parse(localStorage.getItem('product_denounces'));
       if (current_product_denounces){
-        current_product_denounces[pdata.pid]="recommended";
-        localStorage.setItem('product_denounces', JSON.stringify(current_product_denounces));
+        if (current_product_denounces[pdata.pid]=="denounced"){
+          current_product_denounces[pdata.pid]="denounced_recommended";
+          localStorage.setItem('product_denounces', JSON.stringify(current_product_denounces));
+        }
+        else{
+          current_product_denounces[pdata.pid]="recommended";
+          localStorage.setItem('product_denounces', JSON.stringify(current_product_denounces));
+        }
       }
       else{ //inicializar los productos denunciados/recomendados
         a = {}
@@ -777,7 +828,7 @@ function recomendar(){
         localStorage.setItem('product_denounces', JSON.stringify(a));
       }
       console.log(response);
-      send_alert("<strong>Has recomendado este producto</strong> :D", "success");
+      send_alert("<strong>Has recomendado este producto satisfactoriamente</strong> :D", "success");
       location.reload();
     });
   }

@@ -27,43 +27,40 @@
   
 
 <!-- foto de perfil -->
-<div class="card hovercard">
-        <div class="card-background">
-          <img id="profilePicture" class="card-bkimg" alt="...">
-        </div>
-        <div class="useravatar">
-          <img alt="..." id="profilePicture2">
-          <a href="" data-toggle="modal" data-target="#foto-perfil-modal" >
-          </a> 
-        </div>
-
-        <div class="card-info"> <span id="nombredelwn" class="card-title"></span>
-
-        </div>
+  <div class="card hovercard">
+    <div class="card-background">
+      <img id="profilePicture" class="card-bkimg" alt="...">
+    </div>
+    <div class="useravatar">
+      <img alt="..." id="profilePicture2">
+      <a href="" data-toggle="modal" data-target="#foto-perfil-modal" >
+      </a> 
     </div>
 
-<a href="" data-toggle="modal" data-target="#foto-perfil-modal" >
-  <span class="glyphicon glyphicon-camera" style="top: -87px;left: calc(50% + 37px);font-size: 40px;" aria-hidden="true">
-  </span>
-</a>
+    <div class="card-info"> <span id="nombredelwn" class="card-title"></span>
+
+    </div>
+  </div>
+
+  <a href="" data-toggle="modal" data-target="#foto-perfil-modal" >
+    <span class="glyphicon glyphicon-camera" style="top: -87px;left: calc(50% + 37px);font-size: 40px;" aria-hidden="true">
+    </span>
+  </a>
 <!-- fin de foto --> 
 
-  <!-- <div class="intolerance-wrap"> -->
 
   <div class="panel panel-primary" id="familiares" role="tablist" aria-multiselectable="true">
-  <div class="panel-heading">
-    <h2 class="panel-title">Grupo familiar</h2>
-    <span class="info">(Selecciona a cada miembro para mostrar su información)</span>
+    <div class="panel-heading">
+      <h2 class="panel-title">
+        Grupo familiar
+        <a data-toggle="modal" data-target="#new-relative-modal" style="float: right; color: #5eff5e; font-size: 25px;">
+          <span class="fa fa-plus" aria-hidden="true"></span>
+          <!-- <span class="edit-relative fa fa-plus" aria-hidden="true"></span> -->
+        </a>
+      </h2>
+      <span class="info">(Selecciona a cada miembro para mostrar su información)</span>
+    </div>
   </div>
-
-  </div>
-
-  <button data-toggle="modal" data-target="#new-relative-modal" type="button" class="btn btn-success" style="position: relative;bottom: 0px;border-color: transparent;
-    width: 100%;padding: 16px;font-size: 20px;background-color:#168cc5;border-radius: 0px;">Agregar Integrante</button>
-
-  <!-- </div> -->
-
-
 
     <!-- Modal Foto-->
     <div class="modal fade" id="foto-perfil-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

@@ -31,18 +31,20 @@ function match_product(id){
         location.reload();
       }
       else{
-        consulta_exitosa = true;
+        // consulta_exitosa = true;
+        //el producto no se encuentra
+
         // send_alert(JSON.parse(resp.responseText).error, "danger");
-        // window.location="index.html";
+        // location.reload();
       }
     }
   }
 
   $.ajax(settings).done(function (response) {
-    consulta_exitosa = true;
-    if ($("#modal-popup").hasClass("in")){
-      $("#modal-popup").modal('toggle');
-    }
+    // consulta_exitosa = true;
+    // if ($("#modal-popup").hasClass("in")){
+    //   $("#modal-popup").modal('toggle');
+    // }
 
     // console.log(response)
 		pname = response.product.name

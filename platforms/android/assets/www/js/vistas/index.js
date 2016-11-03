@@ -1,32 +1,32 @@
 var consulta_exitosa = false;
 
-jQuery(document).ready(function( $ ) {
-    $( '#my-slider' ).sliderPro({
-      forceSize:'fullWidth',
-      fade:true,
-      buttons:false,
-      keyboard:false,
-      touchSwipe:false,
-      autoplayOnHover:'none',
-    });
-});
+// jQuery(document).ready(function( $ ) {
+//     $( '#my-slider' ).sliderPro({
+//       forceSize:'fullWidth',
+//       fade:true,
+//       buttons:false,
+//       keyboard:false,
+//       touchSwipe:false,
+//       autoplayOnHover:'none',
+//     });
+// });
 
 function escanear(){
   cordova.plugins.barcodeScanner.scan(
     function (result) {
-      $( '#my-slider' ).sliderPro({
-        forceSize:'fullWidth',
-        fade:true,
-        buttons:false,
-        keyboard:false,
-        touchSwipe:false,
-        autoplayOnHover:'none',
-      });
-      setTimeout(function(){
-        if (!consulta_exitosa){
-          $("#modal-popup").modal('show');
-        };
-      }, 3000);
+      // $( '#my-slider' ).sliderPro({
+      //   forceSize:'fullWidth',
+      //   fade:true,
+      //   buttons:false,
+      //   keyboard:false,
+      //   touchSwipe:false,
+      //   autoplayOnHover:'none',
+      // });
+      // setTimeout(function(){
+      //   if (!consulta_exitosa){
+      //     $("#modal-popup").modal('show');
+      //   };
+      // }, 3000);
 
       // get_product(result.text);
 
@@ -40,51 +40,55 @@ function escanear(){
               var testObject = { 'pid': result.text, 'pname': product.name, 'matchs': product.intolerances, 'ingredients': product.ingredients, 'image_route': "img/product_default.png"};
               localStorage.setItem('pdata', JSON.stringify(testObject));
               product_found = true;
-              consulta_exitosa = true;
-              if ($("#modal-popup").hasClass("in")){
-                $("#modal-popup").modal('toggle');
-              }
+              // consulta_exitosa = true;
+              // if ($("#modal-popup").hasClass("in")){
+              //   $("#modal-popup").modal('toggle');
+              // }
               send_alert('<b>Modo sin conexion activado</b>', "danger");
               window.location = "vista_producto.html";
               // return false;
             }
           });
           if (!product_found){ //si el producto no se encontraba en la base de datos local
-            consulta_exitosa = true;
-            if ($("#modal-popup").hasClass("in")){
-              $("#modal-popup").modal('toggle');
-            }
+            // consulta_exitosa = true;
+            // if ($("#modal-popup").hasClass("in")){
+            //   $("#modal-popup").modal('toggle');
+            // }
             send_alert('<b>Modo sin conexion activado</b>', "success");
             send_alert('El producto escaneado no se encuentra en su base de datos local, por lo que lo mas seguro es que <b>SI Puedes Comerlo</b> <span class="fa fa-thumbs-o-up" aria-hidden="true"></span>','success');
             location.reload();
           }
         }
         else{
-          consulta_exitosa = true;
-          if ($("#modal-popup").hasClass("in")){
-            $("#modal-popup").modal('toggle');
-          }
+          // consulta_exitosa = true;
+          // if ($("#modal-popup").hasClass("in")){
+          //   $("#modal-popup").modal('toggle');
+          // }
           send_alert('<b>Modo sin conexion activado</b>', "danger");
           send_alert('<b>Error</b> debes descargar el modo sin conexión para poder realizar busquedas sin acceso a internet', 'danger');
           location.reload();
         }
       }
       else{
+        loading("Buscando producto","Estamos verificando si puedes comer este producto", 0);
         match_product(result.text);
 
         if (pname){
-          consulta_exitosa = true;
-          if ($("#modal-popup").hasClass("in")){
-            $("#modal-popup").modal('toggle');
-          }
+          // consulta_exitosa = true;
+          // if ($("#modal-popup").hasClass("in")){
+          //   $("#modal-popup").modal('toggle');
+          // }
           var testObject = { 'pid': result.text, 'pname': pname, 'matchs': matchs, 'ingredients': ingredients, 'image_route': image_route};
           localStorage.setItem('pdata', JSON.stringify(testObject));
+          stop_loading();
           window.location = "vista_producto.html";
         }
         else{
           localStorage.removeItem('alert_data'); //ya que el match_product envia ese alert
+
           var testObject = { 'pid': result.text };
           localStorage.setItem('pdata', JSON.stringify(testObject));
+          stop_loading();
           window.location = "producto_no_encontrado.html";
         }
 
@@ -164,8 +168,13 @@ function get_my_data(){
       "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
     },
     error: function(resp, status){
-      localStorage.removeItem("usuario");
-      window.location = "login.html";
+      if (resp.status==0){
+        alert("Error de conexión con el servidor, por favor intentelo mas tarde");
+        location.reload();
+      }
+      else{
+        not_loged();
+      }
     }
   }
 

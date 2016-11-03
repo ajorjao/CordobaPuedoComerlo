@@ -1,6 +1,7 @@
 $(function () {
 	// se ejecuta cada vez que se escribe alguna letra
 	$('#search_type').on('input', function(){
+    loading("Realizando busqueda","Estamos buscando productos que coincidan con la busqueda", 2000);
 		if ($(this).val().length>3){
 			var filename = window.location.pathname.split("/").pop();
 			if (filename=="busqueda_nombre.html"){
@@ -42,9 +43,9 @@ function search(type){
 	  		add_error("Error, por favor revisa tu conexión a internet");
       }
       else{
+      	stop_loading();
       	clear_listgroup();
 	  		add_error(JSON.parse(resp.responseText).error+": "+$("#search_type").val()+", puedes solicitar el producto haciendo click en Solicitar Producto");
-      		
       }
 	  }
 	}
@@ -62,6 +63,7 @@ function search(type){
 						add_product(product.name, product.id, "img/product_default.png", "danger", type);
 	  			}
 	  		});
+	  		stop_loading();
   		}
   		else{
 	  		$.each(products,function(pos,product){
@@ -70,13 +72,15 @@ function search(type){
 						add_product(product.name, product.id, "img/product_default.png", "danger", type);
 	  			}
 	  		});
+	  		stop_loading();
   		}
   		// si no se encuentra nada
   		if (!products_found){
-				add_error("No hay prkyukuoductos coincidentes con la busqueda: "+$("#search_type").val());
+				add_error("No hay productos coincidentes con la busqueda: "+$("#search_type").val());
   		}
   	}
   	else {
+	  	stop_loading();
   		add_error("Error, debes descargar el modo sin conexión para poder realizar busquedas sin acceso a internet");
   	}
   }
@@ -100,6 +104,7 @@ function search(type){
 		  	})
 				add_product(producto.name, producto.id, url_image_product, state, type);
 			});
+  		stop_loading();
 		});
   }
 }
@@ -109,6 +114,7 @@ function clear_listgroup(){
 }
 
 function ver_detalle(id){
+  loading("Buscando producto","Estamos verificando si puedes comer este producto", 1000);
   if ($('#alert').text().includes("Modo sin conexion")){
   	products = JSON.parse(localStorage.getItem('products'));
 		$.each(products,function(pos,product){
@@ -119,16 +125,17 @@ function ver_detalle(id){
 			}
 		});
     send_alert('<b>Modo sin conexion activado</b>', "danger");
+		
+		stop_loading();
 		window.location = "vista_producto.html";
 	}
 	else{
 		match_product(id);
-		// console.log("product name:", pname)
-		// console.log("matchs:", matchs)
 
 		var testObject = { 'pid': id, 'pname': pname, 'matchs': matchs, 'ingredients': ingredients, 'image_route': image_route};
-		// Put the object into storage
 		localStorage.setItem('pdata', JSON.stringify(testObject));
+
+		stop_loading();
 		window.location = "vista_producto.html";
 	}
 }

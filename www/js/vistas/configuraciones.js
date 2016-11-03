@@ -94,6 +94,8 @@ function preguntar_modo_sin_conexion(){
 }
 
 function descargar_modo_sin_conexion(user_intolerances){
+  loading("Descargando","Por favor espere mientras descargamos el modo sin conexion en su dispositivo", 0);
+
   var form = new FormData();
   form.append("user_intolerances", user_intolerances);
 
@@ -130,6 +132,7 @@ function descargar_modo_sin_conexion(user_intolerances){
     // console.log("descargado "+ (productsss)+" KB");
     // console.log("descargado "+ (response.length*8/1024).toFixed(2)+" KB");
     send_alert("<b>Bien echo!</b> Has descargado nuestros productos satisfactoriamente", "success");
+    stop_loading();
     location.reload();
   });
 }

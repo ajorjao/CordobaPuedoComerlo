@@ -1,4 +1,3 @@
-
 var consulta_exitosa = false;
 var pdata = {};
 var current_user = 0;
@@ -385,13 +384,13 @@ function add_carrusel_item2(id, name, img_src, i){
 }
 
 function ver_detalle(id){
+  loading("Buscando producto","Estamos verificando si puedes comer este producto", 1000);
   match_product(id);
-  // console.log("product name:", pname)
-  // console.log("matchs:", matchs)
 
   var testObject = { 'pid': id, 'pname': pname, 'matchs': matchs, 'ingredients': ingredients, 'image_route': image_route};
-  // Put the object into storage
   localStorage.setItem('pdata', JSON.stringify(testObject));
+
+  stop_loading();
   window.location = "vista_producto.html";
 }
 

@@ -1,6 +1,7 @@
 $(function () {
 	// se ejecuta cada vez que se escribe alguna letra
 	$('#search_type').on('input', function(){
+    loading("Realizando busqueda","Estamos buscando productos que coincidan con la busqueda", 2000);
 		if ($(this).val().length>3){
 			var filename = window.location.pathname.split("/").pop();
 			if (filename=="busqueda_nombre.html"){
@@ -42,9 +43,9 @@ function search(type){
 	  		add_error("Error, por favor revisa tu conexión a internet");
       }
       else{
+      	stop_loading();
       	clear_listgroup();
 	  		add_error(JSON.parse(resp.responseText).error+": "+$("#search_type").val()+", puedes solicitar el producto haciendo click en Solicitar Producto");
-      		
       }
 	  }
 	}
@@ -62,6 +63,7 @@ function search(type){
 						add_product(product.name, product.id, "img/product_default.png", "danger", type);
 	  			}
 	  		});
+	  		stop_loading();
   		}
   		else{
 	  		$.each(products,function(pos,product){
@@ -70,13 +72,15 @@ function search(type){
 						add_product(product.name, product.id, "img/product_default.png", "danger", type);
 	  			}
 	  		});
+	  		stop_loading();
   		}
   		// si no se encuentra nada
   		if (!products_found){
-				add_error("No hay prkyukuoductos coincidentes con la busqueda: "+$("#search_type").val());
+				add_error("No hay productos coincidentes con la busqueda: "+$("#search_type").val());
   		}
   	}
   	else {
+	  	stop_loading();
   		add_error("Error, debes descargar el modo sin conexión para poder realizar busquedas sin acceso a internet");
   	}
   }
@@ -100,6 +104,7 @@ function search(type){
 		  	})
 				add_product(producto.name, producto.id, url_image_product, state, type);
 			});
+  		stop_loading();
 		});
   }
 }
@@ -109,6 +114,7 @@ function clear_listgroup(){
 }
 
 function ver_detalle(id){
+  loading("Buscando producto","Estamos verificando si puedes comer este producto", 1000);
   if ($('#alert').text().includes("Modo sin conexion")){
   	products = JSON.parse(localStorage.getItem('products'));
 		$.each(products,function(pos,product){
@@ -119,16 +125,17 @@ function ver_detalle(id){
 			}
 		});
     send_alert('<b>Modo sin conexion activado</b>', "danger");
+		
+		stop_loading();
 		window.location = "vista_producto.html";
 	}
 	else{
 		match_product(id);
-		// console.log("product name:", pname)
-		// console.log("matchs:", matchs)
 
 		var testObject = { 'pid': id, 'pname': pname, 'matchs': matchs, 'ingredients': ingredients, 'image_route': image_route};
-		// Put the object into storage
 		localStorage.setItem('pdata', JSON.stringify(testObject));
+
+		stop_loading();
 		window.location = "vista_producto.html";
 	}
 }
@@ -137,13 +144,11 @@ function add_product(name, id, img_src, state, type){
 	if (type=="name"){ //si se realiza una busqueda por nombre
 		var producto = '\
 			<a onClick="ver_detalle('+id+')" class="list-group-item list-group-item-'+state+'" style="overflow: auto;">\
-	  		<div class="col-xs-3" style="text-align: center;">\
+	  		<div style="width: 70; float: left;">\
 					<img src="'+img_src+'" style="height: 70px; width: 70px;">\
 	  		</div>\
-	  		<div class="col-xs-9" style="text-align: center; font-size: 14px; top: 12px;">\
-	  			<div class="row">\
-						'+name+'\
-	  			</div>\
+	  		<div style="text-align: center; top: 8px; position: relative; float: right; width: calc(100% - 75px);">\
+					'+name+'\
 	  			<div class="row">\
 						'+id+'\
 	  			</div>\
@@ -153,16 +158,14 @@ function add_product(name, id, img_src, state, type){
 	else {
 		var producto = '\
 			<a onClick="ver_detalle('+id+')" class="list-group-item list-group-item-'+state+'" style="overflow: auto;">\
-	  		<div class="col-xs-3" style="text-align: center;">\
+	  		<div style="width: 70; float: left;">\
 					<img src="'+img_src+'" style="height: 70px; width: 70px;">\
 	  		</div>\
-	  		<div class="col-xs-9" style="text-align: center; font-size: 14px; top: 12px;">\
+	  		<div style="text-align: center; top: 8px; position: relative; float: right; width: calc(100% - 75px);">\
 	  			<div class="row">\
 						'+id+'\
 	  			</div>\
-	  			<div class="row">\
-						'+name+'\
-	  			</div>\
+					'+name+'\
 	  		</div>\
 			</a>'
 	}
@@ -189,7 +192,13 @@ function get_my_data(){
       "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
     },
     error: function(resp, status){
-      window.location = "login.html";
+      if (resp.status==0){
+        alert("Error de conexión con el servidor, por favor intentelo mas tarde");
+        location.reload();
+      }
+      else{
+        not_loged();
+      }
     }
   }
 

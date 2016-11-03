@@ -61,6 +61,7 @@ function register(){
     $("#name").focus();
   }
   else {
+    loading("Registrandose","Estamos creando su nueva cuenta de usuario", 0);
     $.ajax(settings).done(function (response) {
       console.log(response);
       add_new_familiar();
@@ -89,8 +90,12 @@ function add_new_familiar(){
     "mimeType": "multipart/form-data",
     "data": form,
     error: function(resp, status){
-      // console.log(resp);
-      alert("Error, por favor comprueba tu conexión");
+      if (resp.status==0){
+        alert("Error, por favor comprueba tu conexión")
+      }
+      else{
+        send_alert(JSON.parse(resp.responseText).error, "danger");
+      }
       location.reload();
     }
   }
@@ -105,6 +110,8 @@ function add_new_familiar(){
       new_intolerances(JSON.parse(response).created.id, intolerances);
     }
     send_alert("<strong>Bienvenido!</strong> ya puedes utilizar Puedo Comerlo. Si tienes dudas o inquietudes no dudes en contactarte con nosotros en la sección de configuraciones.", "success");
+
+    stop_loading();
     window.location = "perfil.html";
   });
 }
@@ -136,8 +143,6 @@ function new_intolerances(familiar, intolerancias){ //(int, array)
     "mimeType": "multipart/form-data",
     "data": form,
     error: function(resp, status){
-      // alert("Error, no se pudieron agregar las intolerancias, por favor comprueba tu conexión")
-      // console.log(resp);
       if (resp.status==0){
         alert("Error, por favor comprueba tu conexión")
       }

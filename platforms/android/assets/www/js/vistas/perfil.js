@@ -29,12 +29,12 @@ function get_my_data(){
 		},
 		error: function(resp, status){
       if (resp.status==0){
-        alert("Error, por favor comprueba tu conexión")
+        alert("Error de conexión con el servidor, por favor intentelo mas tarde");
+        location.reload();
       }
       else{
-        send_alert(JSON.parse(resp.responseText).error, "danger");
+        not_loged();
       }
-      location.reload();
 		}
 	}
 
@@ -219,6 +219,9 @@ function get_familiar_data(family_id, family_name){
 }
 
 function new_picture(){
+	$("#foto-perfil-modal").modal("hide");
+  loading("Subiendo Imagen","Por favor espere mientras esta subiendo su nuevo avatar", 0);
+
 	var form = new FormData();
 	form.append("user[avatar]", $("#InputFile").prop("files")[0]);
 
@@ -250,7 +253,8 @@ function new_picture(){
 	}
 
 	$.ajax(settings).done(function (response) {
-		console.log(response);
+		// console.log(response);
+		stop_loading();
 		localStorage.removeItem('usuario'); //se rehace el usuario cuando se agrega una nueva imagen
 		location.reload();
 	});
