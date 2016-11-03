@@ -45,19 +45,26 @@
   <div id="alert"></div>
 
   <div id="menu1" class="menu-wrapper">
+    <div>
     <div class="well" style="overflow: auto;">
-      <div class="col-xs-6" style="text-align: center;">
-        <img id="product-image" style="max-height: 120px; max-width: 120px; margin-top: 15px;">
+      <div class="col-xs-12">
+      <!-- imagen -->
+        <div class="col-xs-6" style="text-align: center;">
+          <img id="product-image" style="max-height: 120px; max-width: 120px; margin-top: 15px;">
+        </div>
+        <!-- detalle producto -->
+        <div class="col-xs-6" style="text-align: center; font-size: 16px; top: 16px;">
+          <b><div class="row" style="margin: 10px 0;" id="product-name"> </div></b>
+          <div class="row" style="margin: 10px 0;" id="product-id"> </div>
+        </div>
       </div>
-      <div class="col-xs-6" style="text-align: center; font-size: 16px; top: 16px;">
-        <div class="row" style="margin: 10px 0;" id="product-name"> </div>
-        <div class="row" style="margin: 10px 0;" id="product-id"> </div>
-      </div>
+
       <div style="position: relative; top: 10px;">
         <div style="font-size: 13px;">
           <div>
             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#product-ingredients" aria-expanded="false" aria-controls="collapseOne" style="color:#333;">
-              <br><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <b>Ingredientes:</b>
+              <br>
+              <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <b style="font-size: 14px;">Ingredientes:</b>
             </a>
           </div>
           <div id="product-ingredients" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_'+nombre_familiar+'" style="margin-bottom: 20px;"> </div>
@@ -65,16 +72,17 @@
       </div>
 		</div>
   </div>
+  </div>
 
   <div id="menu2" class="menu-wrapper">
     <div id="productMatch"></div>
   </div>
 
   <div id="MenuRecomendar" class="menu-wrapper">
-    <button id="recomendar" class="btn btn-success btn-md col-xs-6" onClick="recomendar()" style="width: 48%;font-size: 13px;">
+    <button id="recomendar" class="btn btn-success btn-md col-xs-6" onClick="recomendar()" style="width: 49%;font-size: 15px;">
       Recomendar este Producto
     </button>
-    <button id="denunciar" class="btn btn-warning btn-md col-sm-6" onClick="denunciar()" style="width: 48%;font-size: 13px; margin-left: 11px;">
+    <button id="denunciar" class="btn btn-warning btn-md col-sm-6" onClick="denunciar()" style="width: 49%;font-size: 15px; margin-left: 2%;">
       <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Reportar un Error en este Producto
     </button>
   </div>

@@ -70,6 +70,7 @@ function sugerir_producto() {
         alert("Error de conexión con el servidor, por favor intentelo mas tarde");
       }
       else{
+        console.log(resp)
         send_alert(JSON.parse(resp.responseText).error, "danger");
       }
       location.reload();

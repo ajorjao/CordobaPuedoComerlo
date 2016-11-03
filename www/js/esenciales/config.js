@@ -1,4 +1,4 @@
-var all_servers = ["192.168.1.35:3000","192.168.2.4:3000","10.6.40.153:3000","10.6.43.204:3000","192.168.2.8:3000","localhost:3000"];
+var all_servers = ["192.168.1.35:3000","192.168.2.4:3000","10.6.40.153:3000","10.6.40.47:3000","10.6.43.204:3000","192.168.2.8:3000","localhost:3000"];
 
 var url_server = ""
 var settings = {}
@@ -198,7 +198,6 @@ function read_alerts(){
   var exist_alert = localStorage.getItem('alert_data')
 
   if (exist_alert){
-
     var alert_data = JSON.parse(exist_alert);
     message = alert_data.alert_message
     status = alert_data.alert_status
@@ -227,6 +226,14 @@ function not_loged(){
 //se hacen los pings
 $(document).ready(function( $ ) {
   ping(all_servers.splice(0,1)[0]);
+
+
+  setTimeout(function(){
+    userdata = JSON.parse(localStorage.getItem('usuario'));
+    if (userdata){
+      $("#profilePicture").attr("src", userdata.foto_de_perfil);
+    }
+  }, 0)
 
   var filename = window.location.pathname.split("/").pop();
   var back = JSON.parse(localStorage.getItem('now'));

@@ -1,7 +1,6 @@
 $(function () {
 	// se ejecuta cada vez que se escribe alguna letra
 	$('#search_type').on('input', function(){
-    loading("Realizando busqueda","Estamos buscando productos que coincidan con la busqueda", 2000);
 		if ($(this).val().length>3){
 			var filename = window.location.pathname.split("/").pop();
 			if (filename=="busqueda_nombre.html"){
@@ -18,6 +17,7 @@ $(function () {
 });
 
 function search(type){
+  loading("Realizando busqueda","Estamos buscando productos que coincidan con la busqueda", 2000);
 	var form = new FormData();
 	form.append("product["+type+"]", $("#search_type").val());
 
@@ -204,12 +204,9 @@ function get_my_data(){
 
   $.ajax(settings).done(function (response) {
     userdata = JSON.parse(localStorage.getItem('usuario'));
-    if (userdata){
-      $("#profilePicture").attr("src", userdata.foto_de_perfil);
-    }
-    else{
-      var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
-      $("#profilePicture").attr("src", foto_de_perfil.replace("/original/","/thumb/"));
+    if (!userdata){
+    	send_alert("Hubo un problema con los datos de tu usuario, lamentamos las inconveniencias", "warning");
+      window.location = "perfil.html";
     }
   });
 }
