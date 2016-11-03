@@ -21,7 +21,8 @@ function modo_sin_conexion(){
                 </div>\
             </div>';
   $("#productMatch").append(detalle);
-  $('#menu1 .well a.btn').remove() //se borra el boton para reportar
+  // $('#menu1 .well a.btn').remove() //se borra el boton para reportar
+  $('#MenuRecomendar').remove()
   $('#menu3').remove()
 
   var n = 0
@@ -142,14 +143,15 @@ function get_my_data(){
       "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
     },
     error: function(resp, status){
-      // window.location = "login.html";
       if (resp.status==0){
         alert("Error de conexión")
+        location.reload();
       }
       else{
         send_alert(JSON.parse(resp.responseText).error, "danger");
+        localStorage.removeItem('usuario');
+        window.location = "login.html";
       }
-      location.reload();
     }
   }
 
@@ -164,7 +166,19 @@ function get_my_data(){
     if (imgheight < 120){
       $("#product-image").css('margin-top',60-imgheight/2+'px');
     }
-  }, 100);
+  }, 300);
+
+  current_product_denounces = JSON.parse(localStorage.getItem('product_denounces'));
+  if (current_product_denounces){
+    if (current_product_denounces[pdata.pid]=="denounced"){
+      $('#MenuRecomendar').html('<div class="alert alert-warning">Este producto ya fue denunciado anteriormente</div>')
+      // console.log("el producto ya fue denunciado antes");
+    }
+    else if (current_product_denounces[pdata.pid]=="recommended"){
+      $('#MenuRecomendar').html('<div class="alert alert-success">Este producto ya fue recomendado anteriormente</div>')
+      // console.log("el producto ya fue recomendado antes");
+    }
+  }
 }
 
 
@@ -313,14 +327,12 @@ function get_recomendaciones(){
     if (recomended_1) {
       setTimeout(function(){
         initJCarousel();
-      }, 500)  
+      }, 500)
     }
     else{
       recomended_2 = true
     }
   });
-
-
 }
 
 function add_carrusel_item(id, name, img_src, i, active){
@@ -384,17 +396,21 @@ function get_comments( user_id ){
   }
 
   $.ajax(settings).done(function (response) {
-    // console.log(response);
+    var comment_likes = JSON.parse(localStorage.getItem('comment_likes'));
+    var like_dislike = undefined;
     for (i = 0, len = response.comments.length; i < len; i++) {
+      if (comment_likes){
+        like_dislike = comment_likes[response.comments[i].id]; // like_dislike = ("like", "dislike" o undefined)
+      }
       if (response.comments[i]["prom_likes"]>-15) {
         if (response.comments[i].user.id == user_id){
-          add_comment(response.comments[i], true);
+          add_comment(response.comments[i], true, like_dislike);
         }
         else{
-          add_comment(response.comments[i], false);
+          add_comment(response.comments[i], false, like_dislike);
         }
       }
-      else{
+      else{ //comentario bloqueado
         $("#product-comments").append('\
           <div class="panel-body" style="padding-left: 40px; color: red; border: 1px solid rgba(0,0,0,0.17);">\
             <div class="row">\
@@ -409,7 +425,8 @@ function get_comments( user_id ){
   });
 }
 
-function add_comment(hash_comentario, ask_my_comment){
+//(comentario{id,comentario,etc}), (si es un comentario propio (editable)), ("like": le di like - "dislike": le di dislike - null: no se ha dado nada)
+function add_comment(hash_comentario, ask_my_comment, like_dislike){
   comment = '\
   <div class="panel-body" style="border: 1px solid rgba(0,0,0,0.17)">\
     <div class="col-xs-8">\
@@ -440,6 +457,21 @@ function add_comment(hash_comentario, ask_my_comment){
     </div>\
   </div>'
   $("#product-comments").append(comment);
+  // console.log("like_dislike del comentario "+hash_comentario["id"]+": "+like_dislike);
+  if (like_dislike=="like"){
+    $("#dislikes_"+hash_comentario["id"]).css('color','grey');
+    $("#likes_"+hash_comentario["id"]).css('color','#23ff00');
+    
+    $("#dislikes_"+hash_comentario["id"]).removeAttr('onclick');
+    $("#likes_"+hash_comentario["id"]).attr('onclick',"like("+hash_comentario["id"]+",\'like_cancel\')");
+  }
+  else if (like_dislike=="dislike") {
+    $("#likes_"+hash_comentario["id"]).css('color','gray');
+    $("#dislikes_"+hash_comentario["id"]).css('color','red');
+    
+    $("#likes_"+hash_comentario["id"]).removeAttr('onclick');
+    $("#dislikes_"+hash_comentario["id"]).attr('onclick',"like("+hash_comentario["id"]+",\'dislike_cancel\')");
+  }
 }
 
 
@@ -521,7 +553,7 @@ function update_comentario(){
 
 function like(id_comentario, like_dislike){
   var form = new FormData();
-  form.append(like_dislike, "true");
+  form.append(like_dislike, "true"); //like: true || dislike: true//
 
   var settings = {
     "async": true,
@@ -551,6 +583,17 @@ function like(id_comentario, like_dislike){
   }
 
   $.ajax(settings).done(function (response) {
+    current_comment_likes = JSON.parse(localStorage.getItem('comment_likes'));
+    if (current_comment_likes){
+      current_comment_likes[id_comentario]=like_dislike;
+      localStorage.setItem('comment_likes', JSON.stringify(current_comment_likes));
+    }
+    else{
+      a = {}
+      a[id_comentario] = like_dislike;
+      localStorage.setItem('comment_likes', JSON.stringify(a));
+    }
+
     $("#likes_"+id_comentario).removeAttr('onclick');
     $("#dislikes_"+id_comentario).removeAttr('onclick');
     prom_likes = parseInt($("#prom_likes_"+id_comentario).text())
@@ -578,6 +621,11 @@ function like(id_comentario, like_dislike){
       $("#likes_"+id_comentario).attr('onclick',"like("+id_comentario+",\'like\')");
       $("#dislikes_"+id_comentario).attr('onclick',"like("+id_comentario+",\'dislike\')");
 
+      current_comment_likes = JSON.parse(localStorage.getItem('comment_likes'));
+      if (current_comment_likes){
+        delete current_comment_likes[id_comentario];
+        localStorage.setItem('comment_likes', JSON.stringify(current_comment_likes));
+      }
       if (like_dislike=="like_cancel"){
         $("#prom_likes_"+id_comentario).text(prom_likes-1)
       }
@@ -672,6 +720,16 @@ function denunciar(){
   var denuncia = confirm("¿Estás seguro que deseas denunciar "+pdata.pname+"?");
   if (denuncia == true) {
     $.ajax(settings).done(function (response) {
+      current_product_denounces = JSON.parse(localStorage.getItem('product_denounces'));
+      if (current_product_denounces){
+        current_product_denounces[pdata.pid]="recommended";
+        localStorage.setItem('product_denounces', JSON.stringify(current_product_denounces));
+      }
+      else{ //inicializar los productos denunciados/recomendados
+        a = {}
+        a[pdata.pid] = "recommended";
+        localStorage.setItem('product_denounces', JSON.stringify(a));
+      }
       console.log(response);
       send_alert("<strong>Producto Denunciado Correctamente.</strong> Gracias por avisarnos.", "success");
       location.reload();
@@ -680,13 +738,12 @@ function denunciar(){
 }
 
 function recomendar(){
-
   var form = new FormData();
   form.append("product_id", pdata.pid);
   var settings = {
     "async": true,
     "crossDomain": true,
-    "url": "http://localhost:3000/recommend_product/7802230086952",
+    "url": "http://"+url_server+"/recommend_product/"+pdata.pid,
     "method": "PUT",
     xhrFields: {
       withCredentials: true
@@ -706,11 +763,24 @@ function recomendar(){
     }
   }
 
-  $.ajax(settings).done(function (response) {
-    console.log(response);
-    send_alert("<strong>Has recomendado este producto</strong> :D", "success");
-    location.reload();
-  });
+  var recomienda = confirm("¿Deseas recomendar "+pdata.pname+"?");
+  if (recomienda == true) {
+    $.ajax(settings).done(function (response) {
+      current_product_denounces = JSON.parse(localStorage.getItem('product_denounces'));
+      if (current_product_denounces){
+        current_product_denounces[pdata.pid]="recommended";
+        localStorage.setItem('product_denounces', JSON.stringify(current_product_denounces));
+      }
+      else{ //inicializar los productos denunciados/recomendados
+        a = {}
+        a[pdata.pid] = "recommended";
+        localStorage.setItem('product_denounces', JSON.stringify(a));
+      }
+      console.log(response);
+      send_alert("<strong>Has recomendado este producto</strong> :D", "success");
+      location.reload();
+    });
+  }
 }
 
 function go_back(){

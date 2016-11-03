@@ -251,6 +251,7 @@ function new_picture(){
 
 	$.ajax(settings).done(function (response) {
 		console.log(response);
+		localStorage.removeItem('usuario'); //se rehace el usuario cuando se agrega una nueva imagen
 		location.reload();
 	});
 }

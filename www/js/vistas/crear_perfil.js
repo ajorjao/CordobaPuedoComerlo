@@ -1,3 +1,9 @@
+$(function () {
+  $('#register').submit(function(e) {
+    e.preventDefault();
+  });
+});
+
 function register(){
   var form = new FormData();
   form.append("user[email]", $("#email").val());
@@ -34,11 +40,25 @@ function register(){
     }
   }
 
-  if ($('#pass').val() != $('#pass_conf').val()) {
-    alert("Error, las contraseñas no coinciden")
+  if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test($("#email").val())) { //validacion de email correcto
+    alert("Error, el email no posee un formato correcto");
+    $("#email").goTo();
+    $("#email").focus();
   }
-  else if ($('#name').val()=="") {
-    alert("Error, tu nombre no puede quedar vacio")
+  else if ($('#pass').val().length < 8) { //validacion de password suficientemente largo
+    alert("Error, el largo de la contraseña debe poseer al menos 8 caracteres");
+    $("#pass").goTo();
+    $("#pass").focus();
+  }
+  else if ($('#pass').val() != $('#pass_conf').val()) { //validacion passwords iguales
+    alert("Error, las contraseñas no coinciden");
+    $("#pass").goTo();
+    $("#pass").focus();
+  }
+  else if ($('#name').val()=="") { //validacion de que el nombre no este vacio
+    alert("Error, tu nombre no puede quedar vacio");
+    $("#name").goTo();
+    $("#name").focus();
   }
   else {
     $.ajax(settings).done(function (response) {
@@ -53,45 +73,46 @@ function add_new_familiar(){
   form.append("family[name]", $("#name").val());
 
   var settings = {
-  "async": true,
-  "crossDomain": true,
-  "url": "http://"+url_server+"/families",
-  "method": "POST",
-  xhrFields: {
-    withCredentials: true
-  },
-  "headers": {
-    "cache-control": "no-cache",
-    "postman-token": "880451d2-bb70-c49a-a2a2-bdea0c3d7827"
-  },
-  "processData": false,
-  "contentType": false,
-  "mimeType": "multipart/form-data",
-  "data": form,
-  error: function(resp, status){
-    // console.log(resp);
-    alert("Error, por favor comprueba tu conexión");
-    location.reload();
-  }
+    "async": false,
+    "crossDomain": true,
+    "url": "http://"+url_server+"/families",
+    "method": "POST",
+    xhrFields: {
+      withCredentials: true
+    },
+    "headers": {
+      "cache-control": "no-cache",
+      "postman-token": "880451d2-bb70-c49a-a2a2-bdea0c3d7827"
+    },
+    "processData": false,
+    "contentType": false,
+    "mimeType": "multipart/form-data",
+    "data": form,
+    error: function(resp, status){
+      // console.log(resp);
+      alert("Error, por favor comprueba tu conexión");
+      location.reload();
+    }
   }
 
   $.ajax(settings).done(function (response) {
-  // console.log(response);
-
-  var intolerances = [];
-  $("#check-list-box li.active").each(function() {
-    intolerances.push($(this).data('value'));
-  });
-  new_intolerances(JSON.parse(response).created.id, intolerances);
-  // alert("Te has registrado exitosamente");
-  send_alert("<strong>Bienvenido!</strong> ya puedes utilizar Puedo Comerlo. Si tienes dudas o inquietudes no dudes en contactarte con nosotros en la sección de configuraciones.", "success");
+    // console.log(response);
+    var intolerances = [];
+    $("#check-list-box li.active").each(function() {
+      intolerances.push($(this).data('value'));
+    });
+    if (intolerances.length>0){
+      new_intolerances(JSON.parse(response).created.id, intolerances);
+    }
+    send_alert("<strong>Bienvenido!</strong> ya puedes utilizar Puedo Comerlo. Si tienes dudas o inquietudes no dudes en contactarte con nosotros en la sección de configuraciones.", "success");
+    window.location = "perfil.html";
   });
 }
 
 function new_intolerances(familiar, intolerancias){ //(int, array)
   if (intolerancias==0 && familiar==0){
-  familiar = stored_id;
-  intolerancias = $(".select-intolerance").val();
+    familiar = stored_id;
+    intolerancias = $(".select-intolerance").val();
   }
 
   var form = new FormData();
@@ -99,38 +120,36 @@ function new_intolerances(familiar, intolerancias){ //(int, array)
   form.append("intolerances_ids", intolerancias.toString());
 
   var settings = {
-  "async": false,
-  "crossDomain": true,
-  "url": "http://"+url_server+"/family/intolerance",
-  "method": "POST",
-  xhrFields: {
-    withCredentials: true
-  },
-  "headers": {
-    "cache-control": "no-cache",
-    "postman-token": "04643411-9b85-17f5-0c7f-4c4375d05851"
-  },
-  "processData": false,
-  "contentType": false,
-  "mimeType": "multipart/form-data",
-  "data": form,
-  error: function(resp, status){
-    // alert("Error, no se pudieron agregar las intolerancias, por favor comprueba tu conexión")
-    // console.log(resp);
-    if (resp.status==0){
-    alert("Error, por favor comprueba tu conexión")
+    "async": false,
+    "crossDomain": true,
+    "url": "http://"+url_server+"/family/intolerance",
+    "method": "POST",
+    xhrFields: {
+      withCredentials: true
+    },
+    "headers": {
+      "cache-control": "no-cache",
+      "postman-token": "04643411-9b85-17f5-0c7f-4c4375d05851"
+    },
+    "processData": false,
+    "contentType": false,
+    "mimeType": "multipart/form-data",
+    "data": form,
+    error: function(resp, status){
+      // alert("Error, no se pudieron agregar las intolerancias, por favor comprueba tu conexión")
+      // console.log(resp);
+      if (resp.status==0){
+        alert("Error, por favor comprueba tu conexión")
+      }
+      else{
+        send_alert(JSON.parse(resp.responseText).error, "danger");
+      }
+      location.reload();
     }
-    else{
-    send_alert(JSON.parse(resp.responseText).error, "danger");
-    }
-    location.reload();
-  }
   }
 
   $.ajax(settings).done(function (response) {
     console.log(response);
-    window.location = "perfil.html";
-    // location.reload();
   });
 }
 

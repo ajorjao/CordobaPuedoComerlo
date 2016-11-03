@@ -1,4 +1,4 @@
-var all_servers = ["192.168.1.34:3000","192.168.2.4:3000","10.6.40.153:3000","10.6.43.204:3000","192.168.2.8:3000","localhost:3000"];
+var all_servers = ["192.168.1.35:3000","192.168.2.4:3000","10.6.40.153:3000","10.6.43.204:3000","192.168.2.8:3000","localhost:3000"];
 
 var url_server = ""
 var settings = {}
@@ -204,3 +204,8 @@ $(document).ready(function( $ ) {
   }
   
 });
+
+document.addEventListener("backbutton", onBackKeyDown, false);
+function onBackKeyDown(e) {
+  e.preventDefault();
+}

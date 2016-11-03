@@ -27,7 +27,8 @@ function get_my_data(){
       }
       else if (resp.status==422){
         // si el producto ya fue sugerido anteriormente
-        send_alert(JSON.parse(resp.responseText).error+' <span class="fa fa-frown-o" aria-hidden="true"></span>', "warning");
+        send_alert(JSON.parse(resp.responseText).error+' <span class="fa fa-frown-o" aria-hidden="true"></span><br>\
+          Si crees que hay un error no dudes en decirnoslo a traves de un mensaje de Contactanos', "warning");
         window.location = "index.html"
       }
     }

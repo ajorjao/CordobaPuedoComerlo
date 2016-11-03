@@ -21,7 +21,8 @@ function modo_sin_conexion(){
                 </div>\
             </div>';
   $("#productMatch").append(detalle);
-  $('#menu1 .well a.btn').remove() //se borra el boton para reportar
+  // $('#menu1 .well a.btn').remove() //se borra el boton para reportar
+  $('#MenuRecomendar').remove()
   $('#menu3').remove()
 
   var n = 0
@@ -326,7 +327,7 @@ function get_recomendaciones(){
     if (recomended_1) {
       setTimeout(function(){
         initJCarousel();
-      }, 500)  
+      }, 500)
     }
     else{
       recomended_2 = true
