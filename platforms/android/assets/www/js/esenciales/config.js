@@ -152,7 +152,7 @@ function loading(accion, mensaje, delay){
             </div>\
             <div class="modal-body">\
               <h4>'+mensaje+'</h4>\
-              <img src="img/loaderNO.gif" alt="HTML5 Icon" style="display: block;margin-left:auto;margin-right:auto;width:100px;height:100px;">\
+              <img src="img/loader2.gif" alt="HTML5 Icon" style="display: block;margin-left:auto;margin-right:auto;width:100px;height:100px;">\
             </div>\
           </div>\
         </div>\
@@ -228,10 +228,12 @@ $(document).ready(function( $ ) {
   ping(all_servers.splice(0,1)[0]);
 
 
-  userdata = JSON.parse(localStorage.getItem('usuario'));
-  if (userdata){
-    $("#profilePicture").attr("src", userdata.foto_de_perfil);
-  }
+  setTimeout(function(){
+    userdata = JSON.parse(localStorage.getItem('usuario'));
+    if (userdata){
+      $("#profilePicture").attr("src", userdata.foto_de_perfil);
+    }
+  }, 0)
 
   var filename = window.location.pathname.split("/").pop();
   var back = JSON.parse(localStorage.getItem('now'));

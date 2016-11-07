@@ -101,6 +101,7 @@ function register_provider(access_token, provider){
   $.ajax(settings).done(function (response) {
     // response: {logged_as: "[usuario]"}
     send_alert("Te has registrado satisfactoriamente con tu cuenta de "+provider, "success")
+    stop_loading();
     window.location = "perfil.html";
   });
 
@@ -112,33 +113,31 @@ function login_facebook(){
     response_type: 'token',
     client_id: '1041073662677910', //ok
     redirect_uri: "http://"+url_server.split(":")[0]+".xip.io:3000/callback",
-    // redirect_uri: "http://"+url_server.split(":")[0]+".xip.io:3000/auth/facebook/callback",
     other_params: {scope: 'basic_info', display: 'popup'}
   }, function(token, response){
-    // alert("token:"+token);
+    loading("Iniciando sesion","Estamos Iniciando Sesion con tu cuenta de facebook",0);
     register_provider(token,"facebook");
   }, function(error, response){
-    alert("Error");
+    send_alert("Error al logearse con la red social");
     location.reload();
   });
 }
 
 function login_google(){
   $.oauth2({
-      auth_url: 'https://accounts.google.com/o/oauth2/auth',
-      response_type: 'token',
-      logout_url: 'https://accounts.google.com/logout',
-      client_id: '942948165956-d0hjrqdpbb1pmqe63i5n8iip1p02v1t0.apps.googleusercontent.com', //ok
-      redirect_uri: "http://"+url_server.split(":")[0]+".xip.io:3000/callback",
-      // redirect_uri: "http://"+url_server.split(":")[0]+".xip.io:3000/auth/google_oauth2/callback",
-      other_params: {scope: 'profile email'}
-    }, function(token, response){
-      // alert("token: "+token);
-      register_provider(token,"google");
-    }, function(error, response){
-      alert("Error");
-      location.reload();
-    });
+    auth_url: 'https://accounts.google.com/o/oauth2/auth',
+    response_type: 'token',
+    logout_url: 'https://accounts.google.com/logout',
+    client_id: '942948165956-d0hjrqdpbb1pmqe63i5n8iip1p02v1t0.apps.googleusercontent.com', //ok
+    redirect_uri: "http://"+url_server.split(":")[0]+".xip.io:3000/callback",
+    other_params: {scope: 'profile email'}
+  }, function(token, response){
+    loading("Iniciando sesion","Estamos Iniciando Sesion con tu cuenta de google",0);
+    register_provider(token,"google");
+  }, function(error, response){
+    send_alert("Error al logearse con la red social");
+    location.reload();
+  });
 }
 
 

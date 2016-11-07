@@ -38,12 +38,9 @@ function get_my_data(){
   $.ajax(settings).done(function (response) {
     email = response.user.email //para enviar un mensaje de contactanos
     userdata = JSON.parse(localStorage.getItem('usuario'));
-    if (userdata){
-      $("#profilePicture").attr("src", userdata.foto_de_perfil);
-    }
-    else{
-      var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
-      $("#profilePicture").attr("src", foto_de_perfil.replace("/original/","/thumb/"));
+    if (!userdata){
+      send_alert("Hubo un problema con los datos de tu usuario, lamentamos las inconveniencias", "warning");
+      window.location = "perfil.html";
     }
   });
 
@@ -131,7 +128,7 @@ function descargar_modo_sin_conexion(user_intolerances){
     localStorage.setItem('products', response);
     // console.log("descargado "+ (productsss)+" KB");
     // console.log("descargado "+ (response.length*8/1024).toFixed(2)+" KB");
-    send_alert("<b>Bien echo!</b> Has descargado nuestros productos satisfactoriamente", "success");
+    send_alert("<b>Bien hecho!</b> Has descargado nuestros productos satisfactoriamente", "success");
     stop_loading();
     location.reload();
   });

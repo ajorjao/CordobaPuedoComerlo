@@ -180,12 +180,9 @@ function get_my_data(){
 
   $.ajax(settings).done(function (response) {
     userdata = JSON.parse(localStorage.getItem('usuario'));
-    if (userdata){
-      $("#profilePicture").attr("src", userdata.foto_de_perfil);
-    }
-    else{
-      var foto_de_perfil = "http://"+url_server+response.user.avatar_file_name
-      $("#profilePicture").attr("src", foto_de_perfil.replace("/original/","/thumb/"));
+    if (!userdata){
+      send_alert("Hubo un problema con los datos de tu usuario, lamentamos las inconveniencias", "warning");
+      window.location = "perfil.html";
     }
   });
 }
