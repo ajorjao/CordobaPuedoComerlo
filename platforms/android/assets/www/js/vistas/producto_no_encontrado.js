@@ -4,7 +4,7 @@ $(function () {
   });
 });
 
-function get_my_data(){
+function get_my_data(){ //se obtienen los datos del producto
   var c_bar = JSON.parse(localStorage.getItem('pdata')).pid
   $('#c_barra').val(c_bar)
 

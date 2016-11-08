@@ -1,13 +1,18 @@
 var email = ""
 
 function modo_sin_conexion(){
-  userdata = JSON.parse(localStorage.getItem('usuario'));
-  if (userdata){
-    setTimeout( function (){ //ni idea de porq el Timeout 0 pero es necesario para q se cargue la imagen
-      $("#profilePicture").attr("src", userdata.foto_de_perfil);
-    },0)
-  }
-  // aqui se debe desabilitar la opcion de descargar modo sin conexion
+  // userdata = JSON.parse(localStorage.getItem('usuario'));
+  // if (userdata){
+  //   setTimeout( function (){ //ni idea de porq el Timeout 0 pero es necesario para q se cargue la imagen
+  //     $("#profilePicture").attr("src", userdata.foto_de_perfil);
+  //   },0)
+  // }
+
+  // aqui se desabilitan las opciones del menu ya q para todas es necesario estar conectado
+
+  // 'Para poder utilizar este menú es necesario estar conectado'
+  $('#alert .alert.alert-danger').append('<br>\
+      Para poder utilizar este menú es necesario estar conectado');
   $('.btn').attr('disabled','true')
 }
 
@@ -83,9 +88,24 @@ function preguntar_modo_sin_conexion(){
 
   $.ajax(settings).done(function (response) {
     // var ask_database = confirm("se descargaran "+(JSON.parse(response).size_products)+" caracteres entre los productos");
-    var ask_database = confirm("Deseas descargar "+(JSON.parse(response).size_products*8/1024).toFixed(2)+" KB con nuestros productos?");
-    if (ask_database == true) {
-      descargar_modo_sin_conexion(userdata.intolerancias.toString());
+    productos_local = localStorage.products
+    size_products = JSON.parse(response).size_products
+    if (productos_local){
+      if ((productos_local.length+15 > size_products) && (productos_local.length-15 < size_products)){
+        alert("Tu base de datos de productos ya está actualizada");
+      }
+      else{
+        var ask_database = confirm("Deseas actualizar "+Math.abs((JSON.parse(response).size_products*8/1024)-(productos_local.length*8/1024)).toFixed(2)+" KB con nuestros productos?");
+        if (ask_database == true) {
+          descargar_modo_sin_conexion(userdata.intolerancias.toString());
+        }
+      }
+    }
+    else{
+      var ask_database = confirm("Deseas descargar "+(JSON.parse(response).size_products*8/1024).toFixed(2)+" KB con nuestros productos?");
+      if (ask_database == true) {
+        descargar_modo_sin_conexion(userdata.intolerancias.toString());
+      }
     }
   });
 }

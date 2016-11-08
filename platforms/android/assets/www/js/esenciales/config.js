@@ -30,23 +30,26 @@ function ping(url){
     catch(err) {
       // "no se soporta un modo sin conexion, ej en login & register"
     }
+    send_alert('<b>Modo sin conexion activado</b>', "danger");
 
-    $('#alert .alert.alert-danger button').remove()
+    $('#alert .alert.alert-danger button').remove() //se elimina la x (no se puede "cerrar" el modo sin conexion)
     $('#alert .alert.alert-danger').append('\
-      <button type="button" class="close" onclick="location.reload();">\
+      <button type="button" class="close" onclick="localStorage.removeItem(\'alert_data\'); location.reload();">\
         <span class="fa fa-refresh" aria-hidden="true"></span>\
-      </button>')
+      </button>') //se incluye un boton de "actualizar" para reemplazar el "cerrar"
+
     dis_path = window.location.pathname.split("/").pop()
     if (dis_path == "login.html" || dis_path=="crear_perfil.html"){
-      $('.alert b').text("");
-      $('.alert b').append("ERROR: Necesitas conexion a internet");
+      // $('.alert b').text("");
+      // $('.alert b').append("ERROR: Necesitas conexion a internet");
+      $('.alert b').text("ERROR: Necesitas conexion a internet");
       $('.alert').css("margin-bottom","0");
     }
     return;
   }
 
   new_url = all_servers.splice(0,1)[0];
-  if (new_url!=undefined && url_server=="") {
+  if (new_url!=undefined && url_server=="") { //si quedan servers por verificar y aun ninguno sirve
     setTimeout( function(){
       ping(new_url);
     }, 10);
@@ -54,13 +57,12 @@ function ping(url){
 
   set_settings(url);
   if (url == "localhost:3000"){
-    setTimeout( function(){
-      if (url_server==""){
+    setTimeout( function(){ //se espera 1 seg para asegurarse que todas los otros servers se probaron
+      if (url_server==""){ //si no se ha encontrado otro servidor que funcione
         pings = $.ajax(settings);
-        pings.done(function (response) {
+        pings.done(function (response) { // se conecta a localhost
           url_server = url;
           console.log("Conected to", url_server);
-          // read_alerts();
           try {
             get_my_data();
           }
@@ -68,38 +70,15 @@ function ping(url){
             // "no se requiere un get_my_data"
           }
         })
-        pings.fail(function (response) {
+        pings.fail(function (response) { // no hay un servidor usable (no se ejecuto el "rails s")
           console.log("fail", url);
-          // read_alerts();
           if (new_url == undefined && url_server==""){
-            // if ($('#alert').text() == ""){ //se recarga la pagina si no hay conexion a internet y no se ha enviado la alerta
-              send_alert('<b>Modo sin conexion activado</b>', "danger");
-              if (window.location.pathname.split("/").pop()=="configuraciones.html"){
-                send_alert('Para poder utilizar este menú es necesario estar conectado',"danger");
-              }
-              location.reload();
+            //se recarga la pagina si no hay conexion a internet y no se ha enviado la alerta
+            send_alert('<b>Modo sin conexion activado</b>', "danger");
+            // if (window.location.pathname.split("/").pop()=="configuraciones.html"){
+            //   send_alert('Para poder utilizar este menú es necesario estar conectado',"danger");
             // }
-            // else{ //si el modo sin conexion esta activado (y el mensaje se esta mostrando)
-
-            //   try {
-            //     modo_sin_conexion();
-            //   }
-            //   catch(err) {
-            //     // "no se soporta un modo sin conexion"
-            //   }
-
-            //   $('.alert.alert-danger button').remove()
-            //   $('.alert.alert-danger').append('\
-            //     <button type="button" class="close" onclick="location.reload();">\
-            //       <span class="fa fa-refresh" aria-hidden="true"></span>\
-            //     </button>')
-            //   dis_path = window.location.pathname.split("/").pop()
-            //   if (dis_path == "login.html" || dis_path=="crear_perfil.html"){
-            //     $('.alert b').text("");
-            //     $('.alert b').append("ERROR: Necesitas conexion a internet");
-            //     $('.alert').css("margin-bottom","0");
-            //   }
-            // }
+            location.reload();
           }
         })
       }
@@ -110,7 +89,6 @@ function ping(url){
     pings.done(function (response) {
       url_server = url;
       console.log("Conected to", url_server);
-      // read_alerts();
       try {
         get_my_data();
       }
@@ -147,12 +125,20 @@ function loading(accion, mensaje, delay){
         <div class="modal-dialog">\
           <div class="modal-content">\
             <div class="modal-header">\
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
+              <button type="button" onClick="location.reload();" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
               <h4 class="modal-title">'+accion+'</h4>\
             </div>\
-            <div class="modal-body">\
+            <div class="modal-body" style="text-align: center;">\
               <h4>'+mensaje+'</h4>\
-              <img src="img/loader2.gif" alt="HTML5 Icon" style="display: block;margin-left:auto;margin-right:auto;width:100px;height:100px;">\
+              <img src="img/loader2.gif" alt="HTML5 Icon" style="width:100px;height:100px;">\
+              <p id="problemas_de_conexion" style="display: none; font-size: 13px; margin-bottom: 0;">\
+                Hemos detectado problemas de conexion, estamos intentando reconectar\
+              </p>\
+              <button id="activar_modo_sin_conexion" class="btn btn-xs btn-warning" \
+                  onClick="send_alert(\'<b>Modo sin conexion activado</b>\', \'danger\');" \
+                  style="margin: 10px; display: none;">\
+                Activar modo sin conexion\
+              </button>\
             </div>\
           </div>\
         </div>\
@@ -175,8 +161,8 @@ function stop_loading(){
 
 // el mensaje debe venir con el formato que se quiere mostrar... status debe ser: success, info, warning o danger
 function send_alert(message, status){
-  $('#alert').goTo();
-  var exist_alert = localStorage.getItem('alert_data')
+  // $('#alert').goTo();
+  var exist_alert = localStorage.getItem('alert_data');
   if (exist_alert){
     append_on_alert(message);
   }
@@ -212,6 +198,8 @@ function read_alerts(){
         </button>\
         '+message+'\
       </div>');
+
+    $("#alert").goTo();
   }
 }
 
@@ -223,7 +211,7 @@ function not_loged(){
   window.location = "login.html";
 }
 
-//se hacen los pings
+//se hacen los pings y se guardan la ruta "back"
 $(document).ready(function( $ ) {
   ping(all_servers.splice(0,1)[0]);
 

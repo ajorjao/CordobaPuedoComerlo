@@ -60,7 +60,7 @@ function search(type){
 	  		$.each(products,function(pos,product){
 	  			if (product.name.toUpperCase().includes($("#search_type").val().toUpperCase())){
 	  				products_found = true;
-						add_product(product.name, product.id, "img/product_default.png", "danger", type);
+						add_product(product.name, product.id, "img/Imagen_no_disponible.svg", "danger", type);
 	  			}
 	  		});
 	  		stop_loading();
@@ -69,7 +69,7 @@ function search(type){
 	  		$.each(products,function(pos,product){
 	  			if (product.id.toString().includes($("#search_type").val())){
 	  				products_found = true;
-						add_product(product.name, product.id, "img/product_default.png", "danger", type);
+						add_product(product.name, product.id, "img/Imagen_no_disponible.svg", "danger", type);
 	  			}
 	  		});
 	  		stop_loading();
@@ -114,29 +114,25 @@ function clear_listgroup(){
 }
 
 function ver_detalle(id){
-  loading("Buscando producto","Estamos verificando si puedes comer este producto", 1000);
+
+  loading("Buscando producto",'Estamos verificando si puedes comer este producto<br>', 1000);
+
   if ($('#alert').text().includes("Modo sin conexion")){
   	products = JSON.parse(localStorage.getItem('products'));
 		$.each(products,function(pos,product){
 			if (product.id == id){
-				var testObject = { 'pid': id, 'pname': product.name, 'matchs': product.intolerances, 'ingredients': product.ingredients, 'image_route': "img/product_default.png"};
+				var testObject = { 'pid': id, 'pname': product.name, 'matchs': product.intolerances, 'ingredients': product.ingredients, 'image_route': "img/Imagen_no_disponible.svg"};
 				localStorage.setItem('pdata', JSON.stringify(testObject));
 				return false;
 			}
 		});
-    send_alert('<b>Modo sin conexion activado</b>', "danger");
+    // send_alert('<b>Modo sin conexion activado</b>', "danger");
 		
 		stop_loading();
 		window.location = "vista_producto.html";
 	}
 	else{
 		match_product(id);
-
-		var testObject = { 'pid': id, 'pname': pname, 'matchs': matchs, 'ingredients': ingredients, 'image_route': image_route};
-		localStorage.setItem('pdata', JSON.stringify(testObject));
-
-		stop_loading();
-		window.location = "vista_producto.html";
 	}
 }
 
@@ -211,11 +207,11 @@ function get_my_data(){
   });
 }
 
-function modo_sin_conexion(){
-  userdata = JSON.parse(localStorage.getItem('usuario'));
-  if (userdata){
-    setTimeout( function (){ //ni idea de porq el Timeout 0 pero es necesario para q se cargue la imagen
-      $("#profilePicture").attr("src", userdata.foto_de_perfil);
-    },0)
-  }
-}
+// function modo_sin_conexion(){
+//   userdata = JSON.parse(localStorage.getItem('usuario'));
+//   if (userdata){
+//     setTimeout( function (){ //ni idea de porq el Timeout 0 pero es necesario para q se cargue la imagen
+//       $("#profilePicture").attr("src", userdata.foto_de_perfil);
+//     },0)
+//   }
+// }

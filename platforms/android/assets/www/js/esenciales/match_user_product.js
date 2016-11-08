@@ -23,16 +23,46 @@ function match_product(id){
     "method": "GET",
     error: function(resp, status){
       if (resp.status==0){
-        // $("#modal-popup").modal('show');
-        // setTimeout(function(){
-        //   match_product(id);
-        // }, 1000);
-        alert("Problema de conexión con el servidor");
-        location.reload();
+        //si no hay conexion
+
+        var exist_alert = localStorage.getItem('alert_data');
+        if (exist_alert){
+          if (exist_alert.includes("Modo sin conexion")){
+            // si se activó el modo sin conexion
+            location.reload()
+          }
+        }
+        //si el modo sin conexion no está activado, se sigue buscando
+        else{
+          setTimeout(function(){
+            // si no se han detectado problemas antes
+            if (!$("#problemas_de_conexion").is(":visible")){
+              $("#problemas_de_conexion").fadeIn(1000);
+              products = localStorage.getItem('products');
+              if (products){
+                setTimeout(function(){
+                  $("#activar_modo_sin_conexion").fadeIn(1000);
+                },3000);
+              }
+            }
+            match_product(id);
+          }, 1500 );//el 500 es para asegurarme de que esto se ejecute despues del modal cargando
+        }
+      }
+      else if (resp.status==404){
+        // producto inexistente en la bd o
+        var testObject = { 'pid': result.text };
+        localStorage.setItem('pdata', JSON.stringify(testObject));
+
+        stop_loading();
+        window.location = "producto_no_encontrado.html";
       }
       else{
-        // consulta_exitosa = true;
-        //el producto no se encuentra
+        // producto sugerido pero no agregado
+        send_alert(JSON.parse(resp.responseText).error+' <span class="fa fa-frown-o" aria-hidden="true"></span><br>\
+          Si crees que hay un error no dudes en decirnoslo a traves de un mensaje de Contactanos', "warning");
+        stop_loading();
+        window.location = "index.html"
 
         // send_alert(JSON.parse(resp.responseText).error, "danger");
         // location.reload();
@@ -56,12 +86,12 @@ function match_product(id){
       intolerancias_producto.push(response.intolerances[i].id);
       sintomas_producto.push(response.intolerances[i].medium_symptom);
     }
-  	get_family_data(intolerancias_producto, sintomas_producto);
+  	get_family_data(intolerancias_producto, sintomas_producto, id);
   });
 }
 
 var intolerancias_familiar = [] //se utiliza para obtener las intolerancias de cada familiar y ingresarlas al match
-function get_family_data(intolerancias_producto, sintomas_producto){
+function get_family_data(intolerancias_producto, sintomas_producto, product_id){
   var settings = {
     "async": false,
     "crossDomain": true,
@@ -93,6 +123,12 @@ function get_family_data(intolerancias_producto, sintomas_producto){
         matchs[familiar.name+"_-_"+familiar.id] = intolerancias_familiar
       }
     });
+    stop_loading();
+
+    var testObject = { 'pid': product_id, 'pname': pname, 'matchs': matchs, 'ingredients': ingredients, 'image_route': image_route};
+    localStorage.setItem('pdata', JSON.stringify(testObject));
+
+    window.location = "vista_producto.html";
   });
 }
 

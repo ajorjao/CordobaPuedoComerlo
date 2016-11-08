@@ -91,18 +91,20 @@ function preguntar_modo_sin_conexion(){
     productos_local = localStorage.products
     size_products = JSON.parse(response).size_products
     if (productos_local){
-      if ((productos_local.length+15 > size_products) && (productos_local.length-15 < size_products)){
+      // console.log("productos_local: "+productos_local.length)
+      // console.log("response: "+size_products)
+      if (productos_local.length == size_products){
         alert("Tu base de datos de productos ya está actualizada");
       }
       else{
-        var ask_database = confirm("Deseas actualizar "+((JSON.parse(response).size_products*8/1024).toFixed(2)-(productos_local.length*8/1024).toFixed(2))+" KB con nuestros productos?");
+        var ask_database = confirm("Deseas actualizar "+(Math.abs(size_products-productos_local.length)*8/1024).toFixed(2)+" KB con nuestros productos?");
         if (ask_database == true) {
           descargar_modo_sin_conexion(userdata.intolerancias.toString());
         }
       }
     }
     else{
-      var ask_database = confirm("Deseas descargar "+(JSON.parse(response).size_products*8/1024).toFixed(2)+" KB con nuestros productos?");
+      var ask_database = confirm("Deseas descargar "+(size_products*8/1024).toFixed(2)+" KB con nuestros productos?");
       if (ask_database == true) {
         descargar_modo_sin_conexion(userdata.intolerancias.toString());
       }
