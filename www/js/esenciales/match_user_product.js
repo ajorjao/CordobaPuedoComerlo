@@ -51,7 +51,8 @@ function match_product(id){
       }
       else if (resp.status==404){
         // producto inexistente en la bd o
-        var testObject = { 'pid': result.text };
+        // var testObject = { 'pid': result.text };
+        var testObject = { 'pid': id };
         localStorage.setItem('pdata', JSON.stringify(testObject));
 
         stop_loading();

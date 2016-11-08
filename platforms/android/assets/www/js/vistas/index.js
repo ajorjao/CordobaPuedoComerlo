@@ -75,10 +75,10 @@ function escanear(){
 
         // if (pname){
           // consulta_exitosa
-          var testObject = { 'pid': result.text, 'pname': pname, 'matchs': matchs, 'ingredients': ingredients, 'image_route': image_route};
-          localStorage.setItem('pdata', JSON.stringify(testObject));
-          stop_loading();
-          window.location = "vista_producto.html";
+          // var testObject = { 'pid': result.text, 'pname': pname, 'matchs': matchs, 'ingredients': ingredients, 'image_route': image_route};
+          // localStorage.setItem('pdata', JSON.stringify(testObject));
+          // stop_loading();
+          // window.location = "vista_producto.html";
         // }
         // else{
         //   // localStorage.removeItem('alert_data'); //ya que el match_product envia ese alert
