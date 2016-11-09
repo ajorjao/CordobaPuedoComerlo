@@ -7,8 +7,10 @@
   <link rel="stylesheet" href="font-awesome-4.6.3/css/font-awesome.min.css">
 	<link href="css/style.css"  rel="stylesheet">
 
+  <script src="cordova.js"></script>
 	<script src="js/esenciales/jquery.min.js"></script>
 	<script src="js/esenciales/bootstrap.min.js"></script>
+	
 	<script src="js/esenciales/config.js"></script>
 	<script src="js/esenciales/match_user_product.js"></script> <!-- Para el caso en que el producto si existe -->
 	<script src="js/vistas/producto_no_encontrado.js"></script>
@@ -45,6 +47,16 @@
     	<label for="n_producto">Nombre del Producto</label>
     	<input type="text" name="nombre" class="form-control" id="n_producto">
 		</div>
+
+		<div class="form-group" style="text-align: center;">
+    	<i><label for="n_producto">Opcional</label></i><br>
+    	<img src="" id="myImage" style="max-width: 70px; max-height: 70px;">
+      <button onClick="foto()" type="button" class="btn btn-default btn-sm">
+        <img  src="img/scan.png" style="width: 30px; height: 30px;" alt="...">
+        <br><span id="texto-foto">Sacar una foto</span>
+      </button>
+    	<!-- <input type="file" name="nombre" class="form-control" id="myImage"> -->
+		</div>		
 
 		<div style="text-align: center;">
     	<button type="submit" class="btn btn-md btn-default" onclick="sugerir_producto()">Enviar Producto</button>

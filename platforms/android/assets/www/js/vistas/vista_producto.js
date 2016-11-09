@@ -53,17 +53,20 @@ function modo_sin_conexion(){
 }
 
 function get_my_data(){
-  $( '#my-slider' ).sliderPro({
-    forceSize:'fullWidth',
-    fade:true,
-    buttons:false,
-    keyboard:false,
-    touchSwipe:false,
-    autoplayOnHover:'none',
-  });
+  // $( '#my-slider' ).sliderPro({
+  //   forceSize:'fullWidth',
+  //   fade:true,
+  //   buttons:false,
+  //   keyboard:false,
+  //   touchSwipe:false,
+  //   autoplayOnHover:'none',
+  // });
 
   var retrievedObject = localStorage.getItem('pdata');
   pdata = JSON.parse(retrievedObject);
+  if ($.isEmptyObject(pdata.pname)){
+    window.location = "producto_no_encontrado.html";
+  }
 
   // console.log(pdata.matchs);
   if (!$.isEmptyObject(pdata.matchs)){ //si no puede comerlo
@@ -174,23 +177,18 @@ function get_my_data(){
   current_product_denounces = JSON.parse(localStorage.getItem('product_denounces'));
   if (current_product_denounces){
     if (current_product_denounces[pdata.pid]=="denounced"){
-      // $('#MenuRecomendar').html('<div class="alert alert-warning">Este producto ya fue denunciado anteriormente</div>')
       $('#denunciar').attr('disabled','true')
       $('#denunciar').text('Este producto ya lo denunciaste')
-      // console.log("el producto ya fue denunciado antes");
     }
     else if (current_product_denounces[pdata.pid]=="recommended"){
-      // $('#MenuRecomendar').html('<div class="alert alert-success">Este producto ya fue recomendado anteriormente</div>')
       $('#recomendar').attr('disabled','true')
       $('#recomendar').text('Este producto ya lo recomendaste')
-      // console.log("el producto ya fue recomendado antes");
     }
     if (current_product_denounces[pdata.pid]=="denounced_recommended"){
       $('#denunciar').attr('disabled','true')
       $('#denunciar').text('Este producto ya lo denunciaste')
       $('#recomendar').attr('disabled','true')
       $('#recomendar').text('Este producto ya lo recomendaste')
-      // console.log("el producto ya fue recomendado antes");
     }
   }
 }
@@ -787,7 +785,7 @@ function crear_mensaje_problema_con_familiar(nombre_familiar, problemas_intolera
           localStorage.setItem('product_denounces', JSON.stringify(a));
         }
         console.log(response);
-        send_alert("<strong>Producto Denunciado Correctamente.</strong> Gracias por avisarnos.", "success");
+        send_alert("<strong>Producto Denunciado Correctamente.</strong> Gracias por avisarnos.", "warning");
         location.reload();
       });
     }

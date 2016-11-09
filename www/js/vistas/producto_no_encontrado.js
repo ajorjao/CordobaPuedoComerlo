@@ -4,6 +4,40 @@ $(function () {
   });
 });
 
+
+function foto(){
+  navigator.camera.getPicture(
+    function onSuccess(imageData){
+      var image = document.getElementById('myImage');
+      image.src = "data:image/jpeg;base64," + imageData;
+    },
+    function onFail(message){
+      // alert('Error: ' + message);
+      alert('Se ha cancelado fotografia');
+      location.reload();
+    },
+    { //options
+      quality: 75,
+      // targetWidth: 300,
+      // targetHeight: 300,
+      destinationType: Camera.DestinationType.DATA_URL,
+      cameraDirection: Camera.Direction.BACK
+    }
+  );
+}
+
+// function onSuccess(imageData) {
+//   var image = document.getElementById('myImage');
+//   image.src = "data:image/jpeg;base64," + imageData;
+// }
+// function onFail(message) {
+//   // alert('Error: ' + message);
+//   alert('Se ha cancelado la toma de foto');
+//   location.reload();
+// }
+
+
+
 function get_my_data(){ //se obtienen los datos del producto
   var c_bar = JSON.parse(localStorage.getItem('pdata')).pid
   $('#c_barra').val(c_bar)
@@ -47,6 +81,10 @@ function sugerir_producto() {
   var form = new FormData();
   form.append("barcode", $('#c_barra').val());
   form.append("name", $('#n_producto').val());
+  if ( $('#myImage').attr("src") != "" ){
+    form.append("image", $('#myImage').attr("src"));
+    loading("Sugiriendo","Se está enviando la sugerencia de tu producto", 0);
+  }
 
   var settings = {
     "async": true,
@@ -77,8 +115,8 @@ function sugerir_producto() {
     }
   }
 
-
   $.ajax(settings).done(function (response) {
+    stop_loading();
     send_alert("Producto sugerido correctamente.","success");
     window.location = "index.html"
   });

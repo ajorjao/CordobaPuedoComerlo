@@ -9,10 +9,11 @@
     },
     "cordova-plugin-camera": {
         "source": {
-            "type": "git",
-            "url": "https://github.com/apache/cordova-plugin-camera.git",
-            "subdir": "."
-        }
+            "type": "registry",
+            "id": "cordova-plugin-camera"
+        },
+        "is_top_level": true,
+        "variables": {}
     },
     "phonegap-plugin-barcodescanner": {
         "source": {
