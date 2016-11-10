@@ -162,7 +162,7 @@
       <div class="panel" id="product-comments" style="font-size: 13px;">
         <!-- <input type="text" class="form-control" name="Comentar" placeholder="Danos tu opinion"> -->
         <div style="text-align: center;">
-          <button style="width: 95%; margin: 5px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#comentar-modal">Comentar</button>
+          <button onclick="center_modal();" style="width: 95%; margin: 5px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#comentar-modal">Comentar</button>
         </div>
       </div>
     </div>
@@ -170,7 +170,7 @@
 
 
     <!-- Modal comentar -->
-    <div class="modal fade" id="comentar-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal" id="comentar-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -203,7 +203,7 @@
 
 
     <!-- Modal editar comentario -->
-    <div class="modal fade" id="editar-comentario-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal" id="editar-comentario-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">

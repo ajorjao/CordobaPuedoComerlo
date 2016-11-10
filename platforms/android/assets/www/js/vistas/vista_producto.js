@@ -93,7 +93,7 @@ function get_my_data(){
                   <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="margin-bottom: 0;">\
                     <span aria-hidden="true">&times;</span>\
                   </button>\
-                  (Selecciona a cada uno para ver sus detalles)\
+                  (Selecciona a cada familiar para ver sus posibles sintomas)\
                 </div>\
                 <div class="well panel" style="overflow: auto; margin-bottom: 0;">\
                   <div id="intolerancesMatchs">\
@@ -196,7 +196,7 @@ function get_my_data(){
 
 function crear_mensaje_problema_con_familiar(nombre_familiar, problemas_intolerancias){
   familiar = '\
-    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#sintomas_'+nombre_familiar+'" aria-expanded="false" aria-controls="collapseOne" style="font-size: 20px; color:#333;">\
+    <a id="collapse_'+nombre_familiar+'" onclick="$(\'#\'+this.id+\' span\').toggleClass(\'glyphicon-chevron-right\'); $(\'#\'+this.id+\' span\').toggleClass(\'glyphicon-chevron-down\');" role="button" data-toggle="collapse" data-parent="#accordion" href="#sintomas_'+nombre_familiar+'" aria-expanded="false" aria-controls="collapseOne" style="font-size: 20px; color:#333;">\
       <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> '+ nombre_familiar.split("_-_")[0] +'\
     </a><br>\
     <div id="sintomas_'+nombre_familiar+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_'+nombre_familiar+'" style="margin-bottom: 20px;">';
@@ -479,7 +479,7 @@ function crear_mensaje_problema_con_familiar(nombre_familiar, problemas_intolera
         <div class="row">'
     if (ask_my_comment){
       comment += '\
-        <a class="btn-default" data-toggle="modal" data-target="#editar-comentario-modal">\
+        <a class="btn-default" onclick="center_modal();" data-toggle="modal" data-target="#editar-comentario-modal">\
           <i class="fa fa-pencil" aria-hidden="true" onclick="editar_comentario('+hash_comentario["id"]+',\''+hash_comentario["title"]+'\',\''+hash_comentario["description"]+'\')"></i>\
         </a>'
     }
@@ -721,10 +721,13 @@ function crear_mensaje_problema_con_familiar(nombre_familiar, problemas_intolera
       $("#comentar-modal").modal('toggle');
       $("#title").val("");
       $("#description").val("");
-      // console.log("comentado:"+response);
+      // $("#product-comments").html('\
+      //     <div style="width: 95%; margin: 5px">\
+      //       <button style="width: 75%; margin: 5px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#comentar-modal">Comentar</button>\
+      //     </div>');
       $("#product-comments").html('\
-          <div style="width: 95%; margin: 5px">\
-            <button style="width: 75%; margin: 5px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#comentar-modal">Comentar</button>\
+          <div style="text-align: center;">\
+            <button onclick="center_modal();" style="width: 95%; margin: 5px;" type="button" class="btn btn-default" data-toggle="modal" data-target="#comentar-modal">Comentar</button>\
           </div>');
       get_comments(current_user);
     });

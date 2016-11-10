@@ -1,47 +1,49 @@
 var email = ""
 
 function modo_sin_conexion(){
-  $('#alert .alert.alert-danger').append('<br>\
-      Para poder utilizar este menú es necesario estar conectado');
-  $('.btn').attr('disabled','true')
+  setTimeout(function(){
+    $('#alert .alert.alert-danger').append('<br>\
+      Para poder utilizar este menú es necesario estar conectado.');
+  },0);
+  $('.btn').attr('disabled','true');
 }
 
 function get_my_data(){
-  // var settings = {
-  //   "async": false,
-  //   "crossDomain": true,
-  //   "url": "http://"+url_server+"/user",
-  //   "method": "GET",
-  //   xhrFields: {
-  //     withCredentials: true
-  //   },
-  //   "headers": {
-  //     "cache-control": "no-cache",
-  //     "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
-  //   },
-  //   error: function(resp, status){
-  //     if (resp.status==0){
-  //       alert("Error de conexión con el servidor, por favor intentelo mas tarde");
-  //       location.reload();
-  //     }
-  //     else{
-  //       not_loged();
-  //     }
-  //   }
-  // }
-
-  // $.ajax(settings).done(function (response) {
-  //   email = response.user.email //para enviar un mensaje de contactanos
-  //   userdata = JSON.parse(localStorage.getItem('usuario'));
-  //   if (!userdata){
-  //     send_alert("Hubo un problema con los datos de tu usuario, lamentamos las inconveniencias", "warning");
-  //     window.location = "perfil.html";
-  //   }
-  // });
-
   if (localStorage.getItem('products')){
     $('#modo-sin-conexion').html('<span class="fa fa-download" aria-hidden="true"></span> Actualizar modo sin conexión');
   }
+
+  var settings = {
+    "async": false,
+    "crossDomain": true,
+    "url": "http://"+url_server+"/user",
+    "method": "GET",
+    xhrFields: {
+      withCredentials: true
+    },
+    "headers": {
+      "cache-control": "no-cache",
+      "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
+    },
+    error: function(resp, status){
+      if (resp.status==0){
+        // alert("Error de conexión con el servidor, por favor intentelo mas tarde");
+        // location.reload();
+      }
+      else{
+        not_loged();
+      }
+    }
+  }
+
+  $.ajax(settings).done(function (response) {
+    email = response.user.email //para enviar un mensaje de contactanos
+    userdata = JSON.parse(localStorage.getItem('usuario'));
+    if (!userdata){
+      send_alert("Hubo un problema con los datos de tu usuario, lamentamos las inconveniencias", "warning");
+      window.location = "perfil.html";
+    }
+  });
 }
 
 function preguntar_modo_sin_conexion(){

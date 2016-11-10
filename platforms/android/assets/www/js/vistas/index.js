@@ -50,38 +50,38 @@ function escanear(){
 
 
 
-// function get_my_data(){
-  // var settings = {
-  //   "async": true,
-  //   "crossDomain": true,
-  //   "url": "http://"+url_server+"/user",
-  //   "method": "GET",
-  //   xhrFields: {
-  //     withCredentials: true
-  //   },
-  //   "headers": {
-  //     "cache-control": "no-cache",
-  //     "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
-  //   },
-  //   error: function(resp, status){
-  //     if (resp.status==0){
-  //       alert("Error de conexión con el servidor, por favor intentelo mas tarde");
-  //       location.reload();
-  //     }
-  //     else{
-  //       not_loged();
-  //     }
-  //   }
-  // }
+function get_my_data(){
+  var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://"+url_server+"/user",
+    "method": "GET",
+    xhrFields: {
+      withCredentials: true
+    },
+    "headers": {
+      "cache-control": "no-cache",
+      "postman-token": "e75d6d1f-85a5-fdce-0ff6-704ff358920b"
+    },
+    error: function(resp, status){
+      if (resp.status==0){
+        // alert("Error de conexión con el servidor, por favor intentelo mas tarde");
+        // location.reload();
+      }
+      else{
+        not_loged();
+      }
+    }
+  }
 
-  // $.ajax(settings).done(function (response) {
-  //   userdata = JSON.parse(localStorage.getItem('usuario'));
-  //   if (!userdata){
-  //     send_alert("Hubo un problema con los datos de tu usuario, lamentamos las inconveniencias", "warning");
-  //     window.location = "perfil.html";
-  //   }
-  // });
-// }
+  $.ajax(settings).done(function (response) {
+    userdata = JSON.parse(localStorage.getItem('usuario'));
+    if (!userdata){
+      send_alert("Hubo un problema con los datos de tu usuario, lamentamos las inconveniencias", "warning");
+      window.location = "perfil.html";
+    }
+  });
+}
 
 // function modo_sin_conexion(){
 //   userdata = JSON.parse(localStorage.getItem('usuario'));

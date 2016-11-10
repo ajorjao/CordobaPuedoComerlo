@@ -33,27 +33,25 @@
     </div>
     <div class="useravatar">
       <img alt="..." id="profilePicture2">
-      <a href="" data-toggle="modal" data-target="#foto-perfil-modal" >
-      </a> 
     </div>
 
-    <div class="card-info"> <span id="nombredelwn" class="card-title"></span>
-
+    <div class="card-info">
+      <span id="nombredelwn" class="card-title"></span>
     </div>
   </div>
 
-  <a href="" data-toggle="modal" data-target="#foto-perfil-modal" >
-    <span class="glyphicon glyphicon-camera" style="top: -87px;left: calc(50% + 37px);font-size: 40px;" aria-hidden="true">
+  <a href="" onclick="center_modal('foto-perfil-modal');" id="change-photo" data-toggle="modal" data-target="#foto-perfil-modal" >
+    <span class="glyphicon glyphicon-camera" style="position: absolute; top: 218px; left: calc(50% + 37px);font-size: 40px;" aria-hidden="true">
     </span>
   </a>
 <!-- fin de foto --> 
 
 
-  <div class="panel panel-primary" id="familiares" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-primary" id="familiares" role="tablist" aria-multiselectable="true" style="margin-top: 40px;">
     <div class="panel-heading">
       <h2 class="panel-title">
         Grupo familiar
-        <a data-toggle="modal" data-target="#new-relative-modal" style="float: right; color: #5eff5e; font-size: 25px;">
+        <a id="add-familiar" data-toggle="modal" data-target="#new-relative-modal" style="float: right; color: #5eff5e; font-size: 25px;">
           <span class="fa fa-plus" aria-hidden="true" style="margin-top:7px;"></span>
           <!-- <span class="edit-relative fa fa-plus" aria-hidden="true"></span> -->
         </a>
@@ -63,7 +61,7 @@
   </div>
 
     <!-- Modal Foto-->
-    <div class="modal fade" id="foto-perfil-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal" id="foto-perfil-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -92,7 +90,7 @@
 
 
     <!-- Modal Nombre-->
-    <div class="modal fade" id="nombre-familiar-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal" id="nombre-familiar-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -122,7 +120,7 @@
 
 
     <!-- Modal Nueva Intolerancia-->
-    <div class="modal fade" id="intolerancia-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal" id="intolerancia-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -166,7 +164,7 @@
 
 
     <!-- Modal nuevo familiar-->
-    <div class="modal fade" id="new-relative-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal" id="new-relative-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
