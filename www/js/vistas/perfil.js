@@ -11,6 +11,9 @@ function modo_sin_conexion(){
 	});
 	$('.panel-heading .info').text("")
 	$('.btn.btn-success').remove();
+	$('#change-photo').remove();
+	$('#familiares').css('margin-top','40px');
+	$('#add-familiar').remove();
 }
 
 
@@ -88,15 +91,19 @@ function guardar_id(newid, name){
 }
 
 function add_familiar(nombre, id){
-	var familiar = ''+
-		'<div class="panel panel-default">'+
-			'<div class="panel-heading" role="tab" id="heading_'+id+'" data-toggle="collapse" data-parent="#accordion" href="#collapse_'+id+'" aria-expanded="true" aria-controls="collapseOne">'+
-				'<h4 class="panel-title">'+nombre+
-						'<a data-toggle="modal" data-target="#nombre-familiar-modal" href=""><span class=" edit-relative glyphicon glyphicon-pencil aria-hidden="true" onClick="guardar_id('+id+',\''+nombre+'\')"></span></a>'+
-				'</h4>'+
-			'</div>'+
-			'<div id="collapse_'+id+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_'+id+'" aria-expanded="false">'+
-					'<ul class="list-group-'+id+'" style="padding-left: 0;">'+
+	var familiar = '\
+		<div class="panel panel-default">\
+			<div class="panel-heading" style="display: inline-block; width: calc(100% - 38px);" role="tab" onclick="$(\'#\'+this.id+\' h4 span\').toggleClass(\'glyphicon-chevron-right\'); $(\'#\'+this.id+\' h4 span\').toggleClass(\'glyphicon-chevron-down\');" id="heading_'+id+'" data-toggle="collapse" data-parent="#accordion" href="#collapse_'+id+'" aria-expanded="true" aria-controls="collapseOne">\
+				<h4 class="panel-title"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> '+nombre+'\
+				</h4>\
+			</div>'+
+
+			'<a data-toggle="modal" data-target="#nombre-familiar-modal">\
+				<span style="padding: 10px; font-size: 17px; color: black;" class="edit-relative glyphicon glyphicon-pencil" aria-hidden="true" onClick="guardar_id('+id+',\''+nombre+'\'); center_modal(\'nombre-familiar-modal\'); $(\'#name\').val(\''+nombre+'\')"></span>\
+			</a>'+
+			
+			'<div id="collapse_'+id+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_'+id+'" aria-expanded="false">\
+					<ul class="list-group-'+id+'" style="padding-left: 0;">'+
 					// #############intolerancias###############
 						// '<li class="intolerance list-group-item">'+
 						// 	'<img src="img/intolerancias/2.png" alt="...">'+
@@ -104,9 +111,9 @@ function add_familiar(nombre, id){
 						//   '<a href=""><span class=" remove-intolerance glyphicon glyphicon-remove aria-hidden="true"></span></a>'+
 						// '</li>'+
 					// #############intolerancias###############
-					'</ul>'+
-			'</div>'+
-		'</div>'
+					'</ul>\
+			</div>\
+		</div>'
 	$("#familiares").append(familiar);
 }
 
@@ -210,7 +217,7 @@ function get_familiar_data(family_id, family_name){
 			}
 		});
 		button_add_intolerance=''+
-			'<button data-toggle="modal" data-target="#intolerancia-modal" onClick="guardar_id('+family_id+',\''+family_name+'\')" type="button" class="list-group-item">'+
+			'<button data-toggle="modal" data-target="#intolerancia-modal" onClick="guardar_id('+family_id+',\''+family_name+'\'); center_modal(\'intolerancia-modal\');" type="button" class="list-group-item">'+
 				'<a  href=""><span class="add-intolerance glyphicon glyphicon-plus" aria-hidden="true"></span></a>'+
 				' Agregar Intolerancia'+
 			'</button>'

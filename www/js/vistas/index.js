@@ -65,8 +65,8 @@ function get_my_data(){
     },
     error: function(resp, status){
       if (resp.status==0){
-        alert("Error de conexión con el servidor, por favor intentelo mas tarde");
-        location.reload();
+        // alert("Error de conexión con el servidor, por favor intentelo mas tarde");
+        // location.reload();
       }
       else{
         not_loged();

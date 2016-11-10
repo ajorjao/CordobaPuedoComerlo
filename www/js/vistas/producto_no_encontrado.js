@@ -13,29 +13,18 @@ function foto(){
     },
     function onFail(message){
       // alert('Error: ' + message);
-      alert('Se ha cancelado fotografia');
+      alert('Se ha cancelado la fotografia');
       location.reload();
     },
     { //options
-      quality: 75,
-      // targetWidth: 300,
+      quality: 100,
+      targetWidth: 1024,
       // targetHeight: 300,
       destinationType: Camera.DestinationType.DATA_URL,
       cameraDirection: Camera.Direction.BACK
     }
   );
 }
-
-// function onSuccess(imageData) {
-//   var image = document.getElementById('myImage');
-//   image.src = "data:image/jpeg;base64," + imageData;
-// }
-// function onFail(message) {
-//   // alert('Error: ' + message);
-//   alert('Se ha cancelado la toma de foto');
-//   location.reload();
-// }
-
 
 
 function get_my_data(){ //se obtienen los datos del producto

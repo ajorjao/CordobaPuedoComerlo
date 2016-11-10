@@ -189,8 +189,8 @@ function get_my_data(){
     },
     error: function(resp, status){
       if (resp.status==0){
-        alert("Error de conexión con el servidor, por favor intentelo mas tarde");
-        location.reload();
+        // alert("Error de conexión con el servidor, por favor intentelo mas tarde");
+        // location.reload();
       }
       else{
         not_loged();
@@ -206,12 +206,3 @@ function get_my_data(){
     }
   });
 }
-
-// function modo_sin_conexion(){
-//   userdata = JSON.parse(localStorage.getItem('usuario'));
-//   if (userdata){
-//     setTimeout( function (){ //ni idea de porq el Timeout 0 pero es necesario para q se cargue la imagen
-//       $("#profilePicture").attr("src", userdata.foto_de_perfil);
-//     },0)
-//   }
-// }

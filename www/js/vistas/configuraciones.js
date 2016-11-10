@@ -1,22 +1,18 @@
 var email = ""
 
 function modo_sin_conexion(){
-  // userdata = JSON.parse(localStorage.getItem('usuario'));
-  // if (userdata){
-  //   setTimeout( function (){ //ni idea de porq el Timeout 0 pero es necesario para q se cargue la imagen
-  //     $("#profilePicture").attr("src", userdata.foto_de_perfil);
-  //   },0)
-  // }
-
-  // aqui se desabilitan las opciones del menu ya q para todas es necesario estar conectado
-
-  // 'Para poder utilizar este menú es necesario estar conectado'
-  $('#alert .alert.alert-danger').append('<br>\
-      Para poder utilizar este menú es necesario estar conectado');
-  $('.btn').attr('disabled','true')
+  setTimeout(function(){
+    $('#alert .alert.alert-danger').append('<br>\
+      Para poder utilizar este menú es necesario estar conectado.');
+  },0);
+  $('.btn').attr('disabled','true');
 }
 
 function get_my_data(){
+  if (localStorage.getItem('products')){
+    $('#modo-sin-conexion').html('<span class="fa fa-download" aria-hidden="true"></span> Actualizar modo sin conexión');
+  }
+
   var settings = {
     "async": false,
     "crossDomain": true,
@@ -31,8 +27,8 @@ function get_my_data(){
     },
     error: function(resp, status){
       if (resp.status==0){
-        alert("Error de conexión con el servidor, por favor intentelo mas tarde");
-        location.reload();
+        // alert("Error de conexión con el servidor, por favor intentelo mas tarde");
+        // location.reload();
       }
       else{
         not_loged();
@@ -48,10 +44,6 @@ function get_my_data(){
       window.location = "perfil.html";
     }
   });
-
-  if (localStorage.getItem('products')){
-    $('#modo-sin-conexion').html('<span class="fa fa-download" aria-hidden="true"></span> Actualizar modo sin conexión');
-  }
 }
 
 function preguntar_modo_sin_conexion(){
@@ -104,7 +96,7 @@ function preguntar_modo_sin_conexion(){
       }
     }
     else{
-      var ask_database = confirm("Deseas descargar "+(size_products*8/1024).toFixed(2)+" KB con nuestros productos?");
+      var ask_database = confirm("Deseas descargar "+(size_products*8/1024).toFixed(2)+" KB con nuestros productos?\nNOTA: En el modo sin conexión solo se verá la información básica del producto y si puedes comerlo o no.");
       if (ask_database == true) {
         descargar_modo_sin_conexion(userdata.intolerancias.toString());
       }

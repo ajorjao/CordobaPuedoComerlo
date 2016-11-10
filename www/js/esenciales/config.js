@@ -97,7 +97,7 @@ function ping(url){
       }
     })
   }
-};
+}
 
 // para poder almacenar imagenes con local storage (la foto de perfil del usuario)
 function toDataUrl(url, callback) {
@@ -210,6 +210,20 @@ function not_loged(){
   localStorage.removeItem('product_denounces');
   window.location = "login.html";
 }
+
+function center_modal(id){
+  if (id){
+    setTimeout(function(){
+      $('#'+id).css('margin-top',((window.screen.height)/2  - $('#'+id+' .modal-dialog').height()) + 'px');
+    },0)
+  }
+  else{
+    setTimeout(function(){
+      $('.modal').css('margin-top',((window.screen.height)/2  - $('.modal .modal-dialog').height()) + 'px');
+    },0)
+  }
+}
+
 
 //se hacen los pings y se guardan la ruta "back"
 $(document).ready(function( $ ) {
