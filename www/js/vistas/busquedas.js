@@ -45,7 +45,7 @@ function search(type){
       else{
       	stop_loading();
       	clear_listgroup();
-	  		add_error(JSON.parse(resp.responseText).error+": "+$("#search_type").val()+", puedes solicitar el producto haciendo click en Solicitar Producto");
+	  		add_error(JSON.parse(resp.responseText).error+": "+$("#search_type").val());
       }
 	  }
 	}

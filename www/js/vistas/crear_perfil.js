@@ -119,6 +119,7 @@ function add_new_familiar(){
 
     stop_loading();
     window.location = "perfil.html";
+    activar_modo_tutorial();
   });
 }
 

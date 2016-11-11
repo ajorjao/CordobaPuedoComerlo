@@ -43,6 +43,7 @@ function login(){
     // console.log(response);
     localStorage.removeItem("usuario");
     window.location = "perfil.html"
+    activar_modo_tutorial();
   });
 }
 
@@ -103,6 +104,7 @@ function register_provider(access_token, provider){
     send_alert("Te has registrado satisfactoriamente con tu cuenta de "+provider, "success")
     stop_loading();
     window.location = "perfil.html";
+    activar_modo_tutorial();
   });
 
 }

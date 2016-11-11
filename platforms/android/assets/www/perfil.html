@@ -36,7 +36,11 @@
     </div>
 
     <div class="card-info">
-      <span id="nombredelwn" class="card-title"></span>
+      <span id="nombredelwn" class="card-title" onclick="change_username_mode();"></span>
+      <i id="cancel_username" class="fa fa-times btn btn-danger" onclick="change_username_mode()" aria-hidden="true" style="position: relative; top: -4px; width: 10%; display: none;"></i>
+      <input type="text" id="nombredelwn-input" style="width: 70%; text-align: center; font-size: 22px; border: 1px solid #ccc; border-radius: 4px; display: none;" value=""></input>
+      <i id="change_username" class="fa fa-check btn btn-success" onclick="change_username()" aria-hidden="true" style="position: relative; top: -4px; width: 10%; display: none;"></i>
+      <!-- <i id="cancel_username" class="fa fa-times" aria-hidden="true" style="display: none;"></i> -->
     </div>
   </div>
 

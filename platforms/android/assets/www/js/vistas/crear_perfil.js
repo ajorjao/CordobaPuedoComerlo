@@ -6,6 +6,7 @@ $(function () {
 
 function register(){
   var form = new FormData();
+  form.append("user[username]", $("#username").val());
   form.append("user[email]", $("#email").val());
   form.append("user[password]", $("#pass").val());
   form.append("user[password_confirmation]", $("#pass_conf").val());
@@ -54,6 +55,11 @@ function register(){
     alert("Error, las contraseñas no coinciden");
     $("#pass").goTo();
     $("#pass").focus();
+  }
+  else if ($('#username').val()=="") { //validacion de que el username no este vacio
+    alert("Tu grupo familiar no puede quedar vacio");
+    $("#name").goTo();
+    $("#name").focus();
   }
   else if ($('#name').val()=="") { //validacion de que el nombre no este vacio
     alert("Error, tu nombre no puede quedar vacio");

@@ -225,6 +225,64 @@ function get_familiar_data(family_id, family_name){
 	});
 }
 
+function change_username_mode(){
+	console.log("asdasddas")
+  if ($("#nombredelwn").is(":visible")){
+  	var current_username = $("#nombredelwn").text()
+	  $('#nombredelwn').hide();
+	  $('#nombredelwn-input').show();
+	  $('#change_username').show();
+	  $('#cancel_username').show();
+  	$('#nombredelwn-input').val(current_username);
+	  // setTimeout(function(){
+	  // }, 0);
+  }
+  else{
+	  $('#nombredelwn').show();
+	  $('#nombredelwn-input').hide();
+	  $('#change_username').hide();
+	  $('#cancel_username').hide();	
+  }
+}
+
+function change_username(){
+	var form = new FormData();
+	form.append("user[username]", $('#nombredelwn-input').val());
+
+	var settings = {
+		"async": true,
+		"crossDomain": true,
+		"url": "http://"+url_server+"/user/",
+		"method": "PUT",
+		xhrFields: {
+			withCredentials: true
+		},
+		"headers": {
+			"cache-control": "no-cache",
+			"postman-token": "1fa9c955-3fc6-3be7-2a0d-d01f59170acb"
+		},
+		"processData": false,
+		"contentType": false,
+		"mimeType": "multipart/form-data",
+		"data": form,
+		error: function(resp, status){
+      if (resp.status==0){
+        alert("Error de conexión con el servidor, por favor intentelo mas tarde");
+      }
+      else{
+        send_alert(JSON.parse(resp.responseText).error, "danger");
+      }
+      location.reload();
+		}
+	}
+
+	$.ajax(settings).done(function (response) {
+		// console.log(response);
+		localStorage.removeItem('usuario'); //se rehace el usuario cuando se cambia el nombre de usuario
+		location.reload();
+	});
+}
+
 function new_picture(){
 	$("#foto-perfil-modal").modal("hide");
   loading("Subiendo Imagen","Por favor espere mientras esta subiendo su nuevo avatar", 0);
