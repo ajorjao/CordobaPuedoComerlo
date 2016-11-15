@@ -13,8 +13,8 @@ function foto(){
     },
     function onFail(message){
       // alert('Error: ' + message);
-      alert('Se ha cancelado la fotografia');
-      location.reload();
+      // alert('Se ha cancelado la fotografia');
+      // location.reload();
     },
     { //options
       quality: 100,

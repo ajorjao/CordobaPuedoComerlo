@@ -449,7 +449,8 @@ function get_my_data(){
 	  loading("Subiendo Imagen","Por favor espere mientras esta subiendo su nuevo avatar", 0);
 
 		var form = new FormData();
-		form.append("user[avatar]", $("#InputFile").prop("files")[0]);
+		// form.append("user[avatar]", $("#InputFile").prop("files")[0]);
+    form.append("user[avatar]", $('#myImage').attr("src"));
 
 		var settings = {
 			"async": true,
@@ -485,6 +486,39 @@ function get_my_data(){
 			location.reload();
 		});
 	}
+
+	function select_photo(myurl){
+		url = $(myurl).val()
+    var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      $('#myImage').attr('src', e.target.result);
+    }
+   	reader.readAsDataURL(myurl.files[0]);
+	}
+
+
+	function foto(){
+	  navigator.camera.getPicture(
+	    function onSuccess(imageData){
+	      var image = document.getElementById('myImage');
+	      image.src = "data:image/jpeg;base64," + imageData;
+	    },
+	    function onFail(message){
+	      // alert('Error: ' + message);
+	      // alert('Se ha cancelado la fotografia');
+	      // location.reload();
+	    },
+	    { //options
+	      quality: 100,
+	      targetWidth: 1024,
+	      targetHeight: 768,
+	      destinationType: Camera.DestinationType.DATA_URL,
+	      cameraDirection: Camera.Direction.FRONT
+	    }
+	  );
+	}
 //End username y foto de perfil
 
 
@@ -492,6 +526,27 @@ function go_back(){
   var back = JSON.parse(localStorage.getItem('back'));
   window.location = back.location;
 }
+
+
+// funcion que hace que seleccionar una foto se vea bien
+// $(function () {
+// 	$("#InputFile").fileinput({
+//     overwriteInitial: true,
+//     maxFileSize: 1500,
+//     showClose: false,
+//     showCaption: false,
+//     browseLabel: '',
+//     removeLabel: '',
+//     browseIcon: '<i class="glyphicon glyphicon-folder-open"></i>',
+//     removeIcon: '<i class="glyphicon glyphicon-remove"></i>',
+//     removeTitle: 'Cancel or reset changes',
+//     elErrorContainer: '#kv-avatar-errors-1',
+//     msgErrorClass: 'alert alert-block alert-danger',
+//     defaultPreviewContent: '<i class="fa fa-upload" aria-hidden="true"></i>',
+//     layoutTemplates: {main2: '{preview} ' +  btnCust + ' {remove} {browse}'},
+//     allowedFileExtensions: ["jpg", "png", "gif"]
+// 	});
+// });
 
 
 // funcion que hace que los checklist se vean bien... ### no es necesario ententerla, solo saber q funciona xd ###

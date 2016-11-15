@@ -6,8 +6,11 @@
 	<link href="css/bootstrap.min.css"  rel="stylesheet">
   <link rel="stylesheet" href="font-awesome-4.6.3/css/font-awesome.min.css">
   <link href="css/style.css"  rel="stylesheet">
+
+  <script src="cordova.js"></script>
   <script src="js/esenciales/jquery.min.js"></script>
   <script src="js/esenciales/bootstrap.min.js"></script>
+
   <script src="js/esenciales/config.js"></script>
   <script src="js/vistas/perfil.js"></script>
 </head>
@@ -72,15 +75,27 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title">Cambiar foto de perfil</h4>
           </div>
+
+          <form class="form-horizontal">
           <div class="modal-body">
-              <form class="form-horizontal">
-                <div class="form-group">
-				    <label for="InputFile" class="col-sm-2 control-label">Nueva Foto</label>
-				    <div class="col-sm-10">
-				    <input type="file" id="InputFile">
-				    <p class="help-block">Seleccione una imagen guardada en su dispositivo.</p>
-				    </div>
-				</div>
+
+            <div class="form-group" style="text-align: center;">
+
+              <label class="col-sm-2 control-label">Nueva Foto</label>
+              <img src="" id="myImage" style="max-width: 90px; max-height: 90px; margin: 5px;"><br>
+
+              <div class="btn btn-default btn-sm" style="position: relative;">
+                <i class="fa fa-upload" aria-hidden="true" style="font-size: 29px;"></i>
+                <br><span>Seleccionar foto</span>
+                <input type="file" id="InputFile" onchange="select_photo(this);" style="position: absolute; top: 0; right: 0; padding: 15px; font-size: 20px; opacity: 0;">
+              </div>
+
+              <button onClick="foto()" type="button" class="btn btn-default btn-sm">
+                <img  src="img/scan.png" style="width: 30px; height: 30px;" alt="...">
+                <br><span id="texto-foto">Sacar una foto</span>
+              </button>
+            </div>
+
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>

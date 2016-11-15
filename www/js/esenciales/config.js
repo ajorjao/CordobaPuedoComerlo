@@ -158,50 +158,51 @@ function stop_loading(){
   $("#modal-loading").remove();
 }
 
-
-// el mensaje debe venir con el formato que se quiere mostrar... status debe ser: success, info, warning o danger
-function send_alert(message, status){
-  // $('#alert').goTo();
-  var exist_alert = localStorage.getItem('alert_data');
-  if (exist_alert){
-    append_on_alert(message);
+// alerts
+  // el mensaje debe venir con el formato que se quiere mostrar... status debe ser: success, info, warning o danger
+  function send_alert(message, status){
+    // $('#alert').goTo();
+    var exist_alert = localStorage.getItem('alert_data');
+    if (exist_alert){
+      append_on_alert(message);
+    }
+    else{
+      // Guardar mensaje
+      localStorage.setItem('alert_data', JSON.stringify({ 'alert_message': message, 'alert_status': status }));
+    }
   }
-  else{
-    // Guardar mensaje
-    localStorage.setItem('alert_data', JSON.stringify({ 'alert_message': message, 'alert_status': status }));
+
+  // para que se pueda agregar algo a una alerta ya existente
+  function append_on_alert(message){
+    alert = JSON.parse(localStorage.getItem('alert_data'));
+    localStorage.setItem('alert_data', JSON.stringify({ 'alert_message': alert.alert_message+'<br>'+message, 'alert_status': alert.alert_status }));
   }
-}
 
-// para que se pueda agregar algo a una alerta ya existente
-function append_on_alert(message){
-  alert = JSON.parse(localStorage.getItem('alert_data'));
-  localStorage.setItem('alert_data', JSON.stringify({ 'alert_message': alert.alert_message+'<br>'+message, 'alert_status': alert.alert_status }));
-}
+  //se usa en el ping
+  function read_alerts(){
+    // Ver mensaje
+    var exist_alert = localStorage.getItem('alert_data')
 
-//se usa en el ping
-function read_alerts(){
-  // Ver mensaje
-  var exist_alert = localStorage.getItem('alert_data')
+    if (exist_alert){
+      var alert_data = JSON.parse(exist_alert);
+      message = alert_data.alert_message
+      status = alert_data.alert_status
 
-  if (exist_alert){
-    var alert_data = JSON.parse(exist_alert);
-    message = alert_data.alert_message
-    status = alert_data.alert_status
+      console.log("Existe una alerta ("+status+"): "+message)
+      localStorage.removeItem('alert_data');
 
-    console.log("Existe una alerta ("+status+"): "+message)
-    localStorage.removeItem('alert_data');
+      $("#alert").html('\
+        <div class="alert alert-'+status+' alert-dismissible fade in" role="alert">\
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">\
+            <span aria-hidden="true">&times;</span>\
+          </button>\
+          '+message+'\
+        </div>');
 
-    $("#alert").html('\
-      <div class="alert alert-'+status+' alert-dismissible fade in" role="alert">\
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">\
-          <span aria-hidden="true">&times;</span>\
-        </button>\
-        '+message+'\
-      </div>');
-
-    $("#alert").goTo();
+      $("#alert").goTo();
+    }
   }
-}
+// end alerts
 
 function not_loged(){
   localStorage.removeItem('usuario'); 
@@ -284,7 +285,7 @@ function center_modal(id){
           nuevo_mensaje('\
             <b>Bienvenido a nuestro tutorial <span class="fa fa-smile-o" aria-hidden="true"></span></b>\
             <br>\
-            En este, nos encargarémos de enseñarte todo lo que necesario para que aprendas a utilizar nuestra aplicación\
+            En éste, nos encargaremos de enseñarte todo lo necesario para que aprendas a utilizar nuestra aplicación\
             <br>\
             <br>\
             Esta es la vista de tu perfil, en ella puedes modificar tu grupo familiar');
@@ -501,10 +502,10 @@ function center_modal(id){
           nuevo_mensaje('Finalmente tenemos la vista de <b>Configuraciones</b>\
             <br>\
             <br>\
-            Desde aqui puedes contactarte con un administrador de ¿Puedo Comerlo?, descargar la el modo sin conexion y cerrar la sesion de tu celular\
+            Desde aqui puedes contactarte con un administrador de ¿Puedo Comerlo?, descargar el modo sin conexion y cerrar la sesión de tu celular\
             <br>\
             <br>\
-            Descargar el modo sin conexion te permitirá utilizar la aplicación sin la necesidad de estar conectado a internet, sin embargo, para evitar utilizar mucha memoria de tu celular, no se descargaran imagenes, solo los elementos más importantes para iformarte si puedes o no comer un producto.', '180px');
+            Descargar el modo sin conexion te permitirá utilizar la aplicación sin la necesidad de estar conectado a internet, sin embargo, para evitar utilizar mucha memoria de tu celular, no se descargaran imagenes, solo los elementos más importantes para informarte si puedes o no comer un producto.', '180px');
           mover_circulo("158px", "50px", "0px", "90%");
           $("#tutorial-circulo").hide();
           break;
@@ -518,6 +519,7 @@ function center_modal(id){
   }
 
   function activar_modo_tutorial(){
+    localStorage.removeItem('alert_data');
     var ask_tutorial = confirm("¿Deseas realizar el tutorial de nuestra aplicación?");
     if (ask_tutorial == true) {
       localStorage.setItem('tutorial', JSON.stringify({'step': 0}));
